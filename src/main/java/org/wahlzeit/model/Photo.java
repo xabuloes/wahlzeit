@@ -106,6 +106,11 @@ public class Photo extends DataObject {
 	protected PhotoStatus status = PhotoStatus.VISIBLE;
 	
 	/**
+	 * 
+	 */
+	protected Location location = null;
+	
+	/**
 	 *
 	 */
 	protected int praiseSum = 10;
