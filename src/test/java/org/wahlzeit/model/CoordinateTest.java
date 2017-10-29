@@ -6,6 +6,22 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class CoordinateTest {
+	
+	@Test
+	public void settersSetCorrectValues() {
+		// Arrange
+		Coordinate coordinate = new Coordinate(0.0, 0.0, 0.0);
+		
+		// Act
+		coordinate.setX(1.23);
+		coordinate.setY(2.34);
+		coordinate.setZ(3.45);
+		
+		// Assert
+		assertTrue(coordinate.getX() == 1.23);
+		assertTrue(coordinate.getY() == 2.34);
+		assertTrue(coordinate.getZ() == 3.45);
+	}
 
 	@Test
 	public void isEqualMatchesOnEqualCoordinates() {
