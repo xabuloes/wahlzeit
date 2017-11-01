@@ -82,6 +82,10 @@ public class Coordinate {
 
 	@Override
 	public boolean equals(Object obj) {
+		if(obj.getClass() != Coordinate.class) {
+			return false;
+		}
+		
 		return this.isEqual((Coordinate)obj);
 	}
 

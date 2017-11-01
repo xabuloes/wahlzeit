@@ -1,11 +1,22 @@
 package org.wahlzeit.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 public class CoordinateTest {
+	
+	@Test
+	public void constructorSetsCorrectValues() {
+		
+		Coordinate coordinate = new Coordinate(1.23, 2.34, 3.45);
+		
+		assertTrue(coordinate.getX() == 1.23);
+		assertTrue(coordinate.getY() == 2.34);
+		assertTrue(coordinate.getZ() == 3.45);
+	}
 	
 	@Test
 	public void settersSetCorrectValues() {
@@ -74,8 +85,6 @@ public class CoordinateTest {
 		Coordinate coordinateA = new Coordinate(1.23, 2.34, 3.45);
 		Coordinate coordinateB = new Coordinate(3.45, 1.23, 2.34);
 
-		System.out.println(coordinateA.getDistance(coordinateB));
-
 		// Act & Assert
 		double dx = Math.abs(coordinateA.getX() - coordinateB.getX());
 		double dy = Math.abs(coordinateA.getY() - coordinateB.getY());
@@ -108,6 +117,18 @@ public class CoordinateTest {
 		// Act & Assert
 		assertTrue(coordinateA.getDistance(coordinateB) > 0);
 
+	}
+	
+	@Test
+	public void equalsDoesNotMatchOnNotMatchingClass() {
+		
+		// Arrange
+		Coordinate coordinate = new Coordinate(-1.23, -2.34, -3.45);
+		Object notACoordinate = new Object();
+		
+		// Act & Assert
+		assertFalse(coordinate.equals(notACoordinate));
+		
 	}
 
 }
