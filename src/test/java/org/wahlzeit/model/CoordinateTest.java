@@ -1,134 +1,174 @@
+/*
+ * CoordinateTest
+ * 
+ * Copyright (c) 2017 by xabuloes, http://github.com/xabuloes
+ *
+ * This file is part of the Wahlzeit photo rating application.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
 package org.wahlzeit.model;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ * @author xabuloes
+ *
+ */
 public class CoordinateTest {
 	
-	@Test
-	public void constructorSetsCorrectValues() {
-		
-		Coordinate coordinate = new Coordinate(1.23, 2.34, 3.45);
-		
-		assertTrue(coordinate.getX() == 1.23);
-		assertTrue(coordinate.getY() == 2.34);
-		assertTrue(coordinate.getZ() == 3.45);
-	}
+	/**
+	 * Delta value used for comparison of double values.
+	 */
+	private static double COMPARISON_DELTA = 0.00001;
 	
+	
+	// 4 different coordinates that are used multiple times in the test methods.
+	private Coordinate coordinateA;
+	private Coordinate coordinateB;
+	private Coordinate coordinateC;
+	private Coordinate coordinateD;
+	
+	// Coordinate with null to test edge cases
+	private Coordinate nullCoordinate;
+	
+	@Before
+	public void setup() {
+		
+		this.coordinateA = new Coordinate(1.23, 2.34, 3.45);
+		this.coordinateB = new Coordinate(3.45, 2.34, 1.23);
+		this.coordinateC = new Coordinate(-1.23, -2.34, -3.45);
+		this.coordinateD = new Coordinate(-3.45, -2.34, -1.23);
+		
+		this.nullCoordinate = null;
+		
+	}
+
+	@Test
+	public void testConstructorSetsCorrectValues() {
+
+		// Act & Assert
+		
+		assertEquals(this.coordinateA.getX(), 1.23, CoordinateTest.COMPARISON_DELTA);
+		assertEquals(this.coordinateA.getY(), 2.34, CoordinateTest.COMPARISON_DELTA);
+		assertEquals(this.coordinateA.getZ(), 3.45, CoordinateTest.COMPARISON_DELTA);
+		
+		assertEquals(this.coordinateB.getX(), 3.45, CoordinateTest.COMPARISON_DELTA);
+		assertEquals(this.coordinateB.getY(), 2.34, CoordinateTest.COMPARISON_DELTA);
+		assertEquals(this.coordinateB.getZ(), 1.23, CoordinateTest.COMPARISON_DELTA);
+
+		assertEquals(this.coordinateC.getX(), -1.23, CoordinateTest.COMPARISON_DELTA);
+		assertEquals(this.coordinateC.getY(), -2.34, CoordinateTest.COMPARISON_DELTA);
+		assertEquals(this.coordinateC.getZ(), -3.45, CoordinateTest.COMPARISON_DELTA);
+		
+		assertEquals(this.coordinateD.getX(), -3.45, CoordinateTest.COMPARISON_DELTA);
+		assertEquals(this.coordinateD.getY(), -2.34, CoordinateTest.COMPARISON_DELTA);
+		assertEquals(this.coordinateD.getZ(), -1.23, CoordinateTest.COMPARISON_DELTA);
+		
+	}
+
 	@Test
 	public void settersSetCorrectValues() {
-		// Arrange
-		Coordinate coordinate = new Coordinate(0.0, 0.0, 0.0);
-		
+
 		// Act
-		coordinate.setX(1.23);
-		coordinate.setY(2.34);
-		coordinate.setZ(3.45);
-		
+		this.coordinateA.setX(3.45);
+		this.coordinateA.setY(2.34);
+		this.coordinateA.setZ(1.23);
+
 		// Assert
-		assertTrue(coordinate.getX() == 1.23);
-		assertTrue(coordinate.getY() == 2.34);
-		assertTrue(coordinate.getZ() == 3.45);
+		assertEquals(this.coordinateA.getX(), 3.45, CoordinateTest.COMPARISON_DELTA);
+		assertEquals(this.coordinateA.getY(), 2.34, CoordinateTest.COMPARISON_DELTA);
+		assertEquals(this.coordinateA.getZ(), 1.23, CoordinateTest.COMPARISON_DELTA);
 	}
 
 	@Test
 	public void isEqualMatchesOnEqualCoordinates() {
 
 		// Arrange
-		Coordinate coordinateA = new Coordinate(1.23, 2.34, 3.45);
-		Coordinate coordinateB = new Coordinate(1.23, 2.34, 3.45);
-
+		Coordinate coordinateEqualToCoordinateA = new Coordinate(this.coordinateA.getX(), this.coordinateA.getY(), this.coordinateA.getZ());
+		
 		// Act & Assert
-		assertEquals(coordinateA.equals(coordinateB), true);
+		assertEquals(this.coordinateA.equals(coordinateEqualToCoordinateA), true);
 	}
 
 	@Test
 	public void isEqualDoesNotMatchOnNullCoordinates() {
 
-		// Arrange
-		Coordinate coordinateA = new Coordinate(1.23, 2.34, 3.45);
-		Coordinate coordinateB = null;
-
 		// Act & Assert
-		assertEquals(coordinateA.isEqual(coordinateB), false);
+		assertEquals(this.coordinateA.isEqual(this.nullCoordinate), false);
 	}
 
 	@Test
 	public void isEqualDoesNotMatchOnInequalCoordinates() {
 
-		// Arrange
-		Coordinate coordinateA = new Coordinate(1.23, 2.34, 3.45);
-		Coordinate coordinateB = new Coordinate(3.45, 2.34, 1.23);
-
 		// Act & Assert
-		assertEquals(coordinateA.isEqual(coordinateB), false);
+		assertEquals(this.coordinateA.isEqual(this.coordinateB), false);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void getDistanceFromNullCoordinateRaisesException() {
 
-		// Arrange
-		Coordinate coordinateA = new Coordinate(1.23, 2.34, 3.45);
-		Coordinate coordinateB = null;
-
 		// Act & Assert
-		coordinateA.getDistance(coordinateB);
+		this.coordinateA.getDistance(this.nullCoordinate);
 	}
 
 	@Test
 	public void getDistanceCalculatesDistanceBetweenCoordinates() {
 
 		// Arrange
-		Coordinate coordinateA = new Coordinate(1.23, 2.34, 3.45);
-		Coordinate coordinateB = new Coordinate(3.45, 1.23, 2.34);
+		double deltaX = Math.abs(this.coordinateA.getX() - this.coordinateB.getX());
+		double deltaY = Math.abs(this.coordinateA.getY() - this.coordinateB.getY());
+		double deltaZ = Math.abs(this.coordinateA.getZ() - this.coordinateB.getZ());
 
+		double precalculatedResult = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+		
 		// Act & Assert
-		double dx = Math.abs(coordinateA.getX() - coordinateB.getX());
-		double dy = Math.abs(coordinateA.getY() - coordinateB.getY());
-		double dz = Math.abs(coordinateA.getZ() - coordinateB.getZ());
-
-		// Act & Assert
-		assertTrue(coordinateA.getDistance(coordinateB) == Math.sqrt(dx * dx + dy * dy + dz * dz));
+		assertEquals(this.coordinateA.getDistance(this.coordinateB), precalculatedResult, CoordinateTest.COMPARISON_DELTA);
 
 	}
 
 	@Test
 	public void getDistanceReturnsPositiveValuesWithNegativeCoordinates() {
 
-		// Arrange
-		Coordinate coordinateA = new Coordinate(-1.23, -2.34, -3.45);
-		Coordinate coordinateB = new Coordinate(-3.45, -1.23, -2.34);
-
 		// Act & Assert
-		assertTrue(coordinateA.getDistance(coordinateB) > 0);
+		assertEquals(this.coordinateC.getDistance(this.coordinateD) > 0, true);
 
 	}
 
 	@Test
 	public void getDistanceReturnsPositiveValuesWithSingleNegativeCoordinate() {
 
-		// Arrange
-		Coordinate coordinateA = new Coordinate(-1.23, -2.34, -3.45);
-		Coordinate coordinateB = new Coordinate(3.45, 1.23, 2.34);
-
 		// Act & Assert
-		assertTrue(coordinateA.getDistance(coordinateB) > 0);
+		assertEquals(this.coordinateA.getDistance(this.coordinateC) > 0, true);
 
 	}
-	
+
 	@Test
 	public void equalsDoesNotMatchOnNotMatchingClass() {
-		
+
 		// Arrange
-		Coordinate coordinate = new Coordinate(-1.23, -2.34, -3.45);
 		Object notACoordinate = new Object();
-		
+
 		// Act & Assert
-		assertFalse(coordinate.equals(notACoordinate));
-		
+		assertEquals(this.coordinateA.equals(notACoordinate), false);
+
 	}
 
 }
