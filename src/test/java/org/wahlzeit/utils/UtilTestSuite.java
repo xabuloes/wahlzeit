@@ -20,12 +20,10 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.testSuites;
+package org.wahlzeit.utils;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.wahlzeit.utils.StringUtilTest;
-import org.wahlzeit.utils.VersionTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

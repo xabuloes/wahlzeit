@@ -1,10 +1,5 @@
-package org.wahlzeit.testSuites;
-
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-
 /*
- * AllTests
+ * PersistenceModelTestSuite
  * 
  * Copyright (c) 2017 by xabuloes, http://github.com/xabuloes
  *
@@ -25,13 +20,15 @@ import org.junit.runners.Suite;
  * <http://www.gnu.org/licenses/>.
  */
 
+package org.wahlzeit.model.persistence;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	ModelTestSuite.class,
-	HandlerTestSuite.class,
-	ServiceTestSuite.class,
-	UtilTestSuite.class,
+	DatastoreAdapterTest.class,
 })
-public class AllTests {
+public class PersistenceModelTestSuite {
 	// Remains empty, only used to hold annotations (see B02 p23)
 }

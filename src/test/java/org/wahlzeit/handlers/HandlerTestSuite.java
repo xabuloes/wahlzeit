@@ -1,5 +1,5 @@
 /*
- * ModelTestSuite
+ * HandlerTestSuite
  * 
  * Copyright (c) 2017 by xabuloes, http://github.com/xabuloes
  *
@@ -20,35 +20,15 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.testSuites;
+package org.wahlzeit.handlers;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.wahlzeit.model.AccessRightsTest;
-import org.wahlzeit.model.CoordinateTest;
-import org.wahlzeit.model.FlagReasonTest;
-import org.wahlzeit.model.GenderTest;
-import org.wahlzeit.model.GuestTest;
-import org.wahlzeit.model.LocationTest;
-import org.wahlzeit.model.PhotoFilterTest;
-import org.wahlzeit.model.TagsTest;
-import org.wahlzeit.model.UserStatusTest;
-import org.wahlzeit.model.ValueTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	AccessRightsTest.class,
-	CoordinateTest.class,
-	FlagReasonTest.class,
-	GenderTest.class,
-	GuestTest.class,
-	LocationTest.class,
-	PhotoFilterTest.class,
-	TagsTest.class,
-	UserStatusTest.class,
-	ValueTest.class,
-	PersistenceModelTestSuite.class,
+	TellFriendTest.class,
 })
-public class ModelTestSuite {
+public class HandlerTestSuite {
 	// Remains empty, only used to hold annotations (see B02 p23)
 }

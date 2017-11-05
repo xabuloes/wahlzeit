@@ -1,5 +1,5 @@
 /*
- * MailingServiceTestSuite
+ * ServiceTestSuite
  * 
  * Copyright (c) 2017 by xabuloes, http://github.com/xabuloes
  *
@@ -20,16 +20,19 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.testSuites;
+package org.wahlzeit.services;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.wahlzeit.services.mailing.EmailServiceTest;
+import org.wahlzeit.services.mailing.MailingServiceTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	EmailServiceTest.class,
+	EmailAddressTest.class,
+	LogBuilderTest.class,
+	MailingServiceTestSuite.class,
 })
-public class MailingServiceTestSuite {
+public class ServiceTestSuite {
 	// Remains empty, only used to hold annotations (see B02 p23)
 }
