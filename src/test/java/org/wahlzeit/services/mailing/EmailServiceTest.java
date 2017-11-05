@@ -57,4 +57,7 @@ public class EmailServiceTest {
 			Assert.fail("Silent mode does not allow exceptions");
 		}
 	}
+	
+	// TODO: Check edge cases
+	
 }
