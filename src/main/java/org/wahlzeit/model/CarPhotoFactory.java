@@ -22,8 +22,70 @@
 
 package org.wahlzeit.model;
 
+import java.util.logging.Logger;
+
+import org.wahlzeit.services.LogBuilder;
+
 // TODO: 
 public class CarPhotoFactory extends PhotoFactory {
+
+	
+	private static final Logger log = Logger.getLogger(CarPhotoFactory.class.getName());
+	/**
+	 * Hidden singleton instance; needs to be initialized from the outside.
+	 */
+	private static CarPhotoFactory instance = null;
+
+	
+	protected CarPhotoFactory() {
+		super();
+	}
+	
+	/**
+	 * Hidden singleton instance; needs to be initialized from the outside.
+	 */
+	public static void initialize() {
+		getInstance(); // drops result due to getInstance() side-effects
+	}
+
+	/**
+	 * Public singleton access method.
+	 */
+	public static synchronized CarPhotoFactory getInstance() {
+		if (instance == null) {
+			log.config(LogBuilder.createSystemMessage().addAction("setting CarPhotoFactory").toString());
+			setInstance(new CarPhotoFactory());
+		}
+
+		return instance;
+	}
+	
+	/**
+	 * Method to set the singleton instance of CarPhotoFactory.
+	 */
+	protected static synchronized void setInstance(CarPhotoFactory photoFactory) {
+		if (instance != null) {
+			throw new IllegalStateException("attempt to initalize CarPhotoFactory twice");
+		}
+
+		instance = photoFactory;
+	}
+	
+	/**
+	 * @methodtype factory
+	 */
+	@Override
+	public CarPhoto createPhoto() {
+		return new CarPhoto(null, null, null);
+	}
+
+	/**
+	 * Creates a new photo with the specified id
+	 */
+	@Override
+	public CarPhoto createPhoto(PhotoId id) {
+		return new CarPhoto(id, null, null, null);
+	}
 	
 	// TODO
 

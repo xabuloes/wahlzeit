@@ -22,6 +22,9 @@
 
 package org.wahlzeit.model;
 
+import com.googlecode.objectify.annotation.Entity;
+
+@Entity
 public class CarPhoto extends Photo {
 
 	/**
@@ -29,8 +32,90 @@ public class CarPhoto extends Photo {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * Make of the displayed car.
+	 */
+	private String make = null;
 	
+	/**
+	 * Model of the displayed car.
+	 */
+	private String model = null;
 	
+	/**
+	 * Make year of the displayed car (optional)
+	 */
+	private Integer year = null;
+	
+	/**
+	 * TODO
+	 * 
+	 * @param make	Make of the displayed car (e.g. "Ford")
+	 * @param model	Model of the displayed car (e.g. "Mustang")
+	 * @param year	Make year of the displayed car (e.g. 2013)
+	 */
+	public CarPhoto(String make, String model, Integer year) {
+		super();
+		
+		if(make == null || make.isEmpty() ) {
+			throw new IllegalArgumentException("No make has been given for car photo");
+		}
+		
+		if(model == null || model.isEmpty() ) {
+			throw new IllegalArgumentException("No model has been given for car photo");
+		}
+		
+		this.make = make;
+		this.model = model;
+		
+		// TODO: Year is optional
+		this.year = year;
+		
+	}
+	
+	/**
+	 * TODO
+	 * 
+	 * @param photoId	Id for the new photo
+	 * @param make	Make of the displayed car (e.g. "Ford")
+	 * @param model	Model of the displayed car (e.g. "Mustang")
+	 * @param year	Make year of the displayed car (e.g. 2013)
+	 */
+	public CarPhoto(PhotoId photoId, String make, String model, Integer year) {
+		super(photoId);
+		
+		if(make == null || make.isEmpty() ) {
+			throw new IllegalArgumentException("No make has been given for car photo");
+		}
+		
+		if(model == null || model.isEmpty() ) {
+			throw new IllegalArgumentException("No model has been given for car photo");
+		}
+		
+		this.make = make;
+		this.model = model;
+		
+		// TODO: Year is optional
+		this.year = year;
+		
+	}
+	
+
+	public String getMake() {
+		return make;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+	
+	public String getYearAsString() {
+		return year.toString();
+	}
 	
 
 }

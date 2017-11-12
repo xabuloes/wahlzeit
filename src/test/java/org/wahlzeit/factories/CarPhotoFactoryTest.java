@@ -1,5 +1,5 @@
 /*
- * CarPhotoManagerTest
+ * CarPhotoFactoryTest
  * 
  * Copyright (c) 2017 by xabuloes, http://github.com/xabuloes
  *
@@ -20,10 +20,26 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.model;
+package org.wahlzeit.factories;
 
-public class CarPhotoManagerTest {
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+import org.wahlzeit.model.CarPhotoFactory;
+
+public class CarPhotoFactoryTest {
+	
 	
 	// TODO
+	
+	@Test
+	public void testIfFactoryReturnsCarPhotoInstances() {
+		
+		CarPhotoFactory factory = CarPhotoFactory.getInstance();
+		
+		assertTrue(factory instanceof CarPhotoFactory);
+		
+	}
+	
 
 }

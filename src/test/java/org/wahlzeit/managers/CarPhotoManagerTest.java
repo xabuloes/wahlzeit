@@ -1,5 +1,5 @@
 /*
- * CarPhotoManager
+ * CarPhotoManagerTest
  * 
  * Copyright (c) 2017 by xabuloes, http://github.com/xabuloes
  *
@@ -20,20 +20,17 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.model;
+package org.wahlzeit.managers;
 
-public class CarPhotoManager extends PhotoManager {
-	
-	// TODO
-	
-	/**
-	 *
-	 */
-	protected static final CarPhotoManager instance = new CarPhotoManager();
+import org.junit.Test;
 
+public class CarPhotoManagerTest {
 	
-	protected CarPhotoManager() {
+	@Test
+	public void test() {
 		
 	}
+	
+	// TODO
 
 }

@@ -33,6 +33,7 @@ import org.wahlzeit.model.persistence.PersistenceModelTestSuite;
 	FlagReasonTest.class,
 	GenderTest.class,
 	GuestTest.class,
+	CarPhotoTest.class,
 	LocationTest.class,
 	PhotoFilterTest.class,
 	TagsTest.class,

@@ -22,8 +22,56 @@
 
 package org.wahlzeit.model;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
 public class CarPhotoTest {
-	
+
+	// TODO
+
+	@Test
+	public void testConstructorSetsModelAndMakeCorrectly() {
+
+		// Arrange & Act
+		CarPhoto carPhoto = new CarPhoto("Ford", "Mustang", 2013);
+
+		// Assert
+		assertEquals(carPhoto.getMake(), "Ford");
+		assertEquals(carPhoto.getModel(), "Mustang");
+		assertEquals(carPhoto.getYear(), new Integer(2013));
+		assertEquals(carPhoto.getYearAsString(), "2013");
+
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorThrowsExceptionOnNullMake() {
+
+		CarPhoto carPhoto = new CarPhoto(null, "Mustang", null);
+
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorThrowsExceptionOnEmptyMake() {
+
+		CarPhoto carPhoto = new CarPhoto("", "Mustang", null);
+
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorThrowsExceptionOnNullModel() {
+
+		CarPhoto carPhoto = new CarPhoto("Ford", null, null);
+
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorThrowsExceptionOnEmptyModel() {
+
+		CarPhoto carPhoto = new CarPhoto("Ford", "", null);
+
+	}
+
 	// TODO
 
 }

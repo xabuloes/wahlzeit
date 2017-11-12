@@ -1,5 +1,5 @@
 /*
- * CarPhotoManager
+ * FactoryTestSuite
  * 
  * Copyright (c) 2017 by xabuloes, http://github.com/xabuloes
  *
@@ -20,20 +20,15 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.model;
+package org.wahlzeit.factories;
 
-public class CarPhotoManager extends PhotoManager {
-	
-	// TODO
-	
-	/**
-	 *
-	 */
-	protected static final CarPhotoManager instance = new CarPhotoManager();
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-	
-	protected CarPhotoManager() {
-		
-	}
-
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+	CarPhotoFactoryTest.class
+})
+public class FactoryTestSuite {
+	// Remains empty, only used to hold annotations (see B02 p23)
 }
