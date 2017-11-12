@@ -24,6 +24,7 @@ package org.wahlzeit.managers;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import org.wahlzeit.model.CarPhotoManagerTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

@@ -34,6 +34,8 @@ import org.wahlzeit.model.persistence.PersistenceModelTestSuite;
 	GenderTest.class,
 	GuestTest.class,
 	CarPhotoTest.class,
+	CarPhotoManagerTest.class,
+	CarPhotoFactoryTest.class,
 	LocationTest.class,
 	PhotoFilterTest.class,
 	TagsTest.class,

@@ -23,17 +23,13 @@ package org.wahlzeit.allTests;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.wahlzeit.factories.FactoryTestSuite;
 import org.wahlzeit.handlers.HandlerTestSuite;
-import org.wahlzeit.managers.ManagerTestSuite;
 import org.wahlzeit.model.ModelTestSuite;
 import org.wahlzeit.services.ServiceTestSuite;
 import org.wahlzeit.utils.UtilTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	FactoryTestSuite.class,
-	ManagerTestSuite.class,
 	ModelTestSuite.class,
 	HandlerTestSuite.class,
 	ServiceTestSuite.class,

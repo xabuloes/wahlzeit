@@ -74,17 +74,15 @@ public class CarPhotoFactory extends PhotoFactory {
 	/**
 	 * @methodtype factory
 	 */
-	@Override
-	public CarPhoto createPhoto() {
-		return new CarPhoto(null, null, null);
+	public CarPhoto createPhoto(String make, String model, Integer year) {
+		return new CarPhoto(make, model, year);
 	}
 
 	/**
 	 * Creates a new photo with the specified id
 	 */
-	@Override
-	public CarPhoto createPhoto(PhotoId id) {
-		return new CarPhoto(id, null, null, null);
+	public CarPhoto createPhoto(PhotoId id, String make, String model, Integer year) {
+		return new CarPhoto(id, make, model, year);
 	}
 	
 	// TODO

@@ -24,6 +24,7 @@ package org.wahlzeit.factories;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import org.wahlzeit.model.CarPhotoFactoryTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
