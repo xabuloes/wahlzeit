@@ -25,18 +25,23 @@ package org.wahlzeit.model;
 import java.util.logging.Logger;
 
 public class CarPhotoManager extends PhotoManager {
-
-	// TODO
 	
-	private static final Logger log = Logger.getLogger(CarPhotoManager.class.getName());
-
-	/**
-	 *
-	 */
-	private static final CarPhotoManager instance = new CarPhotoManager();
-
-	protected CarPhotoManager() {
-		super();
+	private static CarPhotoManager instance = new CarPhotoManager();
+	
+	public static CarPhotoManager getInstance() {
+		return instance;
+	}
+	
+	@Override
+	public CarPhoto getPhoto(String id) {
+		Photo photo = super.getPhoto(id);
+		return (CarPhoto)photo;
+	}
+	
+	@Override
+	public CarPhoto getPhotoFromId(PhotoId id) {
+		Photo photoFromId = super.getPhotoFromId(id);
+		return (CarPhoto)photoFromId;
 	}
 
 }

@@ -35,7 +35,6 @@ public class CarPhotoFactoryTest {
 
 	@Test
 	public void testInitializeMultipleTimesDoesNotLeadToMultipleInstances() {
-		// TODO: Same method for manager?
 
 		// Arrange & Act
 		CarPhotoFactory.initialize();
@@ -62,7 +61,6 @@ public class CarPhotoFactoryTest {
 	
 	@Test
 	public void testGetInstanceReturnsACarPhotoInstance() {
-		// TODO: Same method for manager?
 		
 		// Arrange & Act
 		CarPhotoFactory factory = CarPhotoFactory.getInstance();
