@@ -22,8 +22,6 @@
 
 package org.wahlzeit.model;
 
-import java.util.logging.Logger;
-
 public class CarPhotoManager extends PhotoManager {
 	
 	private static CarPhotoManager instance = new CarPhotoManager();

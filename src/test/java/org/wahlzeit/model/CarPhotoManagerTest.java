@@ -24,7 +24,6 @@ package org.wahlzeit.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -37,7 +36,6 @@ import org.wahlzeit.model.persistence.ImageStorage;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.Closeable;
 
@@ -57,8 +55,6 @@ public class CarPhotoManagerTest {
 	@BeforeClass
 	public static void setupBeforeClass() {
 		
-		// Reset the Factory so that all translators work properly
-		ObjectifyService.setFactory(new ObjectifyFactory());
 		ObjectifyService.register(CarPhoto.class);
 
 		// Initialize ImageStorage
