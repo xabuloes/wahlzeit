@@ -22,9 +22,9 @@
 
 package org.wahlzeit.model;
 
-import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Subclass;
 
-@Entity
+@Subclass
 public class CarPhoto extends Photo {
 
 	/**

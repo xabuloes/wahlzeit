@@ -26,7 +26,7 @@ public class CarPhotoManager extends PhotoManager {
 	
 	private static CarPhotoManager instance = new CarPhotoManager();
 	
-	public static CarPhotoManager getInstance() {
+	public static synchronized CarPhotoManager getInstance() {
 		return instance;
 	}
 	
