@@ -20,20 +20,21 @@
 
 package org.wahlzeit.main;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.util.logging.Logger;
+
+import org.wahlzeit.model.CarPhotoFactory;
+import org.wahlzeit.model.CarPhotoManager;
 import org.wahlzeit.model.GlobalsManager;
 import org.wahlzeit.model.PhotoCaseManager;
-import org.wahlzeit.model.PhotoFactory;
 import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserManager;
 import org.wahlzeit.model.persistence.DatastoreAdapter;
 import org.wahlzeit.model.persistence.ImageStorage;
 import org.wahlzeit.services.LogBuilder;
-
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.util.logging.Logger;
 
 /**
  * A single-threaded Main class with database connection. Can be used by tools that don't want to start a server.
@@ -59,11 +60,11 @@ public abstract class ModelMain extends AbstractMain {
 		log.config(LogBuilder.createSystemMessage().addAction("load user").toString());
 		UserManager.getInstance().init();
 
-		log.config(LogBuilder.createSystemMessage().addAction("init PhotoFactory").toString());
-		PhotoFactory.initialize();
+		log.config(LogBuilder.createSystemMessage().addAction("init CarPhotoFactory").toString());
+		CarPhotoFactory.initialize();
 
-		log.config(LogBuilder.createSystemMessage().addAction("load Photos").toString());
-		PhotoManager.getInstance().init();
+		log.config(LogBuilder.createSystemMessage().addAction("load CarPhotos").toString());
+		CarPhotoManager.getInstance().init();
 	}
 
 

@@ -24,22 +24,7 @@ package org.wahlzeit.model;
 
 public class CarPhotoManager extends PhotoManager {
 	
-	private static CarPhotoManager instance = new CarPhotoManager();
-	
-	public static synchronized CarPhotoManager getInstance() {
-		return instance;
-	}
-	
-	@Override
-	public CarPhoto getPhoto(String id) {
-		Photo photo = super.getPhoto(id);
-		return (CarPhoto)photo;
-	}
-	
-	@Override
-	public CarPhoto getPhotoFromId(PhotoId id) {
-		Photo photoFromId = super.getPhotoFromId(id);
-		return (CarPhoto)photoFromId;
-	}
+	protected static final CarPhotoManager instance = new CarPhotoManager();
+
 
 }

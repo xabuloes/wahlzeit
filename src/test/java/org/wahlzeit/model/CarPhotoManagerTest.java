@@ -81,7 +81,7 @@ public class CarPhotoManagerTest {
 		carPhoto2 = new CarPhoto("Mercedes-Benz", "GLA Class", 2014);
 		carPhoto2.setOwnerId(UserManager.getInstance().getClientById("tommy").getId());
 
-		carPhotoManager = CarPhotoManager.getInstance();
+		CarPhotoManager.getInstance().init();
 
 	}
 
@@ -107,14 +107,6 @@ public class CarPhotoManagerTest {
 		assertEquals(carPhoto.getMake(), persistedPhoto.getMake());
 		assertEquals(carPhoto.getModel(), persistedPhoto.getModel());
 
-	}
-
-	@Test
-	public void testGetPhotoReturnsNullIfPhotoDoesNotExist() {
-
-		CarPhoto photoWhichDoesNotExist = carPhotoManager.getPhotoFromId(new PhotoId(0xdeadbeef));
-
-		assertEquals(photoWhichDoesNotExist, null);
 	}
 
 	@Test
