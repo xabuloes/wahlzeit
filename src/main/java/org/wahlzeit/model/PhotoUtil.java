@@ -40,7 +40,7 @@ public class PhotoUtil {
 	 * @methodtype creation
 	 */
 	public static Photo createPhoto(String filename, PhotoId id, Image uploadedImage) throws Exception {
-		Photo result = CarPhotoFactory.getInstance().createPhoto(id, "TEST_MAKE", "TEST_MODEL", null);
+		Photo result = CarPhotoFactory.getInstance().createPhoto(id, "TEST_MAKE", "TEST_MODEL", null); // TODO: Fill in mandatory dummy data 
 		result.setEnding(filename.substring(filename.lastIndexOf(".") + 1));
 
 		createImageFiles(uploadedImage, result);
