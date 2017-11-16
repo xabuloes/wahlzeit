@@ -50,7 +50,7 @@ public class CarPhotoManagerTest {
 	private CarPhoto carPhoto = null;
 	private CarPhoto carPhoto2 = null;
 
-	private CarPhotoManager carPhotoManager;
+	private PhotoManager photoManager;
 
 	@BeforeClass
 	public static void setupBeforeClass() {
@@ -82,6 +82,8 @@ public class CarPhotoManagerTest {
 		carPhoto2.setOwnerId(UserManager.getInstance().getClientById("tommy").getId());
 
 		CarPhotoManager.getInstance().init();
+		
+		photoManager = CarPhotoManager.getInstance();
 
 	}
 
@@ -93,14 +95,12 @@ public class CarPhotoManagerTest {
 
 	}
 
-	// TODO: Add tests for singleton logic
-
 	@Test
 	public void testAddPhotoPersistsCarPhoto() throws IOException {
 
-		carPhotoManager.addPhoto(carPhoto);
+		photoManager.addPhoto(carPhoto);
 
-		CarPhoto persistedPhoto = (CarPhoto) carPhotoManager.getPhotoFromId(carPhoto.getId());
+		CarPhoto persistedPhoto = (CarPhoto) photoManager.getPhotoFromId(carPhoto.getId());
 
 		assertEquals(carPhoto.hashCode(), persistedPhoto.hashCode());
 
@@ -112,7 +112,7 @@ public class CarPhotoManagerTest {
 	@Test
 	public void testHasPhotoReturnsFalseIfPhotoDoesNotExist() {
 
-		assertFalse(carPhotoManager.hasPhoto(new PhotoId(0xdeadbeef)));
+		assertFalse(photoManager.hasPhoto(new PhotoId(0xdeadbeef)));
 	}
 
 	// TODO: Further tests

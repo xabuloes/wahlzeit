@@ -33,61 +33,59 @@ import org.junit.Test;
  *
  */
 public class LocationTest {
-	
+
 	/**
-	 * Coordinate instance is used as the default input parameter for Location object construction in most of the test cases
+	 * Coordinate instance is used as the default input parameter for Location
+	 * object construction in most of the test cases
 	 */
-	private Coordinate coordinateInstance;
-	
+	private Coordinate cartesianCoordinateInstance;
+
 	@Before
 	public void setup() {
-		
-		this.coordinateInstance = new Coordinate(1.23, 2.34, 3.45);
-		
+
+		this.cartesianCoordinateInstance = new CartesianCoordinate(1.23, 2.34, 3.45);
+
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void locationConstructionFailsOnNullCoordinate() {
-		
+
 		// Arrange & Act
-		new Location(null);	
+		new Location(null);
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void setCoordinateFailsOnNullCoordinate() {
-		
+
 		// Arrange
-		Location location = new Location(this.coordinateInstance);
-		
+		Location location = new Location(this.cartesianCoordinateInstance);
+
 		// Act
 		location.setCoordinate(null);
 	}
-	
+
 	@Test
 	public void locationConstructorSetsCoordinateInstance() {
 		// Arrange & Act
-		Location location = new Location(this.coordinateInstance);
-		
+		Location location = new Location(this.cartesianCoordinateInstance);
+
 		// Assert
-		assertTrue(location.getCoordinate() == this.coordinateInstance);
+		assertTrue(location.getCoordinate() == this.cartesianCoordinateInstance);
 	}
-	
+
 	@Test
 	public void setCoordinateSetsCoordinateInstance() {
-		Location location = new Location(this.coordinateInstance);
-		
+		Location location = new Location(this.cartesianCoordinateInstance);
+
 		// Arrange
-		Coordinate newCoordinateInstance = new Coordinate(3.45, 1.23, 2.34);
-		
+		Coordinate newCoordinateInstance = new CartesianCoordinate(3.45, 1.23, 2.34);
+
 		// Act
 		location.setCoordinate(newCoordinateInstance);
-		
+
 		// Assert
 		assertTrue(location.getCoordinate() == newCoordinateInstance);
-		
+
 	}
-	
-	
-	
 
 }
