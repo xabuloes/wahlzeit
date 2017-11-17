@@ -49,6 +49,22 @@ public class CarPhoto extends Photo {
 	
 	/**
 	 * TODO
+	 */
+	public CarPhoto() {
+		super();
+	}
+	
+	/**
+	 * TODO
+	 * 
+	 * @param photoId
+	 */
+	public CarPhoto(PhotoId photoId) {
+		super(photoId);
+	}
+	
+	/**
+	 * TODO
 	 * 
 	 * @param make	Make of the displayed car (e.g. "Ford")
 	 * @param model	Model of the displayed car (e.g. "Mustang")
