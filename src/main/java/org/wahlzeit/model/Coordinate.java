@@ -31,18 +31,21 @@ package org.wahlzeit.model;
 public interface Coordinate {
 
 	/**
+	 * Return instance of associated coordinate in Cartesian representation
 	 * 
 	 * @return
 	 */
 	CartesianCoordinate asCartesianCoordinate();
 
 	/**
+	 * Return instance of associated coordinate in spheric representation
 	 * 
 	 * @return
 	 */
 	SphericCoordinate asSphericCoordinate();
 
 	/**
+	 * Get Cartesian distance between two coordinates 
 	 * 
 	 * @param coordinateB
 	 * @return
@@ -50,6 +53,7 @@ public interface Coordinate {
 	double getCartesianDistance(Coordinate coordinateB);
 
 	/**
+	 * Get spherical distance between two coordinates
 	 * 
 	 * @param coordinateB
 	 * @return
@@ -57,6 +61,7 @@ public interface Coordinate {
 	double getSphericDistance(Coordinate coordinateB);
 
 	/**
+	 * Get distance (default representation, depending on implementation) between two coordinates
 	 * 
 	 * @param coordinateB
 	 * @return
@@ -64,6 +69,7 @@ public interface Coordinate {
 	double getDistance(Coordinate coordinateB);
 
 	/**
+	 * Compare two coordinate values
 	 * 
 	 * @param coordinate
 	 * @return

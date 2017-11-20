@@ -25,26 +25,25 @@ package org.wahlzeit.model;
 public class SphericCoordinate implements Coordinate {
 
 	/**
-	 * TODO
+	 * Latitude (polar angle in radian measure)
 	 */
 	private double latitude;
 
 	/**
-	 * TODO
+	 * Longitude (azimuth angle in radian measure)
 	 */
 	private double longitude;
 
 	/**
-	 * Radius in radian measure
+	 * Radius
 	 */
 	private double radius;
 
 	/**
-	 * TODO
-	 * 
-	 * @param latitude
-	 * @param longitude
-	 * @param radius
+	 *
+	 * @param latitude	in radian measure
+	 * @param longitude	in radian measure
+	 * @param radius	
 	 *            Radius in radian measure
 	 */
 	public SphericCoordinate(double latitude, double longitude, double radius) {
@@ -122,12 +121,15 @@ public class SphericCoordinate implements Coordinate {
 	/**
 	 * Return spheric coordinate value (trivial in this case; method exists to have
 	 * interchangeable coordinate representations)
+	 * 
+	 * @return	Coordinate in spheric values
 	 */
 	public SphericCoordinate asSphericCoordinate() {
 		return this; // TODO: Return cloned object?
 	}
 
 	/**
+	 * TODO
 	 * 
 	 * @param
 	 * @return
@@ -147,8 +149,8 @@ public class SphericCoordinate implements Coordinate {
 	/**
 	 * Delegate distance calculation to Cartesian distance calculation
 	 * 
-	 * @param
-	 * @return
+	 * @param	Coordinate to calculate spheric distance to
+	 * @return	(Spheric) distance between this coordinate and coordinateB
 	 * 
 	 * @throws IllegalArgumentException
 	 *             When input coordinate is null
@@ -166,8 +168,8 @@ public class SphericCoordinate implements Coordinate {
 	 * Returns spheric distance to given coordinate. If coordinate is not spherical,
 	 * it is converted.
 	 * 
-	 * @param
-	 * @return
+	 * @param	Coordinate to calculate distance to (in this case spheric distance) 
+	 * @return	(Spheric) distance between this coordinate an coordinate 
 	 * 
 	 * @throws IllegalArgumentException
 	 *             When input coordinate is null
