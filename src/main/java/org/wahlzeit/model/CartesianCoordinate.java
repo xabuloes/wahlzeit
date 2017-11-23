@@ -24,6 +24,8 @@ package org.wahlzeit.model;
 
 public class CartesianCoordinate implements Coordinate {
 
+	private static double DOUBLE_COMPARISON_DELTA = 0.00001;
+
 	private double x;
 	private double y;
 	private double z;
@@ -36,9 +38,9 @@ public class CartesianCoordinate implements Coordinate {
 	 * @param z
 	 */
 	public CartesianCoordinate(double x, double y, double z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.setX(x);
+		this.setY(y);
+		this.setZ(z);
 	}
 
 	/**
@@ -109,14 +111,15 @@ public class CartesianCoordinate implements Coordinate {
 	 *         one is not equal.
 	 */
 	public boolean isEqual(Coordinate toCompare) {
-		if (toCompare == null) {
+		if (isNull(toCompare)) {
 			return false;
 		}
 
 		CartesianCoordinate asCartesianCoordinate = toCompare.asCartesianCoordinate();
 
-		return (this.getX() == asCartesianCoordinate.getX()) && (this.getY() == asCartesianCoordinate.getY())
-				&& (this.getZ() == asCartesianCoordinate.getZ());
+		return (this.areDoublesEqual(this.getX(), asCartesianCoordinate.getX()))
+				&& this.areDoublesEqual(this.getY(), asCartesianCoordinate.getY())
+				&& this.areDoublesEqual(this.getZ(), asCartesianCoordinate.getZ());
 	}
 
 	/**
@@ -146,7 +149,7 @@ public class CartesianCoordinate implements Coordinate {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj.getClass() != CartesianCoordinate.class) {
+		if (!(obj instanceof CartesianCoordinate)) {
 			return false;
 		}
 
@@ -161,13 +164,13 @@ public class CartesianCoordinate implements Coordinate {
 	 *            Coordinate to which distance should be calculated
 	 * @return calculated distance between the two coordinates in the coordinate
 	 *         system
-	 *         
+	 * 
 	 * @throws IllegalArgumentException
 	 *             When input coordinate is null
 	 */
 	public double getDistance(Coordinate coordinateB) throws IllegalArgumentException {
 
-		if (coordinateB == null) {
+		if (isNull(coordinateB)) {
 			throw new IllegalArgumentException("null value was given to calculate distance between to coordinates");
 		}
 
@@ -230,6 +233,29 @@ public class CartesianCoordinate implements Coordinate {
 	public double getSphericDistance(Coordinate coordinateB) {
 
 		return this.asSphericCoordinate().getSphericDistance(coordinateB);
+	}
+
+	// TODO: Put this in abstract superclass
+	/**
+	 * TODO
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	protected boolean areDoublesEqual(double a, double b) {
+		return (Math.abs(a - b) < DOUBLE_COMPARISON_DELTA);
+	}
+
+	// TODO: Put this in abstract superclass
+	/**
+	 * TODO
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	protected boolean isNull(Object obj) {
+		return obj == null;
 	}
 
 }

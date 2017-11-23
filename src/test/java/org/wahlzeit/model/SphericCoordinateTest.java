@@ -36,7 +36,7 @@ public class SphericCoordinateTest {
 	/**
 	 * Delta value used for comparison of double values.
 	 */
-	private static double COMPARISON_DELTA = 0.00001;
+	private static double DOUBLE_COMPARISON_DELTA = 0.00001;
 
 	private SphericCoordinate sphericCoordinateA;
 	private SphericCoordinate sphericCoordinateB;
@@ -47,7 +47,7 @@ public class SphericCoordinateTest {
 	public void setup() {
 
 		sphericCoordinateA = new SphericCoordinate(1.00, 2.00, 3.00);
-		sphericCoordinateB = new SphericCoordinate(10.00, 100.00, 3.00);
+		sphericCoordinateB = new SphericCoordinate(1.50, 1.60, 1.70);
 
 		nullCoordinate = null;
 
@@ -58,13 +58,35 @@ public class SphericCoordinateTest {
 
 		// Act & Assert
 
-		assertEquals(sphericCoordinateA.getLatitude(), 1.00, COMPARISON_DELTA);
-		assertEquals(sphericCoordinateA.getLongitude(), 2.00, COMPARISON_DELTA);
-		assertEquals(sphericCoordinateA.getRadius(), 3.00, COMPARISON_DELTA);
+		assertEquals(sphericCoordinateA.getLatitude(), 1.00, DOUBLE_COMPARISON_DELTA);
+		assertEquals(sphericCoordinateA.getLongitude(), 2.00, DOUBLE_COMPARISON_DELTA);
+		assertEquals(sphericCoordinateA.getRadius(), 3.00, DOUBLE_COMPARISON_DELTA);
 
-		assertEquals(sphericCoordinateB.getLatitude(), 10.00, COMPARISON_DELTA);
-		assertEquals(sphericCoordinateB.getLongitude(), 100.00, COMPARISON_DELTA);
-		assertEquals(sphericCoordinateB.getRadius(), 3.00, COMPARISON_DELTA);
+		assertEquals(sphericCoordinateB.getLatitude(), 1.50, DOUBLE_COMPARISON_DELTA);
+		assertEquals(sphericCoordinateB.getLongitude(), 1.60, DOUBLE_COMPARISON_DELTA);
+		assertEquals(sphericCoordinateB.getRadius(), 1.70, DOUBLE_COMPARISON_DELTA);
+
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetLatitudeDoNotAcceptInvalidValues() {
+
+		// Act
+		sphericCoordinateA.setLatitude(100);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetLongitudeDoNotAcceptInvalidValues() {
+
+		// Act
+		sphericCoordinateA.setLongitude(100);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetRadiusDoesNotAcceptNegativeValues() {
+
+		// Act
+		sphericCoordinateA.setRadius(-10);
 
 	}
 
@@ -77,9 +99,9 @@ public class SphericCoordinateTest {
 		sphericCoordinateA.setRadius(1.23);
 
 		// Assert
-		assertEquals(sphericCoordinateA.getLatitude(), 3.45, COMPARISON_DELTA);
-		assertEquals(sphericCoordinateA.getLongitude(), 2.34, COMPARISON_DELTA);
-		assertEquals(sphericCoordinateA.getRadius(), 1.23, COMPARISON_DELTA);
+		assertEquals(sphericCoordinateA.getLatitude(), 3.45, DOUBLE_COMPARISON_DELTA);
+		assertEquals(sphericCoordinateA.getLongitude(), 2.34, DOUBLE_COMPARISON_DELTA);
+		assertEquals(sphericCoordinateA.getRadius(), 1.23, DOUBLE_COMPARISON_DELTA);
 	}
 
 	@Test
@@ -130,9 +152,9 @@ public class SphericCoordinateTest {
 		// Assert
 		assertTrue(cartesianCoordinate instanceof CartesianCoordinate);
 
-		assertEquals(cartesianCoordinate.getX(), expectedX, COMPARISON_DELTA);
-		assertEquals(cartesianCoordinate.getY(), expectedY, COMPARISON_DELTA);
-		assertEquals(cartesianCoordinate.getZ(), expectedZ, COMPARISON_DELTA);
+		assertEquals(cartesianCoordinate.getX(), expectedX, DOUBLE_COMPARISON_DELTA);
+		assertEquals(cartesianCoordinate.getY(), expectedY, DOUBLE_COMPARISON_DELTA);
+		assertEquals(cartesianCoordinate.getZ(), expectedZ, DOUBLE_COMPARISON_DELTA);
 
 	}
 
@@ -141,7 +163,7 @@ public class SphericCoordinateTest {
 
 		// Act & Assert
 		assertEquals(sphericCoordinateA.getDistance(sphericCoordinateB),
-				sphericCoordinateA.getSphericDistance(sphericCoordinateB), COMPARISON_DELTA);
+				sphericCoordinateA.getSphericDistance(sphericCoordinateB), DOUBLE_COMPARISON_DELTA);
 
 	}
 
@@ -152,18 +174,20 @@ public class SphericCoordinateTest {
 
 		// Act & Assert
 		assertEquals(sphericCoordinateA.getDistance(cartesianCoordinate),
-				sphericCoordinateA.getSphericDistance(cartesianCoordinate), COMPARISON_DELTA);
+				sphericCoordinateA.getSphericDistance(cartesianCoordinate), DOUBLE_COMPARISON_DELTA);
 
 	}
 
 	@Test
 	public void sphericDistanceIsCalculatedCorrectly() {
 
+		// TODO: Adjust to correct spheric distance calculation
+
 		// Arrange
-		double expectedDistance = 4.4056103950073995;
+		double expectedDistance = 1.9011823808457222;
 
 		// Act & Assert
-		assertEquals(sphericCoordinateA.getSphericDistance(sphericCoordinateB), expectedDistance, COMPARISON_DELTA);
+		assertEquals(sphericCoordinateA.getSphericDistance(sphericCoordinateB), expectedDistance, DOUBLE_COMPARISON_DELTA);
 
 	}
 

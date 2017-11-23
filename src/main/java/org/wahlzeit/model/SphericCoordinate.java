@@ -24,6 +24,8 @@ package org.wahlzeit.model;
 
 public class SphericCoordinate implements Coordinate {
 
+	private static double DOUBLE_COMPARISON_DELTA = 0.00001;
+
 	/**
 	 * Latitude (polar angle in radian measure)
 	 */
@@ -41,17 +43,19 @@ public class SphericCoordinate implements Coordinate {
 
 	/**
 	 *
-	 * @param latitude	in radian measure
-	 * @param longitude	in radian measure
-	 * @param radius	
+	 * @param latitude
+	 *            in radian measure
+	 * @param longitude
+	 *            in radian measure
+	 * @param radius
 	 *            Radius in radian measure
 	 */
 	public SphericCoordinate(double latitude, double longitude, double radius) {
 		super();
 
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.radius = radius;
+		this.setLatitude(latitude);
+		this.setLongitude(longitude);
+		this.setRadius(radius);
 
 	}
 
@@ -64,10 +68,17 @@ public class SphericCoordinate implements Coordinate {
 	}
 
 	/**
+	 * Set latitude in radian measure
 	 * 
 	 * @param latitude
+	 *            Radian value in the range [0;PI*2[
 	 */
 	public void setLatitude(double latitude) {
+
+		if (assertValueInRadianRange(latitude)) {
+			throw new IllegalArgumentException("Value for latitude is not valid radian value!");
+		}
+
 		this.latitude = latitude;
 	}
 
@@ -80,10 +91,17 @@ public class SphericCoordinate implements Coordinate {
 	}
 
 	/**
+	 * Set longitude in radian measure
 	 * 
 	 * @param longitude
+	 *            Radian value in the range [0;PI*2[
 	 */
 	public void setLongitude(double longitude) {
+
+		if (assertValueInRadianRange(longitude)) {
+			throw new IllegalArgumentException("Value for longitude is not valid radian value!");
+		}
+
 		this.longitude = longitude;
 	}
 
@@ -102,6 +120,10 @@ public class SphericCoordinate implements Coordinate {
 	 * @param radius
 	 */
 	public void setRadius(double radius) {
+		if (radius < 0) {
+			throw new IllegalArgumentException("Radius value is invalid (negative)");
+		}
+
 		this.radius = radius;
 	}
 
@@ -122,7 +144,7 @@ public class SphericCoordinate implements Coordinate {
 	 * Return spheric coordinate value (trivial in this case; method exists to have
 	 * interchangeable coordinate representations)
 	 * 
-	 * @return	Coordinate in spheric values
+	 * @return Coordinate in spheric values
 	 */
 	public SphericCoordinate asSphericCoordinate() {
 		return this; // TODO: Return cloned object?
@@ -139,7 +161,7 @@ public class SphericCoordinate implements Coordinate {
 	 */
 	public double getCartesianDistance(Coordinate coordinateB) {
 
-		if (coordinateB == null) {
+		if (isNull(coordinateB)) {
 			throw new IllegalArgumentException("null value was given to calculate distance between to coordinates");
 		}
 
@@ -149,17 +171,20 @@ public class SphericCoordinate implements Coordinate {
 	/**
 	 * Delegate distance calculation to Cartesian distance calculation
 	 * 
-	 * @param	Coordinate to calculate spheric distance to
-	 * @return	(Spheric) distance between this coordinate and coordinateB
+	 * @param Coordinate
+	 *            to calculate spheric distance to
+	 * @return (Spheric) distance between this coordinate and coordinateB
 	 * 
 	 * @throws IllegalArgumentException
 	 *             When input coordinate is null
 	 */
 	public double getSphericDistance(Coordinate coordinateB) {
 
-		if (coordinateB == null) {
+		if (isNull(coordinateB)) {
 			throw new IllegalArgumentException("null value was given to calculate distance between to coordinates");
 		}
+
+		// TODO: Implement spheric distance calculation
 
 		return this.getCartesianDistance(coordinateB);
 	}
@@ -168,15 +193,16 @@ public class SphericCoordinate implements Coordinate {
 	 * Returns spheric distance to given coordinate. If coordinate is not spherical,
 	 * it is converted.
 	 * 
-	 * @param	Coordinate to calculate distance to (in this case spheric distance) 
-	 * @return	(Spheric) distance between this coordinate an coordinate 
+	 * @param Coordinate
+	 *            to calculate distance to (in this case spheric distance)
+	 * @return (Spheric) distance between this coordinate an coordinate
 	 * 
 	 * @throws IllegalArgumentException
 	 *             When input coordinate is null
 	 */
 	public double getDistance(Coordinate coordinateB) throws IllegalArgumentException {
 
-		if (coordinateB == null) {
+		if (isNull(coordinateB)) {
 			throw new IllegalArgumentException("null value was given to calculate distance between to coordinates");
 		}
 
@@ -194,15 +220,15 @@ public class SphericCoordinate implements Coordinate {
 	 *         one is not equal.
 	 */
 	public boolean isEqual(Coordinate toCompare) {
-		if (toCompare == null) {
+		if (isNull(toCompare)) {
 			return false;
 		}
 
 		SphericCoordinate asSphericCoordinate = toCompare.asSphericCoordinate();
 
-		return (this.getRadius() == asSphericCoordinate.getRadius())
-				&& (this.getLongitude() == asSphericCoordinate.getLongitude())
-				&& (this.getLatitude() == asSphericCoordinate.getLatitude());
+		return this.areDoublesEqual(this.getRadius(), asSphericCoordinate.getRadius())
+				&& this.areDoublesEqual(this.getLongitude(), asSphericCoordinate.getLongitude())
+				&& this.areDoublesEqual(this.getLatitude(), asSphericCoordinate.getLatitude());
 	}
 
 	/**
@@ -227,11 +253,44 @@ public class SphericCoordinate implements Coordinate {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj.getClass() != SphericCoordinate.class) {
+		if (!(obj instanceof SphericCoordinate)) {
 			return false;
 		}
 
 		return this.isEqual((Coordinate) obj);
+	}
+
+	// TODO: Put this in abstract superclass
+	/**
+	 * TODO
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	protected boolean areDoublesEqual(double a, double b) {
+		return (Math.abs(a - b) < DOUBLE_COMPARISON_DELTA);
+	}
+
+	// TODO: Put this in abstract superclass
+	/**
+	 * TODO
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	protected boolean isNull(Object obj) {
+		return obj == null;
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @param valueToTest
+	 * @return
+	 */
+	private boolean assertValueInRadianRange(double valueToTest) {
+		return valueToTest < 0 || valueToTest >= Math.PI * 2;
 	}
 
 }
