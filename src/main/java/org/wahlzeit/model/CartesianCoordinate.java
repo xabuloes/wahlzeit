@@ -22,9 +22,7 @@
 
 package org.wahlzeit.model;
 
-public class CartesianCoordinate implements Coordinate {
-
-	private static double DOUBLE_COMPARISON_DELTA = 0.00001;
+public class CartesianCoordinate extends AbstractCoordinate {
 
 	private double x;
 	private double y;
@@ -38,6 +36,8 @@ public class CartesianCoordinate implements Coordinate {
 	 * @param z
 	 */
 	public CartesianCoordinate(double x, double y, double z) {
+		super();
+
 		this.setX(x);
 		this.setY(y);
 		this.setZ(z);
@@ -233,29 +233,6 @@ public class CartesianCoordinate implements Coordinate {
 	public double getSphericDistance(Coordinate coordinateB) {
 
 		return this.asSphericCoordinate().getSphericDistance(coordinateB);
-	}
-
-	// TODO: Put this in abstract superclass
-	/**
-	 * TODO
-	 * 
-	 * @param a
-	 * @param b
-	 * @return
-	 */
-	protected boolean areDoublesEqual(double a, double b) {
-		return (Math.abs(a - b) < DOUBLE_COMPARISON_DELTA);
-	}
-
-	// TODO: Put this in abstract superclass
-	/**
-	 * TODO
-	 * 
-	 * @param obj
-	 * @return
-	 */
-	protected boolean isNull(Object obj) {
-		return obj == null;
 	}
 
 }

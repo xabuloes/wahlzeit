@@ -22,9 +22,7 @@
 
 package org.wahlzeit.model;
 
-public class SphericCoordinate implements Coordinate {
-
-	private static double DOUBLE_COMPARISON_DELTA = 0.00001;
+public class SphericCoordinate extends AbstractCoordinate {
 
 	/**
 	 * Latitude (polar angle in radian measure)
@@ -258,29 +256,6 @@ public class SphericCoordinate implements Coordinate {
 		}
 
 		return this.isEqual((Coordinate) obj);
-	}
-
-	// TODO: Put this in abstract superclass
-	/**
-	 * TODO
-	 * 
-	 * @param a
-	 * @param b
-	 * @return
-	 */
-	protected boolean areDoublesEqual(double a, double b) {
-		return (Math.abs(a - b) < DOUBLE_COMPARISON_DELTA);
-	}
-
-	// TODO: Put this in abstract superclass
-	/**
-	 * TODO
-	 * 
-	 * @param obj
-	 * @return
-	 */
-	protected boolean isNull(Object obj) {
-		return obj == null;
 	}
 
 	/**

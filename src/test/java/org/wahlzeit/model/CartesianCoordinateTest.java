@@ -133,12 +133,12 @@ public class CartesianCoordinateTest {
 				cartesianCoordinateA.getCartesianDistance(cartesianCoordinateB), COMPARISON_DELTA);
 
 	}
-	
+
 	@Test
 	public void getDistanceReturnsTheSameValueAsGetCartesianDistanceWithSphericCoordinate() {
 
 		SphericCoordinate sphericCoordinate = new SphericCoordinate(1.0, 1.0, 1.0);
-		
+
 		// Act & Assert
 		assertEquals(cartesianCoordinateA.getDistance(sphericCoordinate),
 				cartesianCoordinateA.getCartesianDistance(sphericCoordinate), COMPARISON_DELTA);
