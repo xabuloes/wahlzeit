@@ -182,7 +182,16 @@ public class CartesianCoordinateTest {
 
 		// Act & Assert
 		assertEquals(this.cartesianCoordinateA.equals(notACoordinate), false);
+	}
 
+	@Test
+	public void isEqualDoesNotMatchOnNotMatchingClass() {
+
+		// Arrange
+		SphericCoordinate notACartesianCoordinate = new SphericCoordinate(1.0, 1.0, 1.0);
+
+		// Act & Assert
+		assertEquals(this.cartesianCoordinateA.isEqual(notACartesianCoordinate), false);
 	}
 
 	@Test

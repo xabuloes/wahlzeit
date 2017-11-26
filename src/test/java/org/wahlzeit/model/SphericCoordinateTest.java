@@ -116,6 +116,26 @@ public class SphericCoordinateTest {
 	}
 
 	@Test
+	public void equalsDoesNotMatchOnNotMatchingClass() {
+
+		// Arrange
+		Object notACoordinate = new Object();
+
+		// Act & Assert
+		assertEquals(this.sphericCoordinateA.equals(notACoordinate), false);
+	}
+
+	@Test
+	public void isEqualDoesNotMatchOnNotMatchingClass() {
+
+		// Arrange
+		CartesianCoordinate notASphericCoordinate = new CartesianCoordinate(1.0, 1.0, 1.0);
+
+		// Act & Assert
+		assertEquals(this.sphericCoordinateA.isEqual(notASphericCoordinate), false);
+	}
+
+	@Test
 	public void isEqualDoesNotMatchOnNullCoordinates() {
 
 		// Act & Assert
@@ -187,7 +207,8 @@ public class SphericCoordinateTest {
 		double expectedDistance = 1.9011823808457222;
 
 		// Act & Assert
-		assertEquals(sphericCoordinateA.getSphericDistance(sphericCoordinateB), expectedDistance, DOUBLE_COMPARISON_DELTA);
+		assertEquals(sphericCoordinateA.getSphericDistance(sphericCoordinateB), expectedDistance,
+				DOUBLE_COMPARISON_DELTA);
 
 	}
 

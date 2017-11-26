@@ -54,7 +54,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 		this.setLatitude(latitude);
 		this.setLongitude(longitude);
 		this.setRadius(radius);
-
 	}
 
 	/**
@@ -73,7 +72,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 */
 	public void setLatitude(double latitude) {
 
-		if (assertValueInRadianRange(latitude)) {
+		if (assertValueIsInRadianRange(latitude)) {
 			throw new IllegalArgumentException("Value for latitude is not valid radian value!");
 		}
 
@@ -96,7 +95,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 */
 	public void setLongitude(double longitude) {
 
-		if (assertValueInRadianRange(longitude)) {
+		if (assertValueIsInRadianRange(longitude)) {
 			throw new IllegalArgumentException("Value for longitude is not valid radian value!");
 		}
 
@@ -150,87 +149,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 
 	/**
 	 * TODO
-	 * 
-	 * @param
-	 * @return
-	 * 
-	 * @throws IllegalArgumentException
-	 *             When input coordinate is null
-	 */
-	public double getCartesianDistance(Coordinate coordinateB) {
-
-		if (isNull(coordinateB)) {
-			throw new IllegalArgumentException("null value was given to calculate distance between to coordinates");
-		}
-
-		return this.asCartesianCoordinate().getCartesianDistance(coordinateB);
-	}
-
-	/**
-	 * Delegate distance calculation to Cartesian distance calculation
-	 * 
-	 * @param Coordinate
-	 *            to calculate spheric distance to
-	 * @return (Spheric) distance between this coordinate and coordinateB
-	 * 
-	 * @throws IllegalArgumentException
-	 *             When input coordinate is null
-	 */
-	public double getSphericDistance(Coordinate coordinateB) {
-
-		if (isNull(coordinateB)) {
-			throw new IllegalArgumentException("null value was given to calculate distance between to coordinates");
-		}
-
-		// TODO: Implement spheric distance calculation
-
-		return this.getCartesianDistance(coordinateB);
-	}
-
-	/**
-	 * Returns spheric distance to given coordinate. If coordinate is not spherical,
-	 * it is converted.
-	 * 
-	 * @param Coordinate
-	 *            to calculate distance to (in this case spheric distance)
-	 * @return (Spheric) distance between this coordinate an coordinate
-	 * 
-	 * @throws IllegalArgumentException
-	 *             When input coordinate is null
-	 */
-	public double getDistance(Coordinate coordinateB) throws IllegalArgumentException {
-
-		if (isNull(coordinateB)) {
-			throw new IllegalArgumentException("null value was given to calculate distance between to coordinates");
-		}
-
-		return this.getSphericDistance(coordinateB);
-	}
-
-	/**
-	 * Compares the x, y and z values of the associated coordinate object with the
-	 * given coordinate object.
-	 * 
-	 * @param toCompare
-	 *            Coordinate object that should be compared to associated Coordinate
-	 *            object
-	 * @return true if x,y and z are equal in both coordinates, false if at least
-	 *         one is not equal.
-	 */
-	public boolean isEqual(Coordinate toCompare) {
-		if (isNull(toCompare)) {
-			return false;
-		}
-
-		SphericCoordinate asSphericCoordinate = toCompare.asSphericCoordinate();
-
-		return this.areDoublesEqual(this.getRadius(), asSphericCoordinate.getRadius())
-				&& this.areDoublesEqual(this.getLongitude(), asSphericCoordinate.getLongitude())
-				&& this.areDoublesEqual(this.getLatitude(), asSphericCoordinate.getLatitude());
-	}
-
-	/**
-	 * TODO
 	 */
 	@Override
 	public int hashCode() {
@@ -259,12 +177,64 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 
 	/**
+	 * Returns spheric distance to given coordinate. If coordinate is not spherical,
+	 * it is converted.
+	 * 
+	 * @param Coordinate
+	 *            to calculate distance to (in this case spheric distance)
+	 * @return (Spheric) distance between this coordinate an coordinate
+	 */
+	@Override
+	protected double doGetDistance(Coordinate coordinateB) throws IllegalArgumentException {
+		return this.doGetSphericDistance(coordinateB);
+	}
+
+	/**
+	 * TODO
+	 */
+	@Override
+	protected double doGetCartesianDistance(Coordinate coordinateB) {
+		return this.asCartesianCoordinate().getCartesianDistance(coordinateB);
+	}
+
+	/**
+	 * TODO
+	 */
+	@Override
+	protected double doGetSphericDistance(Coordinate coordinateB) {
+		// TODO: This calculation is wrong, fix it!
+		return this.asCartesianCoordinate().getCartesianDistance(coordinateB);
+	}
+
+	/**
+	 * Compares the x, y and z values of the associated coordinate object with the
+	 * given coordinate object.
+	 * 
+	 * @param toCompare
+	 *            Coordinate object that should be compared to associated Coordinate
+	 *            object
+	 * @return true if x,y and z are equal in both coordinates, false if at least
+	 *         one is not equal.
+	 */
+	@Override
+	protected boolean doIsEqual(Coordinate toCompare) {
+
+		// Superclass asserts us a valid, non-null coordinate, so no further assertions
+
+		SphericCoordinate asSphericCoordinate = toCompare.asSphericCoordinate();
+
+		return this.areDoublesEqual(this.getRadius(), asSphericCoordinate.getRadius())
+				&& this.areDoublesEqual(this.getLongitude(), asSphericCoordinate.getLongitude())
+				&& this.areDoublesEqual(this.getLatitude(), asSphericCoordinate.getLatitude());
+	}
+
+	/**
 	 * TODO
 	 * 
 	 * @param valueToTest
 	 * @return
 	 */
-	private boolean assertValueInRadianRange(double valueToTest) {
+	private boolean assertValueIsInRadianRange(double valueToTest) {
 		return valueToTest < 0 || valueToTest >= Math.PI * 2;
 	}
 
