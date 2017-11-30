@@ -22,6 +22,12 @@
 
 package org.wahlzeit.model;
 
+/**
+ * A coordinate represented by the Cartesian system with values x, y and z.
+ * 
+ * @author xabuloes
+ *
+ */
 public class CartesianCoordinate extends AbstractCoordinate {
 
 	private double x;
@@ -51,6 +57,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @return X value of coordinate.
 	 */
 	public double getX() {
+		// No assertions, since this is only a getter
 		return x;
 	}
 
@@ -61,7 +68,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 *            New X value of coordinate.
 	 */
 	public void setX(double x) {
+		this.assertClassInvariants();
+		
 		this.x = x;
+		
+		this.assertClassInvariants();
 	}
 
 	/**
@@ -70,6 +81,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @return Y value of coordinate.
 	 */
 	public double getY() {
+		// No assertions, since this is only a getter
 		return y;
 	}
 
@@ -80,7 +92,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 *            New Y value of coordinate.
 	 */
 	public void setY(double y) {
+		this.assertClassInvariants();
+		
 		this.y = y;
+		
+		this.assertClassInvariants();
 	}
 
 	/**
@@ -89,6 +105,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @return Z value of coordinate.
 	 */
 	public double getZ() {
+		// No assertions, since this is only a getter
 		return z;
 	}
 
@@ -99,7 +116,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 *            New Z value of coordinate.
 	 */
 	public void setZ(double z) {
+		this.assertClassInvariants();
+	
 		this.z = z;
+		
+		this.assertClassInvariants();
 	}
 
 	/**
@@ -129,7 +150,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @return The coordinate object's instance
 	 */
 	public CartesianCoordinate asCartesianCoordinate() {
-		return this; // TODO: Potentially return cloned instance?
+		// No assertions, since this is only a getter
+		return this;
 	}
 
 	/**
@@ -139,12 +161,17 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @return Converted coordinate values as a new object
 	 */
 	public SphericCoordinate asSphericCoordinate() {
+		this.assertClassInvariants();
+		
+		final double latitude = Math.atan(Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY()) / this.getZ());
+		final double longitude = Math.atan(this.getY() / this.getX());
+		final double radius = Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY() + this.getZ() * this.getZ());
 
-		double latitude = Math.atan(Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY()) / this.getZ());
-		double longitude = Math.atan(this.getY() / this.getX());
-		double radius = Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY() + this.getZ() * this.getZ());
-
-		return new SphericCoordinate(latitude, longitude, radius);
+		final SphericCoordinate sphericCoordinate = new SphericCoordinate(latitude, longitude, radius);
+		
+		this.assertClassInvariants();
+		
+		return sphericCoordinate;
 	}
 
 	/**
@@ -158,6 +185,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 */
 	@Override
 	public double doGetCartesianDistance(Coordinate coordinateB) {
+		this.assertClassInvariants();
+		this.assertValueIsNotNull(coordinateB);
 
 		CartesianCoordinate asCartesianCoordinate = coordinateB.asCartesianCoordinate();
 
@@ -165,7 +194,12 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		final double dy = Math.abs(this.getY() - asCartesianCoordinate.getY());
 		final double dz = Math.abs(this.getZ() - asCartesianCoordinate.getZ());
 
-		return Math.sqrt(dx * dx + dy * dy + dz * dz);
+		final double cartesianDistance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+		
+		this.assertDoubleValueIsGreaterOrEqualThanZero(cartesianDistance);
+		this.assertClassInvariants();
+		
+		return cartesianDistance;
 	}
 
 	/**
@@ -178,7 +212,15 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 */
 	@Override
 	public double doGetSphericDistance(Coordinate coordinateB) {
-		return this.asSphericCoordinate().getSphericDistance(coordinateB);
+		this.assertClassInvariants();
+		this.assertValueIsNotNull(coordinateB);
+		
+		final double sphericDistance = this.asSphericCoordinate().getSphericDistance(coordinateB);
+		
+		this.assertDoubleValueIsGreaterOrEqualThanZero(sphericDistance);
+		this.assertClassInvariants();
+		
+		return sphericDistance;
 	}
 
 	/**
@@ -191,29 +233,24 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 */
 	@Override
 	protected double doGetDistance(Coordinate coordinateB) {
-		return this.doGetCartesianDistance(coordinateB);
+		this.assertClassInvariants();
+		
+		final double distance = this.doGetCartesianDistance(coordinateB);
+		
+		this.assertClassInvariants();
+		
+		return distance;
 	}
-
+	
 	/**
-	 * Compares the x, y and z values of the associated coordinate object with the
-	 * given coordinate object.
-	 * 
-	 * @param toCompare
-	 *            Coordinate object that should be compared to associated Coordinate
-	 *            object
-	 * @return true if x,y and z are equal in both coordinates, false if at least
-	 *         one is not equal.
+	 * TODO 
 	 */
 	@Override
-	protected boolean doIsEqual(Coordinate toCompare) {
-
-		// Superclass asserts us a valid, non-null coordinate
-
-		CartesianCoordinate asCartesianCoordinate = toCompare.asCartesianCoordinate();
-
-		return (this.areDoublesEqual(this.getX(), asCartesianCoordinate.getX()))
-				&& this.areDoublesEqual(this.getY(), asCartesianCoordinate.getY())
-				&& this.areDoublesEqual(this.getZ(), asCartesianCoordinate.getZ());
+	protected void assertClassInvariants() {
+		
+		// Nothing to assert here
+		
+		super.assertClassInvariants();
 	}
 
 }

@@ -22,6 +22,12 @@
 
 package org.wahlzeit.model;
 
+/**
+ * A coordinate representing a position defined by spheric values (radius, azimuth and polar angle).
+ * 
+ * @author xabuloes
+ *
+ */
 public class SphericCoordinate extends AbstractCoordinate {
 
 	/**
@@ -72,11 +78,13 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 */
 	public void setLatitude(double latitude) {
 
-		if (assertValueIsInRadianRange(latitude)) {
-			throw new IllegalArgumentException("Value for latitude is not valid radian value!");
-		}
+		this.assertClassInvariants();
+		this.assertValueIsInRadianRange(latitude);
+		
 
 		this.latitude = latitude;
+		
+		this.assertClassInvariants();
 	}
 
 	/**
@@ -84,6 +92,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @return
 	 */
 	public double getLongitude() {
+		
+		this.assertClassInvariants();
 		return longitude;
 	}
 
@@ -94,12 +104,13 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 *            Radian value in the range [0;PI*2[
 	 */
 	public void setLongitude(double longitude) {
-
-		if (assertValueIsInRadianRange(longitude)) {
-			throw new IllegalArgumentException("Value for longitude is not valid radian value!");
-		}
+		
+		this.assertClassInvariants();
+		this.assertValueIsInRadianRange(longitude);
 
 		this.longitude = longitude;
+		
+		this.assertClassInvariants();
 	}
 
 	/**
@@ -108,6 +119,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @return
 	 */
 	public double getRadius() {
+		this.assertClassInvariants();
 		return radius;
 	}
 
@@ -117,11 +129,12 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @param radius
 	 */
 	public void setRadius(double radius) {
-		if (radius < 0) {
-			throw new IllegalArgumentException("Radius value is invalid (negative)");
-		}
+		this.assertClassInvariants();
+		this.assertDoubleValueIsGreaterOrEqualThanZero(radius);
 
 		this.radius = radius;
+		
+		this.assertClassInvariants();
 	}
 
 	/**
@@ -129,11 +142,14 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * Cartesian representation
 	 */
 	public CartesianCoordinate asCartesianCoordinate() {
+		this.assertClassInvariants();
 
-		double x = this.getRadius() * Math.sin(this.getLatitude()) * Math.cos(this.getLongitude());
-		double y = this.getRadius() * Math.sin(this.getLatitude()) * Math.sin(this.getLongitude());
-		double z = this.getRadius() * Math.cos(this.getLatitude());
+		final double x = this.getRadius() * Math.sin(this.getLatitude()) * Math.cos(this.getLongitude());
+		final double y = this.getRadius() * Math.sin(this.getLatitude()) * Math.sin(this.getLongitude());
+		final double z = this.getRadius() * Math.cos(this.getLatitude());
 
+		this.assertClassInvariants();
+		
 		return new CartesianCoordinate(x, y, z);
 	}
 
@@ -144,6 +160,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @return Coordinate in spheric values
 	 */
 	public SphericCoordinate asSphericCoordinate() {
+		
+		this.assertClassInvariants();
 		return this; // TODO: Return cloned object?
 	}
 
@@ -162,18 +180,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 		temp = Double.doubleToLongBits(radius);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
-	}
-
-	/**
-	 * TODO
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof SphericCoordinate)) {
-			return false;
-		}
-
-		return this.isEqual((Coordinate) obj);
 	}
 
 	/**
@@ -207,35 +213,30 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 
 	/**
-	 * Compares the x, y and z values of the associated coordinate object with the
-	 * given coordinate object.
+	 * TODO: 
 	 * 
-	 * @param toCompare
-	 *            Coordinate object that should be compared to associated Coordinate
-	 *            object
-	 * @return true if x,y and z are equal in both coordinates, false if at least
-	 *         one is not equal.
-	 */
-	@Override
-	protected boolean doIsEqual(Coordinate toCompare) {
-
-		// Superclass asserts us a valid, non-null coordinate, so no further assertions
-
-		SphericCoordinate asSphericCoordinate = toCompare.asSphericCoordinate();
-
-		return this.areDoublesEqual(this.getRadius(), asSphericCoordinate.getRadius())
-				&& this.areDoublesEqual(this.getLongitude(), asSphericCoordinate.getLongitude())
-				&& this.areDoublesEqual(this.getLatitude(), asSphericCoordinate.getLatitude());
-	}
-
-	/**
-	 * TODO
+	 * Method is protected to allow usage in further sub classes.
 	 * 
 	 * @param valueToTest
 	 * @return
 	 */
-	private boolean assertValueIsInRadianRange(double valueToTest) {
-		return valueToTest < 0 || valueToTest >= Math.PI * 2;
+	protected final void assertValueIsInRadianRange(double valueToTest) {
+		if(valueToTest < 0 || valueToTest >= Math.PI * 2) {
+			throw new CoordinateAssertionError("Value " + valueToTest + " is not a valid radian value ( range: [0;PI*2[ ).");
+		}
+	}
+	
+	/**
+	 * TODO
+	 */
+	@Override
+	protected void assertClassInvariants() {
+		
+		this.assertValueIsInRadianRange(this.longitude);
+		this.assertValueIsInRadianRange(this.latitude);
+		this.assertDoubleValueIsGreaterOrEqualThanZero(this.radius);
+		
+		super.assertClassInvariants();
 	}
 
 }

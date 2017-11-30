@@ -67,22 +67,32 @@ public class SphericCoordinateTest {
 		assertEquals(sphericCoordinateB.getRadius(), 1.70, DOUBLE_COMPARISON_DELTA);
 
 	}
+	
+	@Test
+	public void testGetDistanceIsCommutative() {
+		
+		final double distanceFromAToB = sphericCoordinateA.getDistance(sphericCoordinateB);
+		final double distanceFromBToA = sphericCoordinateB.getDistance(sphericCoordinateA);
+		
+		assertEquals(distanceFromAToB, distanceFromBToA, DOUBLE_COMPARISON_DELTA);
+		
+	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = CoordinateAssertionError.class)
 	public void testSetLatitudeDoNotAcceptInvalidValues() {
 
 		// Act
 		sphericCoordinateA.setLatitude(100);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = CoordinateAssertionError.class)
 	public void testSetLongitudeDoNotAcceptInvalidValues() {
 
 		// Act
 		sphericCoordinateA.setLongitude(100);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = CoordinateAssertionError.class)
 	public void testSetRadiusDoesNotAcceptNegativeValues() {
 
 		// Act
@@ -149,7 +159,7 @@ public class SphericCoordinateTest {
 		assertEquals(sphericCoordinateA.isEqual(sphericCoordinateB), false);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = CoordinateAssertionError.class)
 	public void getDistanceFromNullCoordinateRaisesException() {
 
 		// Act & Assert

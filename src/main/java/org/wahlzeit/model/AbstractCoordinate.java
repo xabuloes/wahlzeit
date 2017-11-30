@@ -22,6 +22,8 @@
 
 package org.wahlzeit.model;
 
+// TODO: Introduce CoordinateAssertionException
+
 /**
  * TODO
  */
@@ -36,7 +38,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	public AbstractCoordinate() {
 		// TODO
 	}
-
+	
 	/**
 	 * Returns distance to given coordinate. Measure of distance depends on the
 	 * implementation in the subclass.
@@ -51,9 +53,17 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	public final double getDistance(Coordinate coordinateB) {
 
+		this.assertClassInvariants();
+		// TODO: Preconditions
 		this.assertValueIsNotNull(coordinateB);
 
-		return this.doGetDistance(coordinateB);
+		final double distance = this.doGetDistance(coordinateB);
+		
+		// TODO: Postconditions
+		this.assertDoubleValueIsGreaterOrEqualThanZero(distance);
+		this.assertClassInvariants();
+		
+		return distance;
 	}
 
 	/**
@@ -68,9 +78,15 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	public final double getCartesianDistance(Coordinate coordinateB) {
 
+		this.assertClassInvariants();
 		this.assertValueIsNotNull(coordinateB);
 
-		return this.doGetCartesianDistance(coordinateB);
+		final double distance = this.doGetCartesianDistance(coordinateB);
+		
+		this.assertDoubleValueIsGreaterOrEqualThanZero(distance);
+		this.assertClassInvariants();
+		
+		return distance;
 	}
 
 	/**
@@ -85,9 +101,15 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	public final double getSphericDistance(Coordinate coordinateB) {
 
+		this.assertClassInvariants();
 		this.assertValueIsNotNull(coordinateB);
 
-		return this.doGetSphericDistance(coordinateB);
+		final double distance = this.doGetSphericDistance(coordinateB);
+		
+		this.assertDoubleValueIsGreaterOrEqualThanZero(distance);
+		this.assertClassInvariants();
+		
+		return distance;
 	}
 
 	/**
@@ -99,13 +121,21 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	public final boolean isEqual(Coordinate coordinateToCompare) {
 
+		this.assertClassInvariants();
+		
+		// notNull assertion is skipped, since we allow null coordinates here
+		
 		if (coordinateToCompare == null) {
 			return false;
 		} else if (!this.getClass().isInstance(coordinateToCompare)) {
 			return false;
 		}
 
-		return this.doIsEqual(coordinateToCompare);
+		final boolean isEqual = this.areDoublesEqual(this.getDistance(coordinateToCompare), 0.0);
+		
+		this.assertClassInvariants();
+		
+		return isEqual;
 	}
 
 	/**
@@ -115,13 +145,20 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-
+		
+		this.assertClassInvariants();
+		this.assertValueIsNotNull(obj);
+		
 		if (!this.getClass().isInstance(obj)) {
 			return false;
 		}
 
 		// Delegate execution (+ further assertions) to isEqual()
-		return this.isEqual((Coordinate) obj);
+		final boolean isEqual = this.isEqual((Coordinate) obj);
+		
+		this.assertClassInvariants();
+		
+		return isEqual;
 	}
 
 	/**
@@ -138,6 +175,38 @@ public abstract class AbstractCoordinate implements Coordinate {
 	protected boolean areDoublesEqual(double a, double b) {
 		return (Math.abs(a - b) < DEFAULT_DOUBLE_COMPARISON_DELTA);
 	}
+	
+	/**
+	 * Throw an IllegalArgumentException when the given @param object is null.
+	 * 
+	 * @param object
+	 */
+	protected final void assertValueIsNotNull(Object object) {
+		// TODO: Make assert statement out of that
+		if (object == null) {
+			throw new CoordinateAssertionError("null value was given to calculate distance between to coordinates");
+		}
+	}
+	
+	/**
+	 * TODO
+	 * 
+	 * @param value
+	 */
+	protected final void assertDoubleValueIsGreaterOrEqualThanZero(double value) {
+		if(value < 0) {
+			throw new CoordinateAssertionError("Double value " + value + " is smaller than zero");
+		}
+	}
+	
+	/**
+	 * Method is not final, since sub classes may extend class invariants and therefore overwrite it.
+	 * If this method is overwritten, be sure to delegate execution to this method afterwards (via super.assertClassInvariants())
+	 */
+	protected void assertClassInvariants() {
+		// List all assertions that relate to the class invariant
+	}
+	
 
 	/**
 	 * TODO
@@ -163,24 +232,5 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	protected abstract double doGetSphericDistance(Coordinate coordinateB);
 
-	/**
-	 * TODO
-	 * 
-	 * @param
-	 * @return
-	 */
-	protected abstract boolean doIsEqual(Coordinate coordinateToCompare);
-
-	/**
-	 * Throw an IllegalArgumentException when the given @param object is null.
-	 * 
-	 * @param object
-	 */
-	protected final void assertValueIsNotNull(Object object) {
-		// TODO: Make assert statement out of that
-		if (object == null) {
-			throw new IllegalArgumentException("null value was given to calculate distance between to coordinates");
-		}
-	}
 
 }

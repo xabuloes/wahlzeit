@@ -33,7 +33,7 @@ public class CartesianCoordinateTest {
 	/**
 	 * Delta value used for comparison of double values.
 	 */
-	private static double COMPARISON_DELTA = 0.00001;
+	private static double DOUBLE_COMPARISON_DELTA = 0.00001;
 
 	// 4 different coordinates that are used multiple times in the test methods.
 	private CartesianCoordinate cartesianCoordinateA;
@@ -55,27 +55,47 @@ public class CartesianCoordinateTest {
 		this.nullCoordinate = null;
 
 	}
+	
+	@Test
+	public void testGetDistanceIsCommutative() {
+		
+		final double distanceFromAToB = cartesianCoordinateA.getDistance(cartesianCoordinateB);
+		final double distanceFromBToA = cartesianCoordinateB.getDistance(cartesianCoordinateA);
+		
+		assertEquals(distanceFromAToB, distanceFromBToA, DOUBLE_COMPARISON_DELTA);
+		
+	}
+	
+	@Test
+	public void sphericAndCartesianDistanceReturnSameValues() {
+		
+		final double sphericDistance = this.cartesianCoordinateA.getSphericDistance(this.cartesianCoordinateB);
+		final double cartesianDistance = this.cartesianCoordinateA.getCartesianDistance(this.cartesianCoordinateB);
+		
+		assertEquals(sphericDistance, cartesianDistance, DOUBLE_COMPARISON_DELTA);
+		
+	}
 
 	@Test
 	public void testConstructorSetsCorrectValues() {
 
 		// Act & Assert
 
-		assertEquals(this.cartesianCoordinateA.getX(), 1.23, COMPARISON_DELTA);
-		assertEquals(this.cartesianCoordinateA.getY(), 2.34, COMPARISON_DELTA);
-		assertEquals(this.cartesianCoordinateA.getZ(), 3.45, COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateA.getX(), 1.23, DOUBLE_COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateA.getY(), 2.34, DOUBLE_COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateA.getZ(), 3.45, DOUBLE_COMPARISON_DELTA);
 
-		assertEquals(this.cartesianCoordinateB.getX(), 3.45, COMPARISON_DELTA);
-		assertEquals(this.cartesianCoordinateB.getY(), 2.34, COMPARISON_DELTA);
-		assertEquals(this.cartesianCoordinateB.getZ(), 1.23, COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateB.getX(), 3.45, DOUBLE_COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateB.getY(), 2.34, DOUBLE_COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateB.getZ(), 1.23, DOUBLE_COMPARISON_DELTA);
 
-		assertEquals(this.cartesianCoordinateC.getX(), -1.23, COMPARISON_DELTA);
-		assertEquals(this.cartesianCoordinateC.getY(), -2.34, COMPARISON_DELTA);
-		assertEquals(this.cartesianCoordinateC.getZ(), -3.45, COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateC.getX(), -1.23, DOUBLE_COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateC.getY(), -2.34, DOUBLE_COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateC.getZ(), -3.45, DOUBLE_COMPARISON_DELTA);
 
-		assertEquals(this.cartesianCoordinateD.getX(), -3.45, COMPARISON_DELTA);
-		assertEquals(this.cartesianCoordinateD.getY(), -2.34, COMPARISON_DELTA);
-		assertEquals(this.cartesianCoordinateD.getZ(), -1.23, COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateD.getX(), -3.45, DOUBLE_COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateD.getY(), -2.34, DOUBLE_COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateD.getZ(), -1.23, DOUBLE_COMPARISON_DELTA);
 
 	}
 
@@ -88,9 +108,9 @@ public class CartesianCoordinateTest {
 		this.cartesianCoordinateA.setZ(1.23);
 
 		// Assert
-		assertEquals(this.cartesianCoordinateA.getX(), 3.45, COMPARISON_DELTA);
-		assertEquals(this.cartesianCoordinateA.getY(), 2.34, COMPARISON_DELTA);
-		assertEquals(this.cartesianCoordinateA.getZ(), 1.23, COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateA.getX(), 3.45, DOUBLE_COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateA.getY(), 2.34, DOUBLE_COMPARISON_DELTA);
+		assertEquals(this.cartesianCoordinateA.getZ(), 1.23, DOUBLE_COMPARISON_DELTA);
 	}
 
 	@Test
@@ -118,7 +138,7 @@ public class CartesianCoordinateTest {
 		assertEquals(this.cartesianCoordinateA.isEqual(this.cartesianCoordinateB), false);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = CoordinateAssertionError.class)
 	public void getDistanceFromNullCoordinateRaisesException() {
 
 		// Act & Assert
@@ -130,7 +150,7 @@ public class CartesianCoordinateTest {
 
 		// Act & Assert
 		assertEquals(cartesianCoordinateA.getDistance(cartesianCoordinateB),
-				cartesianCoordinateA.getCartesianDistance(cartesianCoordinateB), COMPARISON_DELTA);
+				cartesianCoordinateA.getCartesianDistance(cartesianCoordinateB), DOUBLE_COMPARISON_DELTA);
 
 	}
 
@@ -141,7 +161,7 @@ public class CartesianCoordinateTest {
 
 		// Act & Assert
 		assertEquals(cartesianCoordinateA.getDistance(sphericCoordinate),
-				cartesianCoordinateA.getCartesianDistance(sphericCoordinate), COMPARISON_DELTA);
+				cartesianCoordinateA.getCartesianDistance(sphericCoordinate), DOUBLE_COMPARISON_DELTA);
 
 	}
 
@@ -157,7 +177,7 @@ public class CartesianCoordinateTest {
 
 		// Act & Assert
 		assertEquals(this.cartesianCoordinateA.getCartesianDistance(this.cartesianCoordinateB), precalculatedResult,
-				COMPARISON_DELTA);
+				DOUBLE_COMPARISON_DELTA);
 	}
 
 	@Test
@@ -212,9 +232,9 @@ public class CartesianCoordinateTest {
 		// Assert
 		assertTrue(asSphericCoordinate instanceof SphericCoordinate);
 
-		assertEquals(asSphericCoordinate.getRadius(), expectedRadius, COMPARISON_DELTA);
-		assertEquals(asSphericCoordinate.getLongitude(), expectedLongitude, COMPARISON_DELTA);
-		assertEquals(asSphericCoordinate.getLatitude(), expectedLatitude, COMPARISON_DELTA);
+		assertEquals(asSphericCoordinate.getRadius(), expectedRadius, DOUBLE_COMPARISON_DELTA);
+		assertEquals(asSphericCoordinate.getLongitude(), expectedLongitude, DOUBLE_COMPARISON_DELTA);
+		assertEquals(asSphericCoordinate.getLatitude(), expectedLatitude, DOUBLE_COMPARISON_DELTA);
 
 	}
 
