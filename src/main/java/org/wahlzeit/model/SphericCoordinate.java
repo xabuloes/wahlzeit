@@ -67,6 +67,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @return
 	 */
 	public double getLatitude() {
+		// No assertions, since this is only a getter
 		return latitude;
 	}
 
@@ -92,8 +93,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @return
 	 */
 	public double getLongitude() {
-		
-		this.assertClassInvariants();
+		// No assertions, since this is only a getter
 		return longitude;
 	}
 
@@ -119,7 +119,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @return
 	 */
 	public double getRadius() {
-		this.assertClassInvariants();
+		// No assertions, since this is only a getter
 		return radius;
 	}
 
