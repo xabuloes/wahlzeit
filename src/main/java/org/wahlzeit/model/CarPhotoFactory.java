@@ -73,16 +73,41 @@ public class CarPhotoFactory extends PhotoFactory {
 	
 	/**
 	 * @methodtype factory
+	 * 
+	 * @throws CarPhotoCreationException 
 	 */
-	public CarPhoto createPhoto(String make, String model, Integer year) {
-		return new CarPhoto(make, model, year);
+	public CarPhoto createPhoto(String make, String model, Integer year) throws CarPhotoCreationException {
+		
+		CarPhoto newCarPhoto = null;
+		
+		try {
+			newCarPhoto = new CarPhoto(make, model, year);
+		
+		} catch(IllegalArgumentException exception) {
+			throw new CarPhotoCreationException("Invalid parameters given for CarPhoto object creation");
+		}
+		
+		return newCarPhoto;
 	}
 
 	/**
 	 * Creates a new photo with the specified id
+	 * 
+	 * @throws CarPhotoCreationException 
 	 */
-	public CarPhoto createPhoto(PhotoId id, String make, String model, Integer year) {
-		return new CarPhoto(id, make, model, year);
+	public CarPhoto createPhoto(PhotoId id, String make, String model, Integer year) throws CarPhotoCreationException {
+		
+		CarPhoto newCarPhoto = null;
+		try {
+			
+			newCarPhoto = new CarPhoto(id, make, model, year);
+		
+		} catch(IllegalArgumentException exception) {
+			throw new CarPhotoCreationException("Invalid parameters given for CarPhoto object creation");
+		}
+		
+		return newCarPhoto;
+		
 	}
 	
 	// TODO

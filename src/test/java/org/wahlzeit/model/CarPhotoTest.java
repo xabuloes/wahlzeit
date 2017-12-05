@@ -46,30 +46,37 @@ public class CarPhotoTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testConstructorThrowsExceptionOnNullMake() {
-
 		CarPhoto carPhoto = new CarPhoto(null, "Mustang", null);
-
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorThrowsExceptionOnNullMakeWithPhotoId() {
+		CarPhoto carPhoto = new CarPhoto(new PhotoId(0x0), null, "Mustang", null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testConstructorThrowsExceptionOnEmptyMake() {
+	public void testConstructorThrowsExceptionOnEmptyMakeWithPhotoId() {
+		CarPhoto carPhoto = new CarPhoto(new PhotoId(0x0), "", "Mustang", null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorThrowsExceptionOnNullMakeWithNullPhotoId() {
+		CarPhoto carPhoto = new CarPhoto(null, null, "Mustang", null);
+	}
 
-		CarPhoto carPhoto = new CarPhoto("", "Mustang", null);
-
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorThrowsExceptionOnEmptyMakeWithNullPhotoId() {
+		CarPhoto carPhoto = new CarPhoto(null, "", "Mustang", null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testConstructorThrowsExceptionOnNullModel() {
-
 		CarPhoto carPhoto = new CarPhoto("Ford", null, null);
-
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testConstructorThrowsExceptionOnEmptyModel() {
-
 		CarPhoto carPhoto = new CarPhoto("Ford", "", null);
-
 	}
 
 	// TODO

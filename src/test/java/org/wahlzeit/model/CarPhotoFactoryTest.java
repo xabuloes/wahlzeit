@@ -98,14 +98,14 @@ public class CarPhotoFactoryTest {
 		
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = CarPhotoCreationException.class)
 	public void testFactoryMethodThrowsExceptionOnInvalidMake() {
 		
 		CarPhotoFactory.getInstance().createPhoto(null, "E Class", 2010);
 		
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = CarPhotoCreationException.class)
 	public void testFactoryMethodThrowsExceptionOnInvalidModel() {
 		
 		CarPhotoFactory.getInstance().createPhoto("Mercedes-Benz", null, 2010);
