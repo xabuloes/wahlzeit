@@ -175,13 +175,25 @@ public abstract class AbstractCoordinate implements Coordinate {
 	}
 	
 	/**
-	 * Assert that @param shouldBeGreaterOrEqualZero has a value greater or equal to zero.
+	 * Assert that shouldBeGreaterOrEqualZero has a value greater or equal to zero.
 	 * 
 	 * @param shouldBeGreaterOrEqualZero
 	 */
 	protected final void assertDoubleValueIsGreaterOrEqualThanZero(double shouldBeGreaterOrEqualZero) {
 		if(shouldBeGreaterOrEqualZero < 0) {
 			throw new CoordinateAssertionError("Double value " + shouldBeGreaterOrEqualZero + " is smaller than zero");
+		}
+	}
+	
+	/**
+	 * Assert that shouldBeAFiniteNumber is finite and not NaN.
+	 * 
+	 * @param shouldBeAFiniteNumber
+	 * 
+	 */
+	protected final void assertDoubleIsFiniteNumber(double shouldBeAFiniteNumber) {
+		if(Double.isNaN(shouldBeAFiniteNumber) || Double.isInfinite(shouldBeAFiniteNumber)) {
+			throw new CoordinateAssertionError("Double value " + shouldBeAFiniteNumber + " is either NaN or infinite");
 		}
 	}
 	
