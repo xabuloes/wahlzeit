@@ -22,10 +22,9 @@
 
 package org.wahlzeit.model;
 
-// TODO: Introduce CoordinateAssertionException
-
 /**
- * TODO
+ * Represents a generic coordinate and associated calculations.
+ * Uses a "design-by-primitives" pattern to delegate specific logic to implementing subclasses.
  */
 public abstract class AbstractCoordinate implements Coordinate {
 
@@ -34,10 +33,6 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * we provide the delta/precision in a central place.
 	 */
 	protected final static double DEFAULT_DOUBLE_COMPARISON_DELTA = 0.00001;
-
-	public AbstractCoordinate() {
-		// TODO
-	}
 	
 	/**
 	 * Returns distance to given coordinate. Measure of distance depends on the
@@ -53,13 +48,10 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	public final double getDistance(Coordinate coordinateB) {
 
-		this.assertClassInvariants();
-		// TODO: Preconditions
 		this.assertValueIsNotNull(coordinateB);
 
 		final double distance = this.doGetDistance(coordinateB);
 		
-		// TODO: Postconditions
 		this.assertDoubleValueIsGreaterOrEqualThanZero(distance);
 		this.assertClassInvariants();
 		
@@ -67,7 +59,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	}
 
 	/**
-	 * TODO
+	 * Calculate Cartesian distance to coordinateB.
 	 * 
 	 * @param coordinateB
 	 * 
@@ -78,7 +70,6 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	public final double getCartesianDistance(Coordinate coordinateB) {
 
-		this.assertClassInvariants();
 		this.assertValueIsNotNull(coordinateB);
 
 		final double distance = this.doGetCartesianDistance(coordinateB);
@@ -90,7 +81,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	}
 
 	/**
-	 * TODO
+	 * Calculate spheric distance to coordinateB.
 	 * 
 	 * @param coordinateB
 	 * 
@@ -101,7 +92,6 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	public final double getSphericDistance(Coordinate coordinateB) {
 
-		this.assertClassInvariants();
 		this.assertValueIsNotNull(coordinateB);
 
 		final double distance = this.doGetSphericDistance(coordinateB);
@@ -113,16 +103,14 @@ public abstract class AbstractCoordinate implements Coordinate {
 	}
 
 	/**
-	 * TODO
+	 * Check if given coordinate is (value-)equal to associated coordinate.
 	 * 
 	 * @param coordinateToCompare
 	 * 
 	 * @return
 	 */
 	public final boolean isEqual(Coordinate coordinateToCompare) {
-
-		this.assertClassInvariants();
-		
+	
 		// notNull assertion is skipped, since we allow null coordinates here
 		
 		if (coordinateToCompare == null) {
@@ -139,14 +127,13 @@ public abstract class AbstractCoordinate implements Coordinate {
 	}
 
 	/**
-	 * 
+	 * Override of equals() method to compare coordinate values.
 	 * 
 	 * @return true if equal, false if not
 	 */
 	@Override
 	public boolean equals(Object obj) {
 		
-		this.assertClassInvariants();
 		this.assertValueIsNotNull(obj);
 		
 		if (!this.getClass().isInstance(obj)) {
@@ -177,25 +164,24 @@ public abstract class AbstractCoordinate implements Coordinate {
 	}
 	
 	/**
-	 * Throw an IllegalArgumentException when the given @param object is null.
+	 * Throw a {@link CoordinateAssertionError} when the given @param object is null.
 	 * 
 	 * @param object
 	 */
 	protected final void assertValueIsNotNull(Object object) {
-		// TODO: Make assert statement out of that
 		if (object == null) {
 			throw new CoordinateAssertionError("null value was given to calculate distance between to coordinates");
 		}
 	}
 	
 	/**
-	 * TODO
+	 * Assert that @param shouldBeGreaterOrEqualZero has a value greater or equal to zero.
 	 * 
-	 * @param value
+	 * @param shouldBeGreaterOrEqualZero
 	 */
-	protected final void assertDoubleValueIsGreaterOrEqualThanZero(double value) {
-		if(value < 0) {
-			throw new CoordinateAssertionError("Double value " + value + " is smaller than zero");
+	protected final void assertDoubleValueIsGreaterOrEqualThanZero(double shouldBeGreaterOrEqualZero) {
+		if(shouldBeGreaterOrEqualZero < 0) {
+			throw new CoordinateAssertionError("Double value " + shouldBeGreaterOrEqualZero + " is smaller than zero");
 		}
 	}
 	
@@ -209,7 +195,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 	
 
 	/**
-	 * TODO
+	 * Actual calculation of distance to coordinateB. 
+	 * Implemented by subclass.
 	 * 
 	 * @param coordinateB
 	 * @return
@@ -217,7 +204,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 	protected abstract double doGetDistance(Coordinate coordinateB);
 
 	/**
-	 * TODO
+	 * Actual calculation of Cartesian distance to coordinateB. 
+	 * Implemented by subclass.
 	 * 
 	 * @param coordinateB
 	 * @return
@@ -225,7 +213,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 	protected abstract double doGetCartesianDistance(Coordinate coordinateB);
 
 	/**
-	 * TODO
+	 * Actual calculation of spheric distance to coordinateB. 
+	 * Implemented by subclass.
 	 * 
 	 * @param coordinateB
 	 * @return
