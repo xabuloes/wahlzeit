@@ -25,6 +25,8 @@ package org.wahlzeit.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
+
 import org.junit.Test;
 
 public class CarPhotoFactoryTest {
@@ -109,6 +111,20 @@ public class CarPhotoFactoryTest {
 	public void testFactoryMethodThrowsExceptionOnInvalidModel() {
 		
 		CarPhotoFactory.getInstance().createPhoto("Mercedes-Benz", null, 2010);
+			
+	}
+	
+	@Test(expected = CarPhotoCreationException.class)
+	public void testFactoryMethodThrowsExceptionOnFutureYear() {
+		
+		CarPhotoFactory.getInstance().createPhoto("Mercedes-Benz", "E Class", Calendar.getInstance().get(Calendar.YEAR)+1);
+			
+	}
+	
+	@Test(expected = CarPhotoCreationException.class)
+	public void testFactoryMethodThrowsExceptionOnYearBeforeAutomobileWasInvented() {
+		
+		CarPhotoFactory.getInstance().createPhoto("Mercedes-Benz", "E Class", 1885);
 			
 	}
 	

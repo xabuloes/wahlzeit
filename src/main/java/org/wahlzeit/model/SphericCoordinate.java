@@ -22,11 +22,27 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.CustomAssertionUtils;
+
 /**
  * A coordinate representing a position defined by spheric values (radius, azimuth and polar angle).
  */
 public class SphericCoordinate extends AbstractCoordinate {
 
+	/**
+	 * Assert that valueShouldBeInRadianRange is within valid radian range [0;2*PI[.
+	 * Method is protected to allow usage in further sub classes.
+	 * 
+	 * @param valueShouldBeInRadianRange
+	 * @return
+	 */
+	protected static final void assertValueIsInRadianRange(double valueShouldBeInRadianRange) {
+		if(valueShouldBeInRadianRange < 0 || valueShouldBeInRadianRange >= Math.PI * 2) {
+			// Throw coordinate-specifc assertion error
+			throw new CustomAssertionError("Value " + valueShouldBeInRadianRange + " is not a valid radian value ( range: [0;PI*2[ ).");
+		}
+	}
+	
 	/**
 	 * Latitude (polar angle in radian measure)
 	 */
@@ -77,8 +93,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 */
 	public void setLatitude(double latitude) {
 
-		this.assertDoubleIsFiniteNumber(latitude);
-		this.assertValueIsInRadianRange(latitude);
+		CustomAssertionUtils.assertDoubleIsFiniteNumber(latitude);
+		assertValueIsInRadianRange(latitude);
 		
 		this.latitude = latitude;
 		
@@ -103,8 +119,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 */
 	public void setLongitude(double longitude) {
 		
-		this.assertDoubleIsFiniteNumber(longitude);
-		this.assertValueIsInRadianRange(longitude);
+		CustomAssertionUtils.assertDoubleIsFiniteNumber(longitude);
+		assertValueIsInRadianRange(longitude);
 
 		this.longitude = longitude;
 		
@@ -128,8 +144,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 */
 	public void setRadius(double radius) {
 		
-		this.assertDoubleIsFiniteNumber(radius);
-		this.assertDoubleValueIsGreaterOrEqualThanZero(radius);
+		CustomAssertionUtils.assertDoubleIsFiniteNumber(radius);
+		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(radius);
 
 		this.radius = radius;
 		
@@ -208,29 +224,16 @@ public class SphericCoordinate extends AbstractCoordinate {
 	@Override
 	protected void assertClassInvariants() {
 		
-		this.assertDoubleIsFiniteNumber(this.longitude);
-		this.assertValueIsInRadianRange(this.longitude);
+		CustomAssertionUtils.assertDoubleIsFiniteNumber(this.longitude);
+		assertValueIsInRadianRange(this.longitude);
 		
-		this.assertDoubleIsFiniteNumber(this.latitude);
-		this.assertValueIsInRadianRange(this.latitude);
+		CustomAssertionUtils.assertDoubleIsFiniteNumber(this.latitude);
+		assertValueIsInRadianRange(this.latitude);
 		
-		this.assertDoubleIsFiniteNumber(this.radius);
-		this.assertDoubleValueIsGreaterOrEqualThanZero(this.radius);
+		CustomAssertionUtils.assertDoubleIsFiniteNumber(this.radius);
+		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(this.radius);
 		
 		super.assertClassInvariants();
-	}
-	
-	/**
-	 * Assert that valueShouldBeInRadianRange is within valid radian range [0;2*PI[.
-	 * Method is protected to allow usage in further sub classes.
-	 * 
-	 * @param valueShouldBeInRadianRange
-	 * @return
-	 */
-	protected final void assertValueIsInRadianRange(double valueShouldBeInRadianRange) {
-		if(valueShouldBeInRadianRange < 0 || valueShouldBeInRadianRange >= Math.PI * 2) {
-			throw new CoordinateAssertionError("Value " + valueShouldBeInRadianRange + " is not a valid radian value ( range: [0;PI*2[ ).");
-		}
 	}
 
 }

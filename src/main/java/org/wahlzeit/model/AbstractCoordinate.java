@@ -22,6 +22,8 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.CustomAssertionUtils;
+
 /**
  * Represents a generic coordinate and associated calculations.
  * Uses a "design-by-primitives" pattern to delegate specific logic to implementing subclasses.
@@ -48,11 +50,11 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	public final double getDistance(Coordinate coordinateB) {
 
-		this.assertValueIsNotNull(coordinateB);
+		CustomAssertionUtils.assertValueIsNotNull(coordinateB);
 
 		final double distance = this.doGetDistance(coordinateB);
 		
-		this.assertDoubleValueIsGreaterOrEqualThanZero(distance);
+		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(distance);
 		this.assertClassInvariants();
 		
 		return distance;
@@ -70,11 +72,11 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	public final double getCartesianDistance(Coordinate coordinateB) {
 
-		this.assertValueIsNotNull(coordinateB);
+		CustomAssertionUtils.assertValueIsNotNull(coordinateB);
 
 		final double distance = this.doGetCartesianDistance(coordinateB);
 		
-		this.assertDoubleValueIsGreaterOrEqualThanZero(distance);
+		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(distance);
 		this.assertClassInvariants();
 		
 		return distance;
@@ -92,11 +94,11 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	public final double getSphericDistance(Coordinate coordinateB) {
 
-		this.assertValueIsNotNull(coordinateB);
+		CustomAssertionUtils.assertValueIsNotNull(coordinateB);
 
 		final double distance = this.doGetSphericDistance(coordinateB);
 		
-		this.assertDoubleValueIsGreaterOrEqualThanZero(distance);
+		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(distance);
 		this.assertClassInvariants();
 		
 		return distance;
@@ -134,7 +136,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	@Override
 	public boolean equals(Object obj) {
 		
-		this.assertValueIsNotNull(obj);
+		CustomAssertionUtils.assertValueIsNotNull(obj);
 		
 		if (!this.getClass().isInstance(obj)) {
 			return false;
@@ -162,41 +164,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	protected boolean areDoublesEqual(double a, double b) {
 		return (Math.abs(a - b) < DEFAULT_DOUBLE_COMPARISON_DELTA);
 	}
-	
-	/**
-	 * Throw a {@link CoordinateAssertionError} when the given @param object is null.
-	 * 
-	 * @param object
-	 */
-	protected final void assertValueIsNotNull(Object object) {
-		if (object == null) {
-			throw new CoordinateAssertionError("null value was given to calculate distance between to coordinates");
-		}
-	}
-	
-	/**
-	 * Assert that shouldBeGreaterOrEqualZero has a value greater or equal to zero.
-	 * 
-	 * @param shouldBeGreaterOrEqualZero
-	 */
-	protected final void assertDoubleValueIsGreaterOrEqualThanZero(double shouldBeGreaterOrEqualZero) {
-		if(shouldBeGreaterOrEqualZero < 0) {
-			throw new CoordinateAssertionError("Double value " + shouldBeGreaterOrEqualZero + " is smaller than zero");
-		}
-	}
-	
-	/**
-	 * Assert that shouldBeAFiniteNumber is finite and not NaN.
-	 * 
-	 * @param shouldBeAFiniteNumber
-	 * 
-	 */
-	protected final void assertDoubleIsFiniteNumber(double shouldBeAFiniteNumber) {
-		if(Double.isNaN(shouldBeAFiniteNumber) || Double.isInfinite(shouldBeAFiniteNumber)) {
-			throw new CoordinateAssertionError("Double value " + shouldBeAFiniteNumber + " is either NaN or infinite");
-		}
-	}
-	
+		
 	/**
 	 * Method is not final, since sub classes may extend class invariants and therefore overwrite it.
 	 * If this method is overwritten, be sure to delegate execution to this method afterwards (via super.assertClassInvariants())

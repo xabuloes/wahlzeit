@@ -53,37 +53,37 @@ public class SphericCoordinateTest {
 
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testConstructorDoesNotAcceptNanValue() {
 		new CartesianCoordinate(Double.NaN, 0.0, 0.0);
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetLatitudeDoesNotAcceptNanValues() {
 		this.sphericCoordinateA.setLatitude(Double.NaN);
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetLongitudeDoesNotAcceptNanValues() {
 		this.sphericCoordinateA.setLongitude(Double.NaN);
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetRadiusDoesNotAcceptNanValues() {
 		this.sphericCoordinateA.setRadius(Double.NaN);
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetLatitudeDoesNotAcceptInfiniteValues() {
 		this.sphericCoordinateA.setLatitude(Double.POSITIVE_INFINITY);
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetLongitudeDoesNotAcceptInfiniteValues() {
 		this.sphericCoordinateA.setLongitude(Double.POSITIVE_INFINITY);
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetRadiusDoesNotAcceptInfiniteValues() {
 		this.sphericCoordinateA.setRadius(Double.POSITIVE_INFINITY);
 	}
@@ -113,21 +113,21 @@ public class SphericCoordinateTest {
 		
 	}
 
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetLatitudeDoNotAcceptInvalidValues() {
 
 		// Act
 		sphericCoordinateA.setLatitude(100);
 	}
 
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetLongitudeDoNotAcceptInvalidValues() {
 
 		// Act
 		sphericCoordinateA.setLongitude(100);
 	}
 
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetRadiusDoesNotAcceptNegativeValues() {
 
 		// Act
@@ -194,7 +194,7 @@ public class SphericCoordinateTest {
 		assertEquals(sphericCoordinateA.isEqual(sphericCoordinateB), false);
 	}
 
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void getDistanceFromNullCoordinateRaisesException() {
 
 		// Act & Assert

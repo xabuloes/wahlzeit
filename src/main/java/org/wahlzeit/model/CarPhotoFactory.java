@@ -83,8 +83,10 @@ public class CarPhotoFactory extends PhotoFactory {
 		try {
 			newCarPhoto = new CarPhoto(make, model, year);
 		
-		} catch(IllegalArgumentException exception) {
-			throw new CarPhotoCreationException("Invalid parameters given for CarPhoto object creation");
+		} catch(CustomAssertionError assertionError) {
+			throw new CarPhotoCreationException("Invalid parameters given for CarPhoto object creation (" + assertionError.getMessage() + ")");
+		} catch(Error error) {
+			throw new CarPhotoCreationException("Could not create new car photo");
 		}
 		
 		return newCarPhoto;
@@ -98,12 +100,14 @@ public class CarPhotoFactory extends PhotoFactory {
 	public CarPhoto createPhoto(PhotoId id, String make, String model, Integer year) throws CarPhotoCreationException {
 		
 		CarPhoto newCarPhoto = null;
+		
 		try {
-			
 			newCarPhoto = new CarPhoto(id, make, model, year);
 		
-		} catch(IllegalArgumentException exception) {
-			throw new CarPhotoCreationException("Invalid parameters given for CarPhoto object creation");
+		} catch(CustomAssertionError assertionError) {
+			throw new CarPhotoCreationException("Invalid parameters given for CarPhoto object creation (" + assertionError.getMessage() + ")");
+		} catch(Error error) {
+			throw new CarPhotoCreationException("Could not create new car photo");
 		}
 		
 		return newCarPhoto;

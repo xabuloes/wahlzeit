@@ -1,5 +1,5 @@
 /*
- * CoordinateAssertionError
+ * CustomAssertionError
  * 
  * Copyright (c) 2017 by xabuloes, http://github.com/xabuloes
  *
@@ -22,14 +22,14 @@
 
 package org.wahlzeit.model;
 
-public class CoordinateAssertionError extends Error {
+public class CustomAssertionError extends RuntimeException {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CoordinateAssertionError(String message) {
+	public CustomAssertionError(String message) {
 		super(message);
 	}
 

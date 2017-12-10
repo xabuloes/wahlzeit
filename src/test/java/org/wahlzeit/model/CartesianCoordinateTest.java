@@ -56,37 +56,37 @@ public class CartesianCoordinateTest {
 
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testConstructorDoesNotAcceptNanValue() {
 		new CartesianCoordinate(Double.NaN, 0.0, 0.0);
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetXDoesNotAcceptNanValues() {
 		this.cartesianCoordinateA.setX(Double.NaN);
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetYDoesNotAcceptNanValues() {
 		this.cartesianCoordinateA.setY(Double.NaN);
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetZDoesNotAcceptNanValues() {
 		this.cartesianCoordinateA.setZ(Double.NaN);
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetXDoesNotAcceptInfiniteValues() {
 		this.cartesianCoordinateA.setX(Double.POSITIVE_INFINITY);
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetYDoesNotAcceptInfiniteValues() {
 		this.cartesianCoordinateA.setY(Double.POSITIVE_INFINITY);
 	}
 	
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void testSetZDoesNotAcceptInfiniteValues() {
 		this.cartesianCoordinateA.setZ(Double.POSITIVE_INFINITY);
 	}
@@ -173,7 +173,7 @@ public class CartesianCoordinateTest {
 		assertEquals(this.cartesianCoordinateA.isEqual(this.cartesianCoordinateB), false);
 	}
 
-	@Test(expected = CoordinateAssertionError.class)
+	@Test(expected = CustomAssertionError.class)
 	public void getDistanceFromNullCoordinateRaisesException() {
 
 		// Act & Assert

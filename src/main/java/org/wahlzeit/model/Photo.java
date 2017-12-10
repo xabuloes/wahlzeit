@@ -166,6 +166,21 @@ public class Photo extends DataObject {
 	public void setImage(PhotoSize photoSize, Image image) {
 		this.images.put(photoSize, image);
 	}
+	
+	/**
+	 * @methodtype get
+	 */
+	public Location getLocation() {
+		return this.location;
+	}
+	
+	/**
+	 * 
+	 * @methodtype set
+	 */
+	public void setLocation(Location location) {
+		this.location = location;
+	}
 
 	/**
 	 * @methodtype get

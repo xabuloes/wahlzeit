@@ -22,6 +22,8 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.CustomAssertionUtils;
+
 /**
  * A coordinate represented by the Cartesian system with values x, y and z.
  */
@@ -65,7 +67,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 *            New X value of coordinate.
 	 */
 	public void setX(double x) {
-		this.assertDoubleIsFiniteNumber(x);
+		CustomAssertionUtils.assertDoubleIsFiniteNumber(x);
 		
 		this.x = x;
 		
@@ -89,7 +91,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 *            New Y value of coordinate.
 	 */
 	public void setY(double y) {
-		this.assertDoubleIsFiniteNumber(y);
+		CustomAssertionUtils.assertDoubleIsFiniteNumber(y);
 		
 		this.y = y;
 		
@@ -113,7 +115,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 *            New Z value of coordinate.
 	 */
 	public void setZ(double z) {
-		this.assertDoubleIsFiniteNumber(z);
+		CustomAssertionUtils.assertDoubleIsFiniteNumber(z);
 		
 		this.z = z;
 		
@@ -171,7 +173,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	@Override
 	public double doGetCartesianDistance(Coordinate coordinateB) {
 		
-		this.assertValueIsNotNull(coordinateB);
+		CustomAssertionUtils.assertValueIsNotNull(coordinateB);
 
 		CartesianCoordinate asCartesianCoordinate = coordinateB.asCartesianCoordinate();
 
@@ -181,7 +183,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
 		final double cartesianDistance = Math.sqrt(dx * dx + dy * dy + dz * dz);
 		
-		this.assertDoubleValueIsGreaterOrEqualThanZero(cartesianDistance);
+		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(cartesianDistance);
 		this.assertClassInvariants();
 		
 		return cartesianDistance;
@@ -193,11 +195,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	@Override
 	public double doGetSphericDistance(Coordinate coordinateB) {
 		
-		this.assertValueIsNotNull(coordinateB);
+		CustomAssertionUtils.assertValueIsNotNull(coordinateB);
 		
 		final double sphericDistance = this.asSphericCoordinate().getSphericDistance(coordinateB);
 		
-		this.assertDoubleValueIsGreaterOrEqualThanZero(sphericDistance);
+		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(sphericDistance);
 		this.assertClassInvariants();
 		
 		return sphericDistance;
@@ -209,7 +211,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	@Override
 	protected double doGetDistance(Coordinate coordinateB) {
 		
-		this.assertValueIsNotNull(coordinateB);
+		CustomAssertionUtils.assertValueIsNotNull(coordinateB);
 		
 		final double distance = this.doGetCartesianDistance(coordinateB);
 		
@@ -224,9 +226,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	@Override
 	protected void assertClassInvariants() {
 		
-		this.assertDoubleIsFiniteNumber(this.x);
-		this.assertDoubleIsFiniteNumber(this.y);
-		this.assertDoubleIsFiniteNumber(this.z);
+		CustomAssertionUtils.assertDoubleIsFiniteNumber(this.x);
+		CustomAssertionUtils.assertDoubleIsFiniteNumber(this.y);
+		CustomAssertionUtils.assertDoubleIsFiniteNumber(this.z);
 		
 		super.assertClassInvariants();
 	}
