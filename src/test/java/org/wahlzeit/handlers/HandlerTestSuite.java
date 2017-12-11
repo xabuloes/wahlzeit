@@ -28,6 +28,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	TellFriendTest.class,
+	UploadPhotoTest.class,
 })
 public class HandlerTestSuite {
 	// Remains empty, only used to hold annotations (see B02 p23)

@@ -71,7 +71,7 @@ public class CarPhotoFactoryTest {
 	}
 
 	@Test
-	public void testFactoryMethodCreatesACarPhoto() {
+	public void testFactoryMethodCreatesACarPhoto() throws CarPhotoCreationException {
 		
 		CarPhotoFactory carPhotoFactory = CarPhotoFactory.getInstance();
 		
@@ -86,7 +86,7 @@ public class CarPhotoFactoryTest {
 	}
 	
 	@Test
-	public void testFactoryMethodCreatesACarPhotoWithGivenId() {
+	public void testFactoryMethodCreatesACarPhotoWithGivenId() throws CarPhotoCreationException {
 		
 		CarPhotoFactory carPhotoFactory = CarPhotoFactory.getInstance();
 		
@@ -101,28 +101,28 @@ public class CarPhotoFactoryTest {
 	}
 	
 	@Test(expected = CarPhotoCreationException.class)
-	public void testFactoryMethodThrowsExceptionOnInvalidMake() {
+	public void testFactoryMethodThrowsExceptionOnInvalidMake() throws CarPhotoCreationException {
 		
 		CarPhotoFactory.getInstance().createPhoto(null, "E Class", 2010);
 		
 	}
 	
 	@Test(expected = CarPhotoCreationException.class)
-	public void testFactoryMethodThrowsExceptionOnInvalidModel() {
+	public void testFactoryMethodThrowsExceptionOnInvalidModel() throws CarPhotoCreationException {
 		
 		CarPhotoFactory.getInstance().createPhoto("Mercedes-Benz", null, 2010);
 			
 	}
 	
 	@Test(expected = CarPhotoCreationException.class)
-	public void testFactoryMethodThrowsExceptionOnFutureYear() {
+	public void testFactoryMethodThrowsExceptionOnFutureYear() throws CarPhotoCreationException {
 		
 		CarPhotoFactory.getInstance().createPhoto("Mercedes-Benz", "E Class", Calendar.getInstance().get(Calendar.YEAR)+1);
 			
 	}
 	
 	@Test(expected = CarPhotoCreationException.class)
-	public void testFactoryMethodThrowsExceptionOnYearBeforeAutomobileWasInvented() {
+	public void testFactoryMethodThrowsExceptionOnYearBeforeAutomobileWasInvented() throws CarPhotoCreationException {
 		
 		CarPhotoFactory.getInstance().createPhoto("Mercedes-Benz", "E Class", 1885);
 			

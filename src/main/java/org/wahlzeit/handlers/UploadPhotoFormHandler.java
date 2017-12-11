@@ -23,6 +23,8 @@ package org.wahlzeit.handlers;
 import com.google.appengine.api.images.Image;
 import org.wahlzeit.agents.AsyncTaskExecutor;
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.CarPhotoCreationException;
+import org.wahlzeit.model.CarPhotoManager;
 import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoManager;
@@ -42,6 +44,10 @@ import java.util.logging.Logger;
 public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 
 	private static Logger log = Logger.getLogger(UploadPhotoFormHandler.class.getName());
+	
+	public static final String CAR_MAKE = "carMake";
+	public static final String CAR_MODEL = "carModel";
+	public static final String CAR_YEAR = "carYear";
 
 	/**
 	 *
@@ -77,7 +83,23 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 			String fileName = us.getAsString(args, "fileName");
 			User user = (User) us.getClient();
 			Image uploadedImage = user.getUploadedImage();
-			Photo photo = pm.createPhoto(fileName, uploadedImage);
+			
+			Photo photo = null;
+			
+			// If parameters are available and not null, use them to create a new CarPhoto
+			if((args.containsKey(CAR_MAKE) && args.get(CAR_MAKE) != null)
+					&& (args.containsKey(CAR_MODEL) && args.get(CAR_MODEL) != null) 
+					&& (args.containsKey(CAR_YEAR) && args.get(CAR_YEAR) != null)) {
+				 photo = pm.createPhoto(
+						 fileName, 
+						 uploadedImage, 
+						 (String)args.get(CAR_MAKE), 
+						 (String)args.get(CAR_MODEL), 
+						 Integer.valueOf((String)args.get(CAR_YEAR)));		
+			} else {
+				// Otherwise, create a photo with default values
+				photo = pm.createPhoto(fileName, uploadedImage);
+			}
 
 			user.addPhoto(photo);
 
@@ -94,7 +116,11 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 					addParameter("ID", photo.getId().asString()).toString());
 
 			AsyncTaskExecutor.savePhotoAsync(photo.getId().asString());
-		} catch (Exception ex) {
+		}  
+		catch(CarPhotoCreationException ex) {
+			// TODO: Handle car photo creation exception
+		} 
+		catch (Exception ex) {
 			log.warning(LogBuilder.createSystemMessage().addException("uploading photo failed", ex).toString());
 			us.setMessage(config.getPhotoUploadFailed());
 		}

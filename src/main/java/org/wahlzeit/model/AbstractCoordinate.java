@@ -171,6 +171,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	protected void assertClassInvariants() {
 		// List all assertions that relate to the class invariant
+		
+		// No invariants, since AbstractCoordinate does not have any state (yet)
 	}
 	
 

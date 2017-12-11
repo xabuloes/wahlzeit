@@ -25,6 +25,7 @@ import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.Transform;
 import org.wahlzeit.services.LogBuilder;
+import org.wahlzeit.utils.CustomAssertionUtils;
 
 import java.util.logging.Logger;
 
@@ -37,10 +38,11 @@ public class PhotoUtil {
 	private static final Logger log = Logger.getLogger(PhotoUtil.class.getName());
 
 	/**
+	 * @throws Exception 
 	 * @methodtype creation
 	 */
 	public static Photo createPhoto(String filename, PhotoId id, Image uploadedImage) throws Exception {
-		Photo result = CarPhotoFactory.getInstance().createPhoto(id, "TEST_MAKE", "TEST_MODEL", null); // TODO: Fill in mandatory dummy data 
+		Photo result = CarPhotoFactory.getInstance().createPhoto(id);
 		result.setEnding(filename.substring(filename.lastIndexOf(".") + 1));
 
 		createImageFiles(uploadedImage, result);
@@ -50,6 +52,34 @@ public class PhotoUtil {
 		result.setWidthAndHeight(sourceWidth, sourceHeight);
 
 		return result;
+	}
+	
+	/**
+	 * 
+	 * @param filename
+	 * @param id
+	 * @param uploadedImage
+	 * @param make
+	 * @param model
+	 * @param year
+	 * @return
+	 * @throws Exception
+	 */
+	public static CarPhoto createCarPhoto(String filename, PhotoId id, Image uploadedImage, String make, String model, int year) throws Exception {
+		
+		Photo newPhoto = createPhoto(filename, id, uploadedImage);
+		
+		if(!(newPhoto instanceof CarPhoto)) {
+			throw new CarPhotoCreationException("Photo object generated from createPhoto() is not a CarPhoto");
+		}
+		
+		CarPhoto newCarPhoto = (CarPhoto)newPhoto;
+		
+		newCarPhoto.setMake(make);
+		newCarPhoto.setModel(model);
+		newCarPhoto.setYear(year);
+		
+		return newCarPhoto;
 	}
 
 	/**

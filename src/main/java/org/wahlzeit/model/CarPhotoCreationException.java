@@ -22,7 +22,7 @@
 
 package org.wahlzeit.model;
 
-public class CarPhotoCreationException extends RuntimeException {
+public class CarPhotoCreationException extends Exception {
 
 	/**
 	 * 
