@@ -118,7 +118,9 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 			AsyncTaskExecutor.savePhotoAsync(photo.getId().asString());
 		}  
 		catch(CarPhotoCreationException ex) {
-			// TODO: Handle car photo creation exception
+			// Handle this particular exception case by giving a more specific error message
+			log.warning(LogBuilder.createSystemMessage().addException("uploading photo failed due to malformed input parameter(s)", ex).toString());
+			us.setMessage(config.getPhotoUploadFailed() + "(Photo object could not be create due to malformed input parameters make, model or year)");
 		} 
 		catch (Exception ex) {
 			log.warning(LogBuilder.createSystemMessage().addException("uploading photo failed", ex).toString());
