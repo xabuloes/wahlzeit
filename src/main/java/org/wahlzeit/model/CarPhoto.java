@@ -130,7 +130,7 @@ public class CarPhoto extends Photo {
 	}
 
 	public void setYear(int year) {
-		CustomAssertionUtils.assertValueIsBetween(year, CarPhoto.YEAR_THE_AUTOMOBILE_WAS_INVENTED, 2017);
+		CustomAssertionUtils.assertValueIsBetween(year, CarPhoto.YEAR_THE_AUTOMOBILE_WAS_INVENTED, Calendar.getInstance().get(Calendar.YEAR)+1);
 		
 		this.year = year;
 		
@@ -177,7 +177,7 @@ public class CarPhoto extends Photo {
 		CustomAssertionUtils.assertValueIsNotNullAndNotEmpty(make);
 		CustomAssertionUtils.assertValueIsNotNullAndNotEmpty(model);
 		CustomAssertionUtils.assertValueIsNotNull(year);
-		CustomAssertionUtils.assertValueIsBetween(year.intValue(), CarPhoto.YEAR_THE_AUTOMOBILE_WAS_INVENTED, Calendar.getInstance().get(Calendar.YEAR));
+		CustomAssertionUtils.assertValueIsBetween(year.intValue(), CarPhoto.YEAR_THE_AUTOMOBILE_WAS_INVENTED, Calendar.getInstance().get(Calendar.YEAR)+1);
 	}
 	
 
