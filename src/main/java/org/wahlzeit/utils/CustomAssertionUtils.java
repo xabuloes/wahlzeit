@@ -46,7 +46,7 @@ public class CustomAssertionUtils {
 	public static final void assertValueIsBetween(int value, int beginValueIncl, int endValueExcl) {
 		
 		if(beginValueIncl >= endValueExcl) {
-			throw new IllegalArgumentException("Given value range [" + beginValueIncl + ";" + endValueExcl + "] for assertValueIsBetween() is invalid");
+			throw new CustomAssertionError("Given value range [" + beginValueIncl + ";" + endValueExcl + "] for assertValueIsBetween() is invalid");
 		}
 		
 		if(value < beginValueIncl || value >= endValueExcl) {

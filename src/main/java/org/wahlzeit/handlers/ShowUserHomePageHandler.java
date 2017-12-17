@@ -21,6 +21,8 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.CarPhoto;
+import org.wahlzeit.model.CarPhotoManager;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.User;
@@ -56,7 +58,13 @@ public class ShowUserHomePageHandler extends AbstractWebPageHandler {
 			WritableList list = new WritableList();
 			for (Photo photo : photos) {
 				// load it from the PhotoManager to make sure the same copy is used
-				photo = PhotoManager.getInstance().getPhotoFromId(photo.getId());
+				photo = CarPhotoManager.getInstance().getPhotoFromId(photo.getId());
+				
+				// Ignore non-existing photos (to prevent null pointer exceptions)
+				if(photo == null) {
+					continue;
+				}
+				
 				if (!photo.getStatus().isDeleted()) {
 					part = makeUserPhotoForm(us, photo);
 					list.append(part);
