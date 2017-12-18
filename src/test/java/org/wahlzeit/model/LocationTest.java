@@ -43,7 +43,7 @@ public class LocationTest {
 	@Before
 	public void setup() {
 
-		this.cartesianCoordinateInstance = new CartesianCoordinate(1.23, 2.34, 3.45);
+		this.cartesianCoordinateInstance = CartesianCoordinate.get(1.23, 2.34, 3.45);
 
 	}
 
@@ -78,7 +78,7 @@ public class LocationTest {
 		Location location = new Location(this.cartesianCoordinateInstance);
 
 		// Arrange
-		Coordinate newCoordinateInstance = new CartesianCoordinate(3.45, 1.23, 2.34);
+		Coordinate newCoordinateInstance = CartesianCoordinate.get(3.45, 1.23, 2.34);
 
 		// Act
 		location.setCoordinate(newCoordinateInstance);

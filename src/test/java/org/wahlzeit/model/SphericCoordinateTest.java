@@ -23,6 +23,7 @@
 package org.wahlzeit.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -46,43 +47,43 @@ public class SphericCoordinateTest {
 	@Before
 	public void setup() {
 
-		sphericCoordinateA = new SphericCoordinate(1.00, 2.00, 3.00);
-		sphericCoordinateB = new SphericCoordinate(1.50, 1.60, 1.70);
+		sphericCoordinateA = SphericCoordinate.get(1.00, 2.00, 3.00);
+		sphericCoordinateB = SphericCoordinate.get(1.50, 1.60, 1.70);
 
 		nullCoordinate = null;
 
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testConstructorDoesNotAcceptNanValue() {
-		new CartesianCoordinate(Double.NaN, 0.0, 0.0);
+		CartesianCoordinate.get(Double.NaN, 0.0, 0.0);
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testSetLatitudeDoesNotAcceptNanValues() {
 		this.sphericCoordinateA.setLatitude(Double.NaN);
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testSetLongitudeDoesNotAcceptNanValues() {
 		this.sphericCoordinateA.setLongitude(Double.NaN);
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testSetRadiusDoesNotAcceptNanValues() {
 		this.sphericCoordinateA.setRadius(Double.NaN);
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testSetLatitudeDoesNotAcceptInfiniteValues() {
 		this.sphericCoordinateA.setLatitude(Double.POSITIVE_INFINITY);
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testSetLongitudeDoesNotAcceptInfiniteValues() {
 		this.sphericCoordinateA.setLongitude(Double.POSITIVE_INFINITY);
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testSetRadiusDoesNotAcceptInfiniteValues() {
 		this.sphericCoordinateA.setRadius(Double.POSITIVE_INFINITY);
@@ -102,15 +103,15 @@ public class SphericCoordinateTest {
 		assertEquals(sphericCoordinateB.getRadius(), 1.70, DOUBLE_COMPARISON_DELTA);
 
 	}
-	
+
 	@Test
 	public void testGetDistanceIsCommutative() {
-		
+
 		final double distanceFromAToB = sphericCoordinateA.getDistance(sphericCoordinateB);
 		final double distanceFromBToA = sphericCoordinateB.getDistance(sphericCoordinateA);
-		
+
 		assertEquals(distanceFromAToB, distanceFromBToA, DOUBLE_COMPARISON_DELTA);
-		
+
 	}
 
 	@Test(expected = CustomAssertionError.class)
@@ -139,21 +140,67 @@ public class SphericCoordinateTest {
 	public void settersSetCorrectValues() {
 
 		// Act
-		sphericCoordinateA.setLatitude(3.45);
-		sphericCoordinateA.setLongitude(2.34);
-		sphericCoordinateA.setRadius(1.23);
+		SphericCoordinate newCoordinateValue = sphericCoordinateA.setLatitude(3.45).setLongitude(2.34).setRadius(1.23);
 
 		// Assert
-		assertEquals(sphericCoordinateA.getLatitude(), 3.45, DOUBLE_COMPARISON_DELTA);
-		assertEquals(sphericCoordinateA.getLongitude(), 2.34, DOUBLE_COMPARISON_DELTA);
-		assertEquals(sphericCoordinateA.getRadius(), 1.23, DOUBLE_COMPARISON_DELTA);
+		assertEquals(newCoordinateValue.getLatitude(), 3.45, DOUBLE_COMPARISON_DELTA);
+		assertEquals(newCoordinateValue.getLongitude(), 2.34, DOUBLE_COMPARISON_DELTA);
+		assertEquals(newCoordinateValue.getRadius(), 1.23, DOUBLE_COMPARISON_DELTA);
+	}
+
+	@Test
+	public void settersCreateSeparateInstances() {
+
+		// Arrange & Act
+		SphericCoordinate firstCoordinateValue = this.sphericCoordinateA.setLatitude(3.45);
+
+		SphericCoordinate secondCoordinateValue = firstCoordinateValue.setLongitude(2.34);
+
+		SphericCoordinate thirdCoordinateValue = secondCoordinateValue.setRadius(1.23);
+
+		// Assert
+		assertNotEquals(firstCoordinateValue, secondCoordinateValue);
+		assertNotEquals(secondCoordinateValue, thirdCoordinateValue);
+		assertNotEquals(thirdCoordinateValue, firstCoordinateValue);
+	}
+
+	@Test
+	public void coordinateObjectsAreImmutable() {
+
+		// Arrange
+		double latitudeValueWeAssumeToBeImmutable = this.sphericCoordinateA.getLatitude();
+		double longitudeValueWeAssumeToBeImmutable = this.sphericCoordinateA.getLongitude();
+		double radiusValueWeAssumeToBeImmutable = this.sphericCoordinateA.getRadius();
+
+		// Act
+		this.sphericCoordinateA.setLatitude(latitudeValueWeAssumeToBeImmutable / 2);
+		this.sphericCoordinateA.setLongitude(longitudeValueWeAssumeToBeImmutable / 2);
+		this.sphericCoordinateA.setLatitude(radiusValueWeAssumeToBeImmutable / 2);
+
+		// Assert
+		assertEquals(this.sphericCoordinateA.getLatitude(), latitudeValueWeAssumeToBeImmutable,
+				DOUBLE_COMPARISON_DELTA);
+		assertEquals(this.sphericCoordinateA.getLongitude(), longitudeValueWeAssumeToBeImmutable,
+				DOUBLE_COMPARISON_DELTA);
+		assertEquals(this.sphericCoordinateA.getRadius(), radiusValueWeAssumeToBeImmutable, DOUBLE_COMPARISON_DELTA);
+	}
+
+	@Test
+	public void coordinateObjectsAreReallyShared() {
+
+		SphericCoordinate sphericCoordinate = SphericCoordinate.get(this.sphericCoordinateA.getLatitude(),
+				this.sphericCoordinateA.getLongitude(), this.sphericCoordinateA.getRadius());
+
+		// References should be both pointing to the shared object
+		assertEquals(sphericCoordinate, this.sphericCoordinateA);
+		assertTrue(sphericCoordinate.equals(this.sphericCoordinateA));
 	}
 
 	@Test
 	public void isEqualMatchesOnEqualCoordinates() {
 
 		// Arrange
-		SphericCoordinate coordinateEqualToCoordinateA = new SphericCoordinate(sphericCoordinateA.getLatitude(),
+		SphericCoordinate coordinateEqualToCoordinateA = SphericCoordinate.get(sphericCoordinateA.getLatitude(),
 				sphericCoordinateA.getLongitude(), sphericCoordinateA.getRadius());
 
 		// Act & Assert
@@ -174,7 +221,7 @@ public class SphericCoordinateTest {
 	public void isEqualDoesNotMatchOnNotMatchingClass() {
 
 		// Arrange
-		CartesianCoordinate notASphericCoordinate = new CartesianCoordinate(1.0, 1.0, 1.0);
+		CartesianCoordinate notASphericCoordinate = CartesianCoordinate.get(1.0, 1.0, 1.0);
 
 		// Act & Assert
 		assertEquals(this.sphericCoordinateA.isEqual(notASphericCoordinate), false);
@@ -235,7 +282,7 @@ public class SphericCoordinateTest {
 	@Test
 	public void getDistanceReturnsTheSameValueAsGetSphericDistanceWithCartesianCoordinate() {
 
-		CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(1.23, 2.34, 3.45);
+		CartesianCoordinate cartesianCoordinate = CartesianCoordinate.get(1.23, 2.34, 3.45);
 
 		// Act & Assert
 		assertEquals(sphericCoordinateA.getDistance(cartesianCoordinate),

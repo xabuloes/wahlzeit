@@ -23,6 +23,7 @@
 package org.wahlzeit.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -47,68 +48,68 @@ public class CartesianCoordinateTest {
 	@Before
 	public void setup() {
 
-		this.cartesianCoordinateA = new CartesianCoordinate(1.23, 2.34, 3.45);
-		this.cartesianCoordinateB = new CartesianCoordinate(3.45, 2.34, 1.23);
-		this.cartesianCoordinateC = new CartesianCoordinate(-1.23, -2.34, -3.45);
-		this.cartesianCoordinateD = new CartesianCoordinate(-3.45, -2.34, -1.23);
+		this.cartesianCoordinateA = CartesianCoordinate.get(1.23, 2.34, 3.45);
+		this.cartesianCoordinateB = CartesianCoordinate.get(3.45, 2.34, 1.23);
+		this.cartesianCoordinateC = CartesianCoordinate.get(-1.23, -2.34, -3.45);
+		this.cartesianCoordinateD = CartesianCoordinate.get(-3.45, -2.34, -1.23);
 
 		this.nullCoordinate = null;
 
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testConstructorDoesNotAcceptNanValue() {
-		new CartesianCoordinate(Double.NaN, 0.0, 0.0);
+		CartesianCoordinate.get(Double.NaN, 0.0, 0.0);
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testSetXDoesNotAcceptNanValues() {
 		this.cartesianCoordinateA.setX(Double.NaN);
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testSetYDoesNotAcceptNanValues() {
 		this.cartesianCoordinateA.setY(Double.NaN);
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testSetZDoesNotAcceptNanValues() {
 		this.cartesianCoordinateA.setZ(Double.NaN);
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testSetXDoesNotAcceptInfiniteValues() {
 		this.cartesianCoordinateA.setX(Double.POSITIVE_INFINITY);
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testSetYDoesNotAcceptInfiniteValues() {
 		this.cartesianCoordinateA.setY(Double.POSITIVE_INFINITY);
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testSetZDoesNotAcceptInfiniteValues() {
 		this.cartesianCoordinateA.setZ(Double.POSITIVE_INFINITY);
 	}
-	
+
 	@Test
 	public void testGetDistanceIsCommutative() {
-		
+
 		final double distanceFromAToB = cartesianCoordinateA.getDistance(cartesianCoordinateB);
 		final double distanceFromBToA = cartesianCoordinateB.getDistance(cartesianCoordinateA);
-		
+
 		assertEquals(distanceFromAToB, distanceFromBToA, DOUBLE_COMPARISON_DELTA);
-		
+
 	}
-	
+
 	@Test
 	public void sphericAndCartesianDistanceReturnSameValues() {
-		
+
 		final double sphericDistance = this.cartesianCoordinateA.getSphericDistance(this.cartesianCoordinateB);
 		final double cartesianDistance = this.cartesianCoordinateA.getCartesianDistance(this.cartesianCoordinateB);
-		
+
 		assertEquals(sphericDistance, cartesianDistance, DOUBLE_COMPARISON_DELTA);
-		
+
 	}
 
 	@Test
@@ -138,21 +139,59 @@ public class CartesianCoordinateTest {
 	public void settersSetCorrectValues() {
 
 		// Act
-		this.cartesianCoordinateA.setX(3.45);
-		this.cartesianCoordinateA.setY(2.34);
-		this.cartesianCoordinateA.setZ(1.23);
+		CartesianCoordinate coordinateWithNewValues = this.cartesianCoordinateA.setX(3.45).setY(2.34).setZ(1.23);
 
 		// Assert
-		assertEquals(this.cartesianCoordinateA.getX(), 3.45, DOUBLE_COMPARISON_DELTA);
-		assertEquals(this.cartesianCoordinateA.getY(), 2.34, DOUBLE_COMPARISON_DELTA);
-		assertEquals(this.cartesianCoordinateA.getZ(), 1.23, DOUBLE_COMPARISON_DELTA);
+		assertEquals(coordinateWithNewValues.getX(), 3.45, DOUBLE_COMPARISON_DELTA);
+		assertEquals(coordinateWithNewValues.getY(), 2.34, DOUBLE_COMPARISON_DELTA);
+		assertEquals(coordinateWithNewValues.getZ(), 1.23, DOUBLE_COMPARISON_DELTA);
 	}
 
 	@Test
-	public void isEqualMatchesOnEqualCoordinates() {
+	public void settersCreateSeparateInstances() {
+
+		// Arrange & Act
+		CartesianCoordinate firstCoordinateValue = this.cartesianCoordinateA.setX(3.45);
+
+		CartesianCoordinate secondCoordinateValue = firstCoordinateValue.setY(4.56);
+
+		CartesianCoordinate thirdCoordinateValue = secondCoordinateValue.setZ(1.23);
+
+		// Assert
+		assertNotEquals(firstCoordinateValue, secondCoordinateValue);
+		assertNotEquals(secondCoordinateValue, thirdCoordinateValue);
+		assertNotEquals(thirdCoordinateValue, firstCoordinateValue);
+	}
+
+	@Test
+	public void coordinateObjectsAreImmutable() {
 
 		// Arrange
-		CartesianCoordinate coordinateEqualToCoordinateA = new CartesianCoordinate(this.cartesianCoordinateA.getX(),
+		double xValueWeAssumeToBeImmutable = this.cartesianCoordinateA.getX();
+
+		// Act
+		this.cartesianCoordinateA.setX(xValueWeAssumeToBeImmutable * 2);
+
+		// Assert
+		assertEquals(this.cartesianCoordinateA.getX(), xValueWeAssumeToBeImmutable, DOUBLE_COMPARISON_DELTA);
+
+	}
+
+	@Test
+	public void coordinateObjectsAreReallyShared() {
+
+		CartesianCoordinate cartesianCoordinate = CartesianCoordinate.get(this.cartesianCoordinateA.getX(),
+				this.cartesianCoordinateA.getY(), this.cartesianCoordinateA.getZ());
+
+		// References should be both pointing to the shared object
+		assertEquals(cartesianCoordinate, this.cartesianCoordinateA);
+	}
+
+	@Test
+	public void equalsMatchesOnEqualCoordinates() {
+
+		// Arrange
+		CartesianCoordinate coordinateEqualToCoordinateA = CartesianCoordinate.get(this.cartesianCoordinateA.getX(),
 				this.cartesianCoordinateA.getY(), this.cartesianCoordinateA.getZ());
 
 		// Act & Assert
@@ -192,7 +231,7 @@ public class CartesianCoordinateTest {
 	@Test
 	public void getDistanceReturnsTheSameValueAsGetCartesianDistanceWithSphericCoordinate() {
 
-		SphericCoordinate sphericCoordinate = new SphericCoordinate(1.0, 1.0, 1.0);
+		SphericCoordinate sphericCoordinate = SphericCoordinate.get(1.0, 1.0, 1.0);
 
 		// Act & Assert
 		assertEquals(cartesianCoordinateA.getDistance(sphericCoordinate),
@@ -243,7 +282,7 @@ public class CartesianCoordinateTest {
 	public void isEqualDoesNotMatchOnNotMatchingClass() {
 
 		// Arrange
-		SphericCoordinate notACartesianCoordinate = new SphericCoordinate(1.0, 1.0, 1.0);
+		SphericCoordinate notACartesianCoordinate = SphericCoordinate.get(1.0, 1.0, 1.0);
 
 		// Act & Assert
 		assertEquals(this.cartesianCoordinateA.isEqual(notACartesianCoordinate), false);

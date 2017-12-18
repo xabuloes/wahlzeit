@@ -22,12 +22,60 @@
 
 package org.wahlzeit.model;
 
+import java.util.HashMap;
+
 import org.wahlzeit.utils.CustomAssertionUtils;
 
 /**
- * A coordinate representing a position defined by spheric values (radius, azimuth and polar angle).
+ * A coordinate representing a position defined by spheric values (radius,
+ * azimuth and polar angle).
  */
 public class SphericCoordinate extends AbstractCoordinate {
+
+	/**
+	 * 
+	 */
+	private static final HashMap<String, SphericCoordinate> sharedSphericCoordinates = new HashMap<String, SphericCoordinate>();
+
+	/**
+	 * Requests a shared CartesianCoordinate instance.
+	 * 
+	 * @param latitude
+	 * @param longitude
+	 * @param radius
+	 * @return
+	 */
+	public static final SphericCoordinate get(double latitude, double longitude, double radius) {
+
+		final String coordinateAsString = asSphericCoordinateString(latitude, longitude, radius);
+
+		if (sharedSphericCoordinates.get(coordinateAsString) == null) {
+			synchronized (SphericCoordinate.class) {
+				if (sharedSphericCoordinates.get(coordinateAsString) == null) {
+
+					sharedSphericCoordinates.put(coordinateAsString,
+							new SphericCoordinate(latitude, longitude, radius));
+				}
+
+			}
+		}
+
+		return sharedSphericCoordinates.get(coordinateAsString);
+
+	}
+
+	/**
+	 * Creates a string of Cartesian coordinate values for distinct identification
+	 * of a coordinate value.
+	 * 
+	 * @param latitude
+	 * @param longitude
+	 * @param radius
+	 * @return
+	 */
+	private static final String asSphericCoordinateString(double latitude, double longitude, double radius) {
+		return latitude + ";" + longitude + ";" + radius;
+	}
 
 	/**
 	 * Assert that valueShouldBeInRadianRange is within valid radian range [0;2*PI[.
@@ -37,26 +85,27 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @return
 	 */
 	protected static final void assertValueIsInRadianRange(double valueShouldBeInRadianRange) {
-		if(valueShouldBeInRadianRange < 0 || valueShouldBeInRadianRange >= Math.PI * 2) {
+		if (valueShouldBeInRadianRange < 0 || valueShouldBeInRadianRange >= Math.PI * 2) {
 			// Throw coordinate-specifc assertion error
-			throw new CustomAssertionError("Value " + valueShouldBeInRadianRange + " is not a valid radian value ( range: [0;PI*2[ ).");
+			throw new CustomAssertionError(
+					"Value " + valueShouldBeInRadianRange + " is not a valid radian value ( range: [0;PI*2[ ).");
 		}
 	}
-	
+
 	/**
 	 * Latitude (polar angle in radian measure)
 	 */
-	private double latitude;
+	private final double latitude;
 
 	/**
 	 * Longitude (azimuth angle in radian measure)
 	 */
-	private double longitude;
+	private final double longitude;
 
 	/**
 	 * Radius
 	 */
-	private double radius;
+	private final double radius;
 
 	/**
 	 *
@@ -67,12 +116,13 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @param radius
 	 *            Radius
 	 */
-	public SphericCoordinate(double latitude, double longitude, double radius) {
+	private SphericCoordinate(double latitude, double longitude, double radius) {
 		super();
 
-		this.setLatitude(latitude);
-		this.setLongitude(longitude);
-		this.setRadius(radius);
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.radius = radius;
+
 	}
 
 	/**
@@ -86,19 +136,23 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 
 	/**
-	 * Set latitude in radian measure.
+	 * Return the value object representing the coordinate with the changed latitude
+	 * value.
 	 * 
 	 * @param latitude
 	 *            Radian value in the range [0;PI*2[
 	 */
-	public void setLatitude(double latitude) {
+	public SphericCoordinate setLatitude(double latitude) {
 
 		CustomAssertionUtils.assertDoubleIsFiniteNumber(latitude);
 		assertValueIsInRadianRange(latitude);
-		
-		this.latitude = latitude;
-		
-		this.assertClassInvariants();
+
+		SphericCoordinate newCoordinate = SphericCoordinate.get(latitude, this.getLongitude(), this.getRadius());
+
+		// No class invariant assertion, since we are in an immutable shared value
+		// object.
+
+		return newCoordinate;
 	}
 
 	/**
@@ -112,19 +166,23 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 
 	/**
-	 * Set longitude in radian measure.
+	 * Return the value object representing the coordinate with the changed
+	 * longitude value.
 	 * 
 	 * @param longitude
 	 *            Radian value in the range [0;PI*2[
 	 */
-	public void setLongitude(double longitude) {
-		
+	public SphericCoordinate setLongitude(double longitude) {
+
 		CustomAssertionUtils.assertDoubleIsFiniteNumber(longitude);
 		assertValueIsInRadianRange(longitude);
 
-		this.longitude = longitude;
-		
-		this.assertClassInvariants();
+		SphericCoordinate newCoordinate = SphericCoordinate.get(this.getLatitude(), longitude, this.getRadius());
+
+		// No class invariant assertion, since we are in an immutable shared value
+		// object.
+
+		return newCoordinate;
 	}
 
 	/**
@@ -138,18 +196,21 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 
 	/**
-	 * Set radius to given value.
+	 * Return the value object representing the coordinate with the changed radius
+	 * value.
 	 * 
 	 * @param radius
 	 */
-	public void setRadius(double radius) {
-		
+	public SphericCoordinate setRadius(double radius) {
+
 		CustomAssertionUtils.assertDoubleIsFiniteNumber(radius);
 		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(radius);
 
-		this.radius = radius;
-		
+		SphericCoordinate newCoordinate = SphericCoordinate.get(this.getLatitude(), this.getLongitude(), radius);
+
 		this.assertClassInvariants();
+
+		return newCoordinate;
 	}
 
 	/**
@@ -162,8 +223,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 		final double z = this.getRadius() * Math.cos(this.getLatitude());
 
 		this.assertClassInvariants();
-		
-		return new CartesianCoordinate(x, y, z);
+
+		return CartesianCoordinate.get(x, y, z);
 	}
 
 	/**
@@ -217,22 +278,22 @@ public class SphericCoordinate extends AbstractCoordinate {
 		// TODO: This calculation is wrong, fix it!
 		return this.asCartesianCoordinate().getCartesianDistance(coordinateB);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void assertClassInvariants() {
-		
+
 		CustomAssertionUtils.assertDoubleIsFiniteNumber(this.longitude);
 		assertValueIsInRadianRange(this.longitude);
-		
+
 		CustomAssertionUtils.assertDoubleIsFiniteNumber(this.latitude);
 		assertValueIsInRadianRange(this.latitude);
-		
+
 		CustomAssertionUtils.assertDoubleIsFiniteNumber(this.radius);
 		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(this.radius);
-		
+
 		super.assertClassInvariants();
 	}
 

@@ -25,8 +25,9 @@ package org.wahlzeit.model;
 import org.wahlzeit.utils.CustomAssertionUtils;
 
 /**
- * Represents a generic coordinate and associated calculations.
- * Uses a "design-by-primitives" pattern to delegate specific logic to implementing subclasses.
+ * Represents a generic coordinate and associated calculations. Uses a
+ * "design-by-primitives" pattern to delegate specific logic to implementing
+ * subclasses.
  */
 public abstract class AbstractCoordinate implements Coordinate {
 
@@ -35,7 +36,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * we provide the delta/precision in a central place.
 	 */
 	protected final static double DEFAULT_DOUBLE_COMPARISON_DELTA = 0.00001;
-	
+
 	/**
 	 * Returns distance to given coordinate. Measure of distance depends on the
 	 * implementation in the subclass.
@@ -53,10 +54,10 @@ public abstract class AbstractCoordinate implements Coordinate {
 		CustomAssertionUtils.assertValueIsNotNull(coordinateB);
 
 		final double distance = this.doGetDistance(coordinateB);
-		
+
 		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(distance);
 		this.assertClassInvariants();
-		
+
 		return distance;
 	}
 
@@ -75,10 +76,10 @@ public abstract class AbstractCoordinate implements Coordinate {
 		CustomAssertionUtils.assertValueIsNotNull(coordinateB);
 
 		final double distance = this.doGetCartesianDistance(coordinateB);
-		
+
 		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(distance);
 		this.assertClassInvariants();
-		
+
 		return distance;
 	}
 
@@ -97,35 +98,22 @@ public abstract class AbstractCoordinate implements Coordinate {
 		CustomAssertionUtils.assertValueIsNotNull(coordinateB);
 
 		final double distance = this.doGetSphericDistance(coordinateB);
-		
+
 		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(distance);
 		this.assertClassInvariants();
-		
+
 		return distance;
 	}
 
 	/**
-	 * Check if given coordinate is (value-)equal to associated coordinate.
-	 * 
-	 * @param coordinateToCompare
 	 * 
 	 * @return
 	 */
-	public final boolean isEqual(Coordinate coordinateToCompare) {
-	
-		// notNull assertion is skipped, since we allow null coordinates here
-		
-		if (coordinateToCompare == null) {
-			return false;
-		} else if (!this.getClass().isInstance(coordinateToCompare)) {
-			return false;
-		}
-
-		final boolean isEqual = this.areDoublesEqual(this.getDistance(coordinateToCompare), 0.0);
-		
-		this.assertClassInvariants();
-		
-		return isEqual;
+	@Override
+	public boolean isEqual(Coordinate coordinateToCompare) {
+		// We assume that sub classes are shared value object classes, so equality is
+		// trivial:
+		return this == coordinateToCompare;
 	}
 
 	/**
@@ -134,19 +122,19 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @return true if equal, false if not
 	 */
 	@Override
-	public boolean equals(Object obj) {
-		
+	public final boolean equals(Object obj) {
+
 		CustomAssertionUtils.assertValueIsNotNull(obj);
-		
+
 		if (!this.getClass().isInstance(obj)) {
 			return false;
 		}
 
 		// Delegate execution (+ further assertions) to isEqual()
 		final boolean isEqual = this.isEqual((Coordinate) obj);
-		
+
 		this.assertClassInvariants();
-		
+
 		return isEqual;
 	}
 
@@ -164,21 +152,20 @@ public abstract class AbstractCoordinate implements Coordinate {
 	protected boolean areDoublesEqual(double a, double b) {
 		return (Math.abs(a - b) < DEFAULT_DOUBLE_COMPARISON_DELTA);
 	}
-		
+
 	/**
-	 * Method is not final, since sub classes may extend class invariants and therefore overwrite it.
-	 * If this method is overwritten, be sure to delegate execution to this method afterwards (via super.assertClassInvariants())
+	 * Method is not final, since sub classes may extend class invariants and
+	 * therefore overwrite it. If this method is overwritten, be sure to delegate
+	 * execution to this method afterwards (via super.assertClassInvariants())
 	 */
 	protected void assertClassInvariants() {
 		// List all assertions that relate to the class invariant
-		
+
 		// No invariants, since AbstractCoordinate does not have any state (yet)
 	}
-	
 
 	/**
-	 * Actual calculation of distance to coordinateB. 
-	 * Implemented by subclass.
+	 * Actual calculation of distance to coordinateB. Implemented by subclass.
 	 * 
 	 * @param coordinateB
 	 * @return
@@ -186,8 +173,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 	protected abstract double doGetDistance(Coordinate coordinateB);
 
 	/**
-	 * Actual calculation of Cartesian distance to coordinateB. 
-	 * Implemented by subclass.
+	 * Actual calculation of Cartesian distance to coordinateB. Implemented by
+	 * subclass.
 	 * 
 	 * @param coordinateB
 	 * @return
@@ -195,13 +182,12 @@ public abstract class AbstractCoordinate implements Coordinate {
 	protected abstract double doGetCartesianDistance(Coordinate coordinateB);
 
 	/**
-	 * Actual calculation of spheric distance to coordinateB. 
-	 * Implemented by subclass.
+	 * Actual calculation of spheric distance to coordinateB. Implemented by
+	 * subclass.
 	 * 
 	 * @param coordinateB
 	 * @return
 	 */
 	protected abstract double doGetSphericDistance(Coordinate coordinateB);
-
 
 }

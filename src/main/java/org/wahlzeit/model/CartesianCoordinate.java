@@ -22,18 +22,66 @@
 
 package org.wahlzeit.model;
 
+import java.util.HashMap;
+
 import org.wahlzeit.utils.CustomAssertionUtils;
 
 /**
  * A coordinate represented by the Cartesian system with values x, y and z.
  */
-public class CartesianCoordinate extends AbstractCoordinate {
+public final class CartesianCoordinate extends AbstractCoordinate {
 
-	private double x;
+	/**
+	 * 
+	 */
+	private static final HashMap<String, CartesianCoordinate> sharedCartesianCoordinates = new HashMap<String, CartesianCoordinate>();
 
-	private double y;
+	/**
+	 * Requests a shared CartesianCoordinate instance.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+	public static final CartesianCoordinate get(double x, double y, double z) {
 
-	private double z;
+		final String coordinateAsString = asCoordinateString(x, y, z);
+
+		if (sharedCartesianCoordinates.get(coordinateAsString) == null) {
+			synchronized (CartesianCoordinate.class) {
+				if (sharedCartesianCoordinates.get(coordinateAsString) == null) {
+
+					sharedCartesianCoordinates.put(coordinateAsString, new CartesianCoordinate(x, y, z));
+				}
+				return sharedCartesianCoordinates.get(coordinateAsString);
+			}
+		} else {
+			return sharedCartesianCoordinates.get(coordinateAsString);
+		}
+
+	}
+
+	/**
+	 * Creates a string of Cartesian coordinate values for distinct identification
+	 * of a coordinate value.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+	private static final String asCoordinateString(double x, double y, double z) {
+		return x + ";" + y + ";" + z;
+	}
+
+	// TODO: Reintroduce setters & return new value objects
+
+	private final double x;
+
+	private final double y;
+
+	private final double z;
 
 	/**
 	 * Create a new instance with values x, y and z.
@@ -42,12 +90,14 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @param y
 	 * @param z
 	 */
-	public CartesianCoordinate(double x, double y, double z) {
+	private CartesianCoordinate(double x, double y, double z) {
 		super();
 
-		this.setX(x);
-		this.setY(y);
-		this.setZ(z);
+		this.x = x;
+		this.y = y;
+		this.z = z;
+
+		this.assertClassInvariants();
 	}
 
 	/**
@@ -61,17 +111,20 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	}
 
 	/**
-	 * Set x value.
+	 * Return value object representing the coordinate with the new x value.
 	 * 
 	 * @param x
 	 *            New X value of coordinate.
 	 */
-	public void setX(double x) {
+	public CartesianCoordinate setX(double x) {
 		CustomAssertionUtils.assertDoubleIsFiniteNumber(x);
-		
-		this.x = x;
-		
-		this.assertClassInvariants();
+
+		CartesianCoordinate newCoordinate = CartesianCoordinate.get(x, this.getY(), this.getZ());
+
+		// No class invariant assertion, since we are in an immutable shared value
+		// object.
+
+		return newCoordinate;
 	}
 
 	/**
@@ -85,17 +138,20 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	}
 
 	/**
-	 * Set y value.
+	 * Return value object representing the coordinate with the new y value.
 	 * 
 	 * @param y
 	 *            New Y value of coordinate.
 	 */
-	public void setY(double y) {
+	public CartesianCoordinate setY(double y) {
 		CustomAssertionUtils.assertDoubleIsFiniteNumber(y);
-		
-		this.y = y;
-		
-		this.assertClassInvariants();
+
+		CartesianCoordinate newCoordinate = CartesianCoordinate.get(this.getX(), y, this.getZ());
+
+		// No class invariant assertion, since we are in an immutable shared value
+		// object.
+
+		return newCoordinate;
 	}
 
 	/**
@@ -109,17 +165,20 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	}
 
 	/**
-	 * Set z value.
+	 * Return value object representing the coordinate with the new z value.
 	 * 
 	 * @param z
 	 *            New Z value of coordinate.
 	 */
-	public void setZ(double z) {
+	public CartesianCoordinate setZ(double z) {
 		CustomAssertionUtils.assertDoubleIsFiniteNumber(z);
-		
-		this.z = z;
-		
-		this.assertClassInvariants();
+
+		CartesianCoordinate newCoordinate = CartesianCoordinate.get(this.getX(), this.getY(), z);
+
+		// No class invariant assertion, since we are in an immutable shared value
+		// object.
+
+		return newCoordinate;
 	}
 
 	/**
@@ -154,16 +213,17 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * {@inheritDoc}
 	 */
 	public SphericCoordinate asSphericCoordinate() {
-		this.assertClassInvariants();
-		
-		final double latitude = Math.atan(Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY()) / this.getZ());
-		final double longitude = Math.atan(this.getY() / this.getX());
-		final double radius = Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY() + this.getZ() * this.getZ());
 
-		final SphericCoordinate sphericCoordinate = new SphericCoordinate(latitude, longitude, radius);
-		
+		final double latitude = Math
+				.atan(Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY()) / this.getZ());
+		final double longitude = Math.atan(this.getY() / this.getX());
+		final double radius = Math
+				.sqrt(this.getX() * this.getX() + this.getY() * this.getY() + this.getZ() * this.getZ());
+
+		final SphericCoordinate sphericCoordinate = SphericCoordinate.get(latitude, longitude, radius);
+
 		this.assertClassInvariants();
-		
+
 		return sphericCoordinate;
 	}
 
@@ -172,7 +232,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 */
 	@Override
 	public double doGetCartesianDistance(Coordinate coordinateB) {
-		
+
 		CustomAssertionUtils.assertValueIsNotNull(coordinateB);
 
 		CartesianCoordinate asCartesianCoordinate = coordinateB.asCartesianCoordinate();
@@ -182,10 +242,10 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		final double dz = Math.abs(this.getZ() - asCartesianCoordinate.getZ());
 
 		final double cartesianDistance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-		
+
 		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(cartesianDistance);
 		this.assertClassInvariants();
-		
+
 		return cartesianDistance;
 	}
 
@@ -194,14 +254,14 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 */
 	@Override
 	public double doGetSphericDistance(Coordinate coordinateB) {
-		
+
 		CustomAssertionUtils.assertValueIsNotNull(coordinateB);
-		
+
 		final double sphericDistance = this.asSphericCoordinate().getSphericDistance(coordinateB);
-		
+
 		CustomAssertionUtils.assertDoubleValueIsGreaterOrEqualThanZero(sphericDistance);
 		this.assertClassInvariants();
-		
+
 		return sphericDistance;
 	}
 
@@ -210,26 +270,26 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 */
 	@Override
 	protected double doGetDistance(Coordinate coordinateB) {
-		
+
 		CustomAssertionUtils.assertValueIsNotNull(coordinateB);
-		
+
 		final double distance = this.doGetCartesianDistance(coordinateB);
-		
+
 		this.assertClassInvariants();
-		
+
 		return distance;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void assertClassInvariants() {
-		
+
 		CustomAssertionUtils.assertDoubleIsFiniteNumber(this.x);
 		CustomAssertionUtils.assertDoubleIsFiniteNumber(this.y);
 		CustomAssertionUtils.assertDoubleIsFiniteNumber(this.z);
-		
+
 		super.assertClassInvariants();
 	}
 
