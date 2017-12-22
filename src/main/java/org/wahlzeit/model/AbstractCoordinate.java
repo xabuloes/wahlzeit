@@ -23,6 +23,7 @@
 package org.wahlzeit.model;
 
 import org.wahlzeit.utils.CustomAssertionUtils;
+import org.wahlzeit.utils.PatternInstance;
 
 /**
  * Represents a generic coordinate and associated calculations. Uses a
@@ -49,6 +50,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @throws IllegalArgumentException
 	 *             When input coordinate is null
 	 */
+	@PatternInstance(patternName = "TemplateMethod", participants = { "AbstractCoordinate", "CartesianCoordinate",
+			"SphericCoordinate" })
 	public final double getDistance(Coordinate coordinateB) {
 
 		CustomAssertionUtils.assertValueIsNotNull(coordinateB);

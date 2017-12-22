@@ -20,9 +20,10 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.services.LogBuilder;
-
 import java.util.logging.Logger;
+
+import org.wahlzeit.services.LogBuilder;
+import org.wahlzeit.utils.PatternInstance;
 
 /**
  * An Abstract Factory for creating photos and related objects.
@@ -30,9 +31,11 @@ import java.util.logging.Logger;
 public class PhotoFactory {
 
 	private static final Logger log = Logger.getLogger(PhotoFactory.class.getName());
+
 	/**
 	 * Hidden singleton instance; needs to be initialized from the outside.
 	 */
+	@PatternInstance(patternName = "Singleton", participants = { "PhotoFactory" })
 	private static PhotoFactory instance = null;
 
 	/**
@@ -75,6 +78,8 @@ public class PhotoFactory {
 	/**
 	 * @methodtype factory
 	 */
+	@PatternInstance(patternName = "FactoryMethod", participants = { "PhotoFactory", "CarPhotoFactory", "Photo",
+			"CarPhoto" })
 	public Photo createPhoto() {
 		return new Photo();
 	}
@@ -82,26 +87,30 @@ public class PhotoFactory {
 	/**
 	 * Creates a new photo with the specified id
 	 */
+	@PatternInstance(patternName = "FactoryMethod", participants = { "PhotoFactory", "CarPhotoFactory", "Photo",
+	"CarPhoto" })
 	public Photo createPhoto(PhotoId id) {
 		return new Photo(id);
 	}
 
 	/**
-	 * Loads a photo. The Java object is loaded from the Google Datastore, the Images in all sizes are loaded from the
-	 * Google Cloud storage.
+	 * Loads a photo. The Java object is loaded from the Google Datastore, the
+	 * Images in all sizes are loaded from the Google Cloud storage.
 	 */
 	public Photo loadPhoto(PhotoId id) {
-	   /* Photo result =
-                OfyService.ofy().load().type(Photo.class).ancestor(KeyFactory.createKey("Application", "Wahlzeit")).filter(Photo.ID, id).first().now();
-        for (PhotoSize size : PhotoSize.values()) {
-            GcsFilename gcsFilename = new GcsFilename("picturebucket", filename);
-
-
-
-        }*/
+		/*
+		 * Photo result =
+		 * OfyService.ofy().load().type(Photo.class).ancestor(KeyFactory.createKey(
+		 * "Application", "Wahlzeit")).filter(Photo.ID, id).first().now(); for
+		 * (PhotoSize size : PhotoSize.values()) { GcsFilename gcsFilename = new
+		 * GcsFilename("picturebucket", filename);
+		 * 
+		 * 
+		 * 
+		 * }
+		 */
 		return null;
 	}
-
 
 	/**
 	 *
