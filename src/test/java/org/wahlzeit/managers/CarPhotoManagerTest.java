@@ -20,7 +20,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.model;
+package org.wahlzeit.managers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -31,6 +31,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.wahlzeit.model.CarPhoto;
+import org.wahlzeit.model.CarPhotoManager;
+import org.wahlzeit.model.PhotoId;
+import org.wahlzeit.model.PhotoManager;
+import org.wahlzeit.model.User;
+import org.wahlzeit.model.UserManager;
 import org.wahlzeit.model.persistence.DatastoreAdapter;
 import org.wahlzeit.model.persistence.ImageStorage;
 
@@ -54,7 +60,7 @@ public class CarPhotoManagerTest {
 
 	@BeforeClass
 	public static void setupBeforeClass() {
-		
+
 		ObjectifyService.register(CarPhoto.class);
 
 		// Initialize ImageStorage
@@ -82,7 +88,7 @@ public class CarPhotoManagerTest {
 		carPhoto2.setOwnerId(UserManager.getInstance().getClientById("tommy").getId());
 
 		CarPhotoManager.getInstance().init();
-		
+
 		photoManager = CarPhotoManager.getInstance();
 
 	}
@@ -112,7 +118,7 @@ public class CarPhotoManagerTest {
 	@Test
 	public void testHasPhotoReturnsFalseIfPhotoDoesNotExist() {
 
-		assertFalse(photoManager.hasPhoto(new PhotoId(0xdeadbeef)));
+		assertFalse(photoManager.hasPhoto(PhotoId.getNextId()));
 	}
 
 	// TODO: Further tests

@@ -1,5 +1,5 @@
 /*
- * ModelTestSuite
+ * CarTest
  * 
  * Copyright (c) 2017 by xabuloes, http://github.com/xabuloes
  *
@@ -22,31 +22,13 @@
 
 package org.wahlzeit.model;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.wahlzeit.managers.CarPhotoManagerTest;
-import org.wahlzeit.model.persistence.PersistenceModelTestSuite;
+import org.junit.Test;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
-	AccessRightsTest.class,
-	CartesianCoordinateTest.class,
-	SphericCoordinateTest.class,
-	FlagReasonTest.class,
-	GenderTest.class,
-	GuestTest.class,
-	CarTest.class,
-	CarTypeTest.class,
-	CarPhotoTest.class,
-	CarPhotoManagerTest.class,
-	CarPhotoFactoryTest.class,
-	LocationTest.class,
-	PhotoFilterTest.class,
-	TagsTest.class,
-	UserStatusTest.class,
-	ValueTest.class,
-	PersistenceModelTestSuite.class,
-})
-public class ModelTestSuite {
-	// Remains empty, only used to hold annotations (see B02 p23)
+public class CarTest {
+
+	@Test
+	public void testTodo() {
+		// TODO
+	}
+	
 }

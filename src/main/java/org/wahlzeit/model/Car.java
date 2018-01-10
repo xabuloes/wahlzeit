@@ -1,5 +1,5 @@
 /*
- * ModelTestSuite
+ * Car
  * 
  * Copyright (c) 2017 by xabuloes, http://github.com/xabuloes
  *
@@ -22,31 +22,41 @@
 
 package org.wahlzeit.model;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.wahlzeit.managers.CarPhotoManagerTest;
-import org.wahlzeit.model.persistence.PersistenceModelTestSuite;
+import org.wahlzeit.utils.CustomAssertionUtils;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
-	AccessRightsTest.class,
-	CartesianCoordinateTest.class,
-	SphericCoordinateTest.class,
-	FlagReasonTest.class,
-	GenderTest.class,
-	GuestTest.class,
-	CarTest.class,
-	CarTypeTest.class,
-	CarPhotoTest.class,
-	CarPhotoManagerTest.class,
-	CarPhotoFactoryTest.class,
-	LocationTest.class,
-	PhotoFilterTest.class,
-	TagsTest.class,
-	UserStatusTest.class,
-	ValueTest.class,
-	PersistenceModelTestSuite.class,
-})
-public class ModelTestSuite {
-	// Remains empty, only used to hold annotations (see B02 p23)
+public class Car {
+
+	private CarType type = null;
+
+	private CarManager carManager = null;
+
+	public Car(CarType type, CarManager carManager) {
+
+		CustomAssertionUtils.assertValueIsNotNull(type);
+
+		// TODO
+		this.type = type;
+
+		this.carManager = carManager;
+
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @return
+	 */
+	public CarType getType() {
+		return this.type;
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @return
+	 */
+	public CarManager getManager() {
+		return this.carManager;
+	}
+
 }

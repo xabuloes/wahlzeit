@@ -24,11 +24,11 @@ package org.wahlzeit.managers;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.wahlzeit.model.CarPhotoManagerTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	CarPhotoManagerTest.class,
+	CarManagerTest.class
 })
 public class ManagerTestSuite {
 	// Remains empty, only used to hold annotations (see B02 p23)
