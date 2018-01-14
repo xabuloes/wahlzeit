@@ -38,9 +38,9 @@ public class CarType {
 	@Ignore
 	private CarType baseClass = null;
 
-	public CarType(CarType baseClass) {
+	public CarType(CarType baseClass, String typeName) {
 
-		this.typeName = "TEST";
+		this.typeName = typeName;
 
 		this.carManager = null;
 

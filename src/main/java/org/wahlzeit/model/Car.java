@@ -31,6 +31,12 @@ import com.googlecode.objectify.annotation.Ignore;
 @Entity
 public class Car {
 
+	private static long idCounter = 0;
+
+	public static long getNextId() {
+		return idCounter++;
+	}
+
 	@Id
 	private long id = 0;
 
@@ -47,6 +53,8 @@ public class Car {
 		this.type = type;
 
 		this.carManager = null;
+
+		this.id = Car.getNextId();
 
 	}
 

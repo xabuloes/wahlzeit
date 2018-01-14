@@ -25,22 +25,34 @@ package org.wahlzeit.model;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class CarTypeTest {
 
+	private CarType carType = null;
+
+	private CarType anotherCarType = null;
+
+	private CarType carTypeWithBaseType = null;
+
+	@Before
+	public void setup() {
+
+		this.carType = new CarType(null, "carType1");
+		this.anotherCarType = new CarType(null, "carType2");
+		this.carTypeWithBaseType = new CarType(anotherCarType, "carType3");
+
+	}
+
 	@Test
 	public void testIsSubtypeWorksForNonSubtype() {
-		CarType type = new CarType(null);
-
-		assertFalse(type.isSubtype());
+		assertFalse(carType.isSubtype());
 	}
 
 	@Test
 	public void testIsSubtypeWorksForSubtype() {
-		CarType type = new CarType(new CarType(null));
-
-		assertTrue(type.isSubtype());
+		assertTrue(carTypeWithBaseType.isSubtype());
 	}
 
 }

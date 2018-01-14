@@ -34,7 +34,7 @@ public class CarTest {
 	@Before
 	public void setup() {
 
-		this.carType = new CarType(null);
+		this.carType = new CarType(null, "testCarType");
 
 	}
 
@@ -46,6 +46,13 @@ public class CarTest {
 
 		assertEquals(car.getType(), this.carType);
 
+	}
+	
+	@Test(expected = CustomAssertionError.class)
+	public void testConstructorThrowsAssertionErrorOnNullCarType() {
+		
+		Car car = new Car(null);
+		
 	}
 
 }
