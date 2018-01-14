@@ -24,20 +24,29 @@ package org.wahlzeit.model;
 
 import org.wahlzeit.utils.CustomAssertionUtils;
 
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Ignore;
+
+@Entity
 public class Car {
+
+	@Id
+	private long id = 0;
 
 	private CarType type = null;
 
+	@Ignore
 	private CarManager carManager = null;
 
-	public Car(CarType type, CarManager carManager) {
+	public Car(CarType type) {
 
 		CustomAssertionUtils.assertValueIsNotNull(type);
 
 		// TODO
 		this.type = type;
 
-		this.carManager = carManager;
+		this.carManager = null;
 
 	}
 

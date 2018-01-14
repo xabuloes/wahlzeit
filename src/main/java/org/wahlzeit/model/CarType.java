@@ -22,18 +22,34 @@
 
 package org.wahlzeit.model;
 
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Ignore;
+
+@Entity
 public class CarType {
 
+	@Id
+	private String typeName;
+
+	@Ignore
 	private CarManager carManager = null;
 
-	public CarType(CarManager carManager) {
+	@Ignore
+	private CarType baseClass = null;
 
-		this.carManager = carManager;
+	public CarType(CarType baseClass) {
+
+		this.typeName = "TEST";
+
+		this.carManager = null;
+
+		this.baseClass = baseClass;
 	}
 
 	public boolean isSubtype() {
 		// TODO
-		return false;
+		return baseClass != null;
 	}
 
 	/**
@@ -43,6 +59,10 @@ public class CarType {
 	 */
 	public CarManager getCarManager() {
 		return this.carManager;
+	}
+
+	public Car createInstance() {
+		return new Car(this);
 	}
 
 }

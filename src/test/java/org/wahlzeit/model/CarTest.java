@@ -31,14 +31,10 @@ public class CarTest {
 
 	private CarType carType;
 
-	private CarManager carManager;
-
 	@Before
 	public void setup() {
 
-		this.carManager = new CarManager();
-
-		this.carType = new CarType(this.carManager);
+		this.carType = new CarType(null);
 
 	}
 
@@ -46,10 +42,9 @@ public class CarTest {
 	public void testConstructorSetsCorrectValues() {
 
 		// Act && Assert
-		Car car = new Car(this.carType, this.carManager);
+		Car car = new Car(this.carType);
 
 		assertEquals(car.getType(), this.carType);
-		assertEquals(car.getManager(), this.carManager);
 
 	}
 

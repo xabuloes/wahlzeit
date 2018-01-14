@@ -22,13 +22,25 @@
 
 package org.wahlzeit.model;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 public class CarTypeTest {
 
 	@Test
-	public void todoTest() {
-		// TODO
+	public void testIsSubtypeWorksForNonSubtype() {
+		CarType type = new CarType(null);
+
+		assertFalse(type.isSubtype());
+	}
+
+	@Test
+	public void testIsSubtypeWorksForSubtype() {
+		CarType type = new CarType(new CarType(null));
+
+		assertTrue(type.isSubtype());
 	}
 
 }

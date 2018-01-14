@@ -26,6 +26,7 @@ import java.util.Calendar;
 
 import org.wahlzeit.utils.CustomAssertionUtils;
 
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Subclass;
 
 @Subclass
@@ -58,9 +59,9 @@ public class CarPhoto extends Photo {
 	private Integer year = null;
 
 	/**
-	 * Reference to car's type object.
+	 * Car object of the displayed car.
 	 */
-	private CarType type = null;
+	private Car car = null;
 
 	/**
 	 * Default constructor.
@@ -80,8 +81,6 @@ public class CarPhoto extends Photo {
 		this.make = "UNKNOWN_MAKE";
 		this.model = "UNKNOWN_MODEL";
 		this.year = Calendar.getInstance().get(Calendar.YEAR);
-
-		this.type = null;
 
 	}
 

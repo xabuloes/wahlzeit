@@ -31,5 +31,9 @@ public class CarManager extends ObjectManager {
 	public CarManager() {
 		super();
 	}
+	
+	public Car createCar(CarType type) {
+		return type.createInstance();
+	}
 
 }
