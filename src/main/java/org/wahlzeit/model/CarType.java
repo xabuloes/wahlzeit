@@ -26,8 +26,9 @@ public class CarType {
 
 	private CarManager carManager = null;
 
-	public CarType() {
-		// TODO
+	public CarType(CarManager carManager) {
+
+		this.carManager = carManager;
 	}
 
 	public boolean isSubtype() {

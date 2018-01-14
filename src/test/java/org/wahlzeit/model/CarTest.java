@@ -22,13 +22,35 @@
 
 package org.wahlzeit.model;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
 import org.junit.Test;
 
 public class CarTest {
 
-	@Test
-	public void testTodo() {
-		// TODO
+	private CarType carType;
+
+	private CarManager carManager;
+
+	@Before
+	public void setup() {
+
+		this.carManager = new CarManager();
+
+		this.carType = new CarType(this.carManager);
+
 	}
-	
+
+	@Test
+	public void testConstructorSetsCorrectValues() {
+
+		// Act && Assert
+		Car car = new Car(this.carType, this.carManager);
+
+		assertEquals(car.getType(), this.carType);
+		assertEquals(car.getManager(), this.carManager);
+
+	}
+
 }
