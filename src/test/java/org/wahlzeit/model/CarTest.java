@@ -29,30 +29,44 @@ import org.junit.Test;
 
 public class CarTest {
 
-	private CarType carType;
+	private CarManager carManager;
+
+	private CarType someCarType;
 
 	@Before
 	public void setup() {
 
-		this.carType = new CarType(null, "testCarType");
+		carManager = CarManager.getInstance();
+
+		someCarType = carManager.createType("Ford", "Mustang");
 
 	}
 
 	@Test
 	public void testConstructorSetsCorrectValues() {
 
-		// Act && Assert
-		Car car = new Car(this.carType);
+		// Arrange
+		Car car = new Car(someCarType, carManager);
 
-		assertEquals(car.getType(), this.carType);
+		// Act & Assert
+		assertEquals(car.getType(), someCarType);
 
 	}
-	
+
 	@Test(expected = CustomAssertionError.class)
 	public void testConstructorThrowsAssertionErrorOnNullCarType() {
-		
-		Car car = new Car(null);
-		
+
+		// Act
+		Car car = new Car(null, carManager);
+
+	}
+
+	@Test(expected = CustomAssertionError.class)
+	public void testConstructorThrowsAssertionErrorOnNullCarManager() {
+
+		// Act
+		Car car = new Car(someCarType, null);
+
 	}
 
 }

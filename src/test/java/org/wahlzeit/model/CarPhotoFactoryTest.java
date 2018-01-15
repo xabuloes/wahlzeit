@@ -27,106 +27,98 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class CarPhotoFactoryTest {
-	
-	// TODO
+
+	private static final int TEST_PHOTO_ID = 0xdeadbeef;
+
+	private CarManager carManager = null;
+
+	private Car ford = null;
+
+	@Before
+	public void setup() {
+
+		carManager = CarManager.getInstance();
+
+		ford = carManager.createCar(carManager.createType("Ford", null));
+
+	}
 
 	@Test
 	public void testInitializeMultipleTimesDoesNotLeadToMultipleInstances() {
 
 		// Arrange & Act
 		CarPhotoFactory.initialize();
-		
+
 		CarPhotoFactory carPhotoFactory = CarPhotoFactory.getInstance();
-		
+
 		CarPhotoFactory.initialize();
-		
+
 		// Assert
 		assertEquals(carPhotoFactory.hashCode(), CarPhotoFactory.getInstance().hashCode());
-		
+
 	}
-	
+
 	@Test(expected = IllegalStateException.class)
 	public void testSetInstanceMutltipleTimesThrowsException() {
-		
+
 		// Ensure that singleton instance is in place
 		CarPhotoFactory.initialize();
-		
+
 		// Try to overwrite singleton instance
 		CarPhotoFactory.setInstance(new CarPhotoFactory());
-		
+
 	}
-	
+
 	@Test
 	public void testGetInstanceReturnsACarPhotoInstance() {
-		
+
 		// Arrange & Act
 		CarPhotoFactory factory = CarPhotoFactory.getInstance();
-		
+
 		// Assert
 		assertTrue(factory instanceof CarPhotoFactory);
-		
+
 	}
 
 	@Test
 	public void testFactoryMethodCreatesACarPhoto() throws CarPhotoCreationException {
-		
+
 		CarPhotoFactory carPhotoFactory = CarPhotoFactory.getInstance();
-		
-		CarPhoto newPhoto = carPhotoFactory.createPhoto("Mercedes-Benz", "C Class", 2016);
-		
+
+		CarPhoto newPhoto = carPhotoFactory.createPhoto(ford);
+
 		assertTrue(newPhoto instanceof CarPhoto);
-		assertEquals(newPhoto.getMake(), "Mercedes-Benz");
-		assertEquals(newPhoto.getModel(), "C Class");
-		assertEquals(newPhoto.getYearAsString(), "2016");
+		assertEquals(newPhoto.getCar().getMake(), ford.getMake());
+		assertEquals(newPhoto.getCar().getModel(), ford.getModel());
+		assertEquals(newPhoto.getCar().getYearAsString(), ford.getYearAsString());
 		assertTrue(newPhoto.getId() != null);
-		
+
 	}
-	
+
 	@Test
 	public void testFactoryMethodCreatesACarPhotoWithGivenId() throws CarPhotoCreationException {
-		
+
 		CarPhotoFactory carPhotoFactory = CarPhotoFactory.getInstance();
-		
-		CarPhoto newPhoto = carPhotoFactory.createPhoto(new PhotoId(0xdeadbeef), "Mercedes-Benz", "C Class", 2016);
-		
+
+		CarPhoto newPhoto = carPhotoFactory.createPhoto(new PhotoId(TEST_PHOTO_ID), ford);
+
 		assertTrue(newPhoto instanceof CarPhoto);
-		assertEquals(newPhoto.getMake(), "Mercedes-Benz");
-		assertEquals(newPhoto.getModel(), "C Class");
-		assertEquals(newPhoto.getYearAsString(), "2016");
-		assertEquals(newPhoto.getId().asInt(), 0xdeadbeef);
-		
+		assertEquals(newPhoto.getCar().getMake(), ford.getMake());
+		assertEquals(newPhoto.getCar().getModel(), ford.getModel());
+		assertEquals(newPhoto.getCar().getYearAsString(), ford.getYearAsString());
+		assertEquals(newPhoto.getId().asInt(), TEST_PHOTO_ID);
+
 	}
-	
+
 	@Test(expected = CarPhotoCreationException.class)
-	public void testFactoryMethodThrowsExceptionOnInvalidMake() throws CarPhotoCreationException {
-		
-		CarPhotoFactory.getInstance().createPhoto(null, "E Class", 2010);
-		
+	public void testFactoryMethodThrowsExceptionOnNullCar() throws CarPhotoCreationException {
+
+		CarPhotoFactory.getInstance().createPhoto(new PhotoId(TEST_PHOTO_ID), null);
+
 	}
-	
-	@Test(expected = CarPhotoCreationException.class)
-	public void testFactoryMethodThrowsExceptionOnInvalidModel() throws CarPhotoCreationException {
-		
-		CarPhotoFactory.getInstance().createPhoto("Mercedes-Benz", null, 2010);
-			
-	}
-	
-	@Test(expected = CarPhotoCreationException.class)
-	public void testFactoryMethodThrowsExceptionOnFutureYear() throws CarPhotoCreationException {
-		
-		CarPhotoFactory.getInstance().createPhoto("Mercedes-Benz", "E Class", Calendar.getInstance().get(Calendar.YEAR)+1);
-			
-	}
-	
-	@Test(expected = CarPhotoCreationException.class)
-	public void testFactoryMethodThrowsExceptionOnYearBeforeAutomobileWasInvented() throws CarPhotoCreationException {
-		
-		CarPhotoFactory.getInstance().createPhoto("Mercedes-Benz", "E Class", 1885);
-			
-	}
-	
 
 }

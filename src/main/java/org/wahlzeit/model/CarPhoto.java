@@ -22,11 +22,8 @@
 
 package org.wahlzeit.model;
 
-import java.util.Calendar;
-
 import org.wahlzeit.utils.CustomAssertionUtils;
 
-import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Subclass;
 
 @Subclass
@@ -36,27 +33,6 @@ public class CarPhoto extends Photo {
 	 * TODO
 	 */
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Minimum value for the car's year (no car before the invention of the first
-	 * automobile)
-	 */
-	protected static final int YEAR_THE_AUTOMOBILE_WAS_INVENTED = 1886;
-
-	/**
-	 * Make of the displayed car.
-	 */
-	private String make = null;
-
-	/**
-	 * Model of the displayed car.
-	 */
-	private String model = null;
-
-	/**
-	 * Make year of the displayed car (optional)
-	 */
-	private Integer year = null;
 
 	/**
 	 * Car object of the displayed car.
@@ -71,147 +47,79 @@ public class CarPhoto extends Photo {
 	}
 
 	/**
-	 * Constructor with specified ID.
+	 * Constructor with specified ID (unknown car object is created).
 	 * 
 	 * @param photoId
 	 */
 	public CarPhoto(PhotoId photoId) {
 		super(photoId);
 
-		this.make = "UNKNOWN_MAKE";
-		this.model = "UNKNOWN_MODEL";
-		this.year = Calendar.getInstance().get(Calendar.YEAR);
+		this.car = CarManager.getInstance().createUnknownCar();
 
 	}
 
 	/**
-	 * Constructor with specified data.
+	 * Constructor with car.
 	 * 
-	 * @param make
-	 *            Make of the displayed car (e.g. "Ford")
-	 * @param model
-	 *            Model of the displayed car (e.g. "Mustang")
-	 * @param year
-	 *            Make year of the displayed car (e.g. 2013)
+	 * @param car
+	 *            Car that is shown in the photo.
+	 * 
 	 */
-	public CarPhoto(String make, String model, Integer year) {
+	public CarPhoto(Car car) {
 		super();
 
-		this.make = make;
-		this.model = model;
-		this.year = year;
+		CustomAssertionUtils.assertValueIsNotNull(car);
+
+		this.car = car;
 
 		this.assertClassInvariants();
 	}
 
 	/**
-	 * Constructor with specified data and ID.
+	 * Constructor with car and ID.
 	 * 
 	 * @param photoId
 	 *            Id for the new photo
-	 * @param make
-	 *            Make of the displayed car (e.g. "Ford")
-	 * @param model
-	 *            Model of the displayed car (e.g. "Mustang")
-	 * @param year
-	 *            Make year of the displayed car (e.g. 2013)
+	 * @param car
+	 *            Car that is shown in the photo.
 	 */
-	public CarPhoto(PhotoId photoId, String make, String model, Integer year) {
+	public CarPhoto(PhotoId photoId, Car car) {
 		super(photoId);
 
-		this.make = make;
-		this.model = model;
-		this.year = year;
+		CustomAssertionUtils.assertValueIsNotNull(car);
+
+		this.car = car;
 
 		this.assertClassInvariants();
 	}
 
 	/**
-	 * Set the displayed car's make.
+	 * Return the displayed car's object.
 	 * 
-	 * @param make
+	 * @return
 	 */
-	public void setMake(String make) {
-		CustomAssertionUtils.assertValueIsNotNullAndNotEmpty(make);
+	public Car getCar() {
+		return this.car;
+	}
 
-		this.make = make;
+	/**
+	 * Set the displayed car's object.
+	 * 
+	 * @param car
+	 */
+	public void setCar(Car car) {
+		CustomAssertionUtils.assertValueIsNotNull(car);
+
+		this.car = car;
 
 		this.assertClassInvariants();
-	}
-
-	/**
-	 * Set the displayed car's model.
-	 * 
-	 * @param model
-	 */
-	public void setModel(String model) {
-		CustomAssertionUtils.assertValueIsNotNullAndNotEmpty(model);
-
-		this.model = model;
-
-		this.assertClassInvariants();
-	}
-
-	/**
-	 * Set the displayed car's year.
-	 * 
-	 * @param year
-	 */
-	public void setYear(int year) {
-		CustomAssertionUtils.assertValueIsBetween(year, CarPhoto.YEAR_THE_AUTOMOBILE_WAS_INVENTED,
-				Calendar.getInstance().get(Calendar.YEAR) + 1);
-
-		this.year = year;
-
-		this.assertClassInvariants();
-	}
-
-	/**
-	 * Get displayed car's make.
-	 * 
-	 * @return
-	 */
-	public String getMake() {
-		return make;
-	}
-
-	/**
-	 * Get displayed car's model.
-	 * 
-	 * @return
-	 */
-	public String getModel() {
-		return model;
-	}
-
-	/**
-	 * Get displayed car's year.
-	 * 
-	 * @return
-	 */
-	public int getYear() {
-		return year.intValue();
-	}
-
-	/**
-	 * Get displayed car's year as a string.
-	 * 
-	 * @return
-	 */
-	public String getYearAsString() {
-		return year.toString();
 	}
 
 	/**
 	 * Assert all class invariants.
 	 */
 	private void assertClassInvariants() {
-
-		CustomAssertionUtils.assertValueIsNotNullAndNotEmpty(make);
-		CustomAssertionUtils.assertValueIsNotNullAndNotEmpty(model);
-		CustomAssertionUtils.assertValueIsNotNull(year);
-		CustomAssertionUtils.assertValueIsBetween(year.intValue(), CarPhoto.YEAR_THE_AUTOMOBILE_WAS_INVENTED,
-				Calendar.getInstance().get(Calendar.YEAR) + 1);
+		CustomAssertionUtils.assertValueIsNotNull(car);
 	}
 
 }

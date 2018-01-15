@@ -29,18 +29,16 @@ import org.wahlzeit.services.LogBuilder;
 // TODO: 
 public class CarPhotoFactory extends PhotoFactory {
 
-	
 	private static final Logger log = Logger.getLogger(CarPhotoFactory.class.getName());
 	/**
 	 * Hidden singleton instance; needs to be initialized from the outside.
 	 */
 	private static CarPhotoFactory instance = null;
 
-	
 	protected CarPhotoFactory() {
 		super();
 	}
-	
+
 	/**
 	 * Hidden singleton instance; needs to be initialized from the outside.
 	 */
@@ -59,7 +57,7 @@ public class CarPhotoFactory extends PhotoFactory {
 
 		return instance;
 	}
-	
+
 	/**
 	 * Method to set the singleton instance of CarPhotoFactory.
 	 */
@@ -70,50 +68,52 @@ public class CarPhotoFactory extends PhotoFactory {
 
 		instance = photoFactory;
 	}
-	
+
 	/**
 	 * @methodtype factory
 	 * 
-	 * @throws CarPhotoCreationException 
+	 * @throws CarPhotoCreationException
 	 */
-	public CarPhoto createPhoto(String make, String model, Integer year) throws CarPhotoCreationException {
-		
+	public CarPhoto createPhoto(Car carInPhoto) throws CarPhotoCreationException {
+
 		CarPhoto newCarPhoto = null;
-		
+
 		try {
-			newCarPhoto = new CarPhoto(make, model, year);
-		
-		} catch(CustomAssertionError assertionError) {
-			throw new CarPhotoCreationException("Invalid parameters given for CarPhoto object creation (" + assertionError.getMessage() + ")");
-		} catch(Error error) {
+			newCarPhoto = new CarPhoto(carInPhoto);
+
+		} catch (CustomAssertionError assertionError) {
+			throw new CarPhotoCreationException(
+					"Invalid parameters given for CarPhoto object creation (" + assertionError.getMessage() + ")");
+		} catch (Error error) {
 			throw new CarPhotoCreationException("Could not create new car photo");
 		}
-		
+
 		return newCarPhoto;
 	}
 
 	/**
 	 * Creates a new photo with the specified id
 	 * 
-	 * @throws CarPhotoCreationException 
+	 * @throws CarPhotoCreationException
 	 */
-	public CarPhoto createPhoto(PhotoId id, String make, String model, Integer year) throws CarPhotoCreationException {
-		
+	public CarPhoto createPhoto(PhotoId id, Car car) throws CarPhotoCreationException {
+
 		CarPhoto newCarPhoto = null;
-		
+
 		try {
-			newCarPhoto = new CarPhoto(id, make, model, year);
-		
-		} catch(CustomAssertionError assertionError) {
-			throw new CarPhotoCreationException("Invalid parameters given for CarPhoto object creation (" + assertionError.getMessage() + ")");
-		} catch(Error error) {
+			newCarPhoto = new CarPhoto(id, car);
+
+		} catch (CustomAssertionError assertionError) {
+			throw new CarPhotoCreationException(
+					"Invalid parameters given for CarPhoto object creation (" + assertionError.getMessage() + ")");
+		} catch (Error error) {
 			throw new CarPhotoCreationException("Could not create new car photo");
 		}
-		
+
 		return newCarPhoto;
-		
+
 	}
-	
+
 	// TODO
 
 }

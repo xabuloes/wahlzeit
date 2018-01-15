@@ -23,93 +23,63 @@
 package org.wahlzeit.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Calendar;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class CarPhotoTest {
 
 	// TODO
 
+	private CarManager carManager = null;
+
+	private Car ford;
+
+	private CarType fordCar = null;
+
+	@Before
+	public void setup() {
+
+		carManager = CarManager.getInstance();
+
+		fordCar = carManager.createType("Ford", null);
+
+		ford = carManager.createCar(fordCar);
+
+	}
+
+	public void testConstructorWithoutParamsCreateCar() {
+		CarPhoto photo = new CarPhoto();
+
+		assertNotNull(photo.getCar());
+
+	}
+
 	@Test
-	public void testConstructorSetsModelAndMakeCorrectly() {
+	public void testConstructorSetsCorrectValuesOnlyCar() {
 
-		// Arrange & Act
-		CarPhoto carPhoto = new CarPhoto("Ford", "Mustang", 2013);
+		// Arrange
+		CarPhoto photo = new CarPhoto(ford);
 
-		// Assert
-		assertEquals(carPhoto.getMake(), "Ford");
-		assertEquals(carPhoto.getModel(), "Mustang");
-		assertEquals(carPhoto.getYear(), 2013);
-		assertEquals(carPhoto.getYearAsString(), "2013");
+		assertEquals(photo.getCar(), ford);
 
 	}
 
-	@Test(expected = CustomAssertionError.class)
-	public void testConstructorThrowsExceptionOnNullMake() {
-		CarPhoto carPhoto = new CarPhoto(null, "Mustang", 0);
-	}
-	
-	@Test(expected = CustomAssertionError.class)
-	public void testConstructorThrowsExceptionOnNullMakeWithPhotoId() {
-		CarPhoto carPhoto = new CarPhoto(new PhotoId(0x0), null, "Mustang", 0);
-	}
-
-	@Test(expected = CustomAssertionError.class)
-	public void testConstructorThrowsExceptionOnEmptyMakeWithPhotoId() {
-		CarPhoto carPhoto = new CarPhoto(new PhotoId(0x0), "", "Mustang", 0);
-	}
-	
-	@Test(expected = CustomAssertionError.class)
-	public void testConstructorThrowsExceptionOnNullMakeWithNullPhotoId() {
-		CarPhoto carPhoto = new CarPhoto(null, null, "Mustang", 0);
-	}
-	
-	@Test(expected = CustomAssertionError.class)
-	public void testConstructorThrowsExceptionOnEmptyMakeWithNullPhotoId() {
-		CarPhoto carPhoto = new CarPhoto(null, "", "Mustang", 0);
-	}
-
-	@Test(expected = CustomAssertionError.class)
-	public void testConstructorThrowsExceptionOnNullModel() {
-		CarPhoto carPhoto = new CarPhoto("Ford", null, 0);
-	}
-
-	@Test(expected = CustomAssertionError.class)
-	public void testConstructorThrowsExceptionOnEmptyModel() {
-		CarPhoto carPhoto = new CarPhoto("Ford", "", 0);
-	}
-	
-	@Test(expected = CustomAssertionError.class)
-	public void testConstructorThrowsExceptionOnFutureYear() {
-		CarPhoto carPhoto = new CarPhoto("Ford", "Mustang", Calendar.getInstance().get(Calendar.YEAR) + 1);
-	}
-	
 	@Test
-	public void testConstructorDoesNotThrowExceptionOnPresentYear() {
-		CarPhoto carPhoto = new CarPhoto("Ford", "Mustang", Calendar.getInstance().get(Calendar.YEAR));
-		
-		assertEquals(carPhoto.getYear(), Calendar.getInstance().get(Calendar.YEAR));
-	}
-	
-	@Test(expected = CustomAssertionError.class)
-	public void testConstructorThrowsExceptionOnNegativeYear() {
-		CarPhoto carPhoto = new CarPhoto("Ford", "Mustang", -1);
-	}
-	
-	@Test(expected = CustomAssertionError.class)
-	public void testConstructorThrowsExceptionOnYearBeforeInventionOfTheAutomobile() {
-		CarPhoto carPhoto = new CarPhoto("Ford", "Mustang", CarPhoto.YEAR_THE_AUTOMOBILE_WAS_INVENTED - 1);
-	}
-	
-	@Test
-	public void testConstructorDoesNotThrowExceptionOnYearInventionOfTheAutomobile() {
-		CarPhoto carPhoto = new CarPhoto("Ford", "Mustang", CarPhoto.YEAR_THE_AUTOMOBILE_WAS_INVENTED);
-		
-		assertEquals(carPhoto.getYear(), CarPhoto.YEAR_THE_AUTOMOBILE_WAS_INVENTED);
-	}
+	public void testConstructorSetsCorrectValuesCarAndYear() {
 
-	// TODO
+		ford.setYear(2013);
+
+		// Arrange
+		CarPhoto photo = new CarPhoto(ford);
+
+		assertEquals(photo.getCar(), ford);
+		assertEquals(photo.getCar().getYear(), ford.getYear());
+
+	}
 
 }

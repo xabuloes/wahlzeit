@@ -21,73 +21,82 @@
  */
 
 package org.wahlzeit.utils;
+
 import org.wahlzeit.model.CustomAssertionError;
 
 public class CustomAssertionUtils {
-	
+
 	/**
 	 * @param shouldBeNotNullAndNotEmpty
 	 */
 	public static final void assertValueIsNotNullAndNotEmpty(String shouldBeNotNullAndNotEmpty) {
-	
-		if(shouldBeNotNullAndNotEmpty == null) {
+
+		if (shouldBeNotNullAndNotEmpty == null) {
 			throw new CustomAssertionError("String value is null");
-		} else if(shouldBeNotNullAndNotEmpty.isEmpty()) {
+		} else if (shouldBeNotNullAndNotEmpty.isEmpty()) {
 			throw new CustomAssertionError("String has empty value");
 		}
-		
+
 	}
-	
+
+	/**
+	 * 
+	 * @param shouldBeTrue
+	 */
+	public static final void assertTrue(boolean shouldBeTrue) {
+		if (!shouldBeTrue) {
+			throw new CustomAssertionError("Given value is not true.");
+		}
+	}
+
 	/**
 	 * @param value
 	 * @param beginValueIncl
 	 * @param endValueExcl
 	 */
 	public static final void assertValueIsBetween(int value, int beginValueIncl, int endValueExcl) {
-		
-		if(beginValueIncl >= endValueExcl) {
-			throw new CustomAssertionError("Given value range [" + beginValueIncl + ";" + endValueExcl + "] for assertValueIsBetween() is invalid");
+
+		if (beginValueIncl >= endValueExcl) {
+			throw new CustomAssertionError("Given value range [" + beginValueIncl + ";" + endValueExcl
+					+ "] for assertValueIsBetween() is invalid");
 		}
-		
-		if(value < beginValueIncl || value >= endValueExcl) {
-			throw new CustomAssertionError("Integer value '" + value + "' is not between range from '" + beginValueIncl + "' to '" + endValueExcl + "'");
+
+		if (value < beginValueIncl || value >= endValueExcl) {
+			throw new CustomAssertionError("Integer value '" + value + "' is not between range from '" + beginValueIncl
+					+ "' to '" + endValueExcl + "'");
 		}
-		
+
 	}
-	
 
 	/**
 	 * @param object
 	 */
 	public static final void assertValueIsNotNull(Object object) {
 		if (object == null) {
-			throw new CustomAssertionError("null value was given to calculate distance between to coordinates");
+			throw new CustomAssertionError("Value should not be null");
 		}
 	}
-	
+
 	/**
 	 * Assert that shouldBeGreaterOrEqualZero has a value greater or equal to zero.
 	 * 
 	 * @param shouldBeGreaterOrEqualZero
 	 */
 	public static final void assertDoubleValueIsGreaterOrEqualThanZero(double shouldBeGreaterOrEqualZero) {
-		if(shouldBeGreaterOrEqualZero < 0) {
+		if (shouldBeGreaterOrEqualZero < 0) {
 			throw new CustomAssertionError("Double value " + shouldBeGreaterOrEqualZero + " is smaller than zero");
 		}
 	}
-	
+
 	/**
 	 * Assert that shouldBeAFiniteNumber is finite and not NaN.
 	 * 
 	 * @param shouldBeAFiniteNumber
 	 */
 	public static final void assertDoubleIsFiniteNumber(double shouldBeAFiniteNumber) {
-		if(Double.isNaN(shouldBeAFiniteNumber) || Double.isInfinite(shouldBeAFiniteNumber)) {
+		if (Double.isNaN(shouldBeAFiniteNumber) || Double.isInfinite(shouldBeAFiniteNumber)) {
 			throw new CustomAssertionError("Double value " + shouldBeAFiniteNumber + " is either NaN or infinite");
 		}
 	}
-
-	
-	
 
 }

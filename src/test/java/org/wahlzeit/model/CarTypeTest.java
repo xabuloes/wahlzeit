@@ -22,6 +22,7 @@
 
 package org.wahlzeit.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -29,6 +30,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class CarTypeTest {
+
+	private CarManager carManager = null;
 
 	private CarType carType = null;
 
@@ -39,20 +42,59 @@ public class CarTypeTest {
 	@Before
 	public void setup() {
 
-		this.carType = new CarType(null, "carType1");
-		this.anotherCarType = new CarType(null, "carType2");
-		this.carTypeWithBaseType = new CarType(anotherCarType, "carType3");
+		carManager = CarManager.getInstance();
 
+		this.carType = new CarType(null, "carType1", carManager, "Ford", null);
+		this.anotherCarType = new CarType(null, "carType2", carManager, "Mercedes-Benz", null);
+		this.carTypeWithBaseType = new CarType(anotherCarType, "carType3", carManager, "Fiat", null);
+
+	}
+
+	@Test(expected = CustomAssertionError.class)
+	public void testConstructorThrowsAssertionErrorWhenTypeNameIsNull() {
+		CarType shouldNotBeCreated = new CarType(null, null, carManager, "Ford", "Focus");
+	}
+
+	@Test(expected = CustomAssertionError.class)
+	public void testConstructorThrowsAssertionErrorWhenTypeNameIsEmpty() {
+		CarType shouldNotBeCreated = new CarType(null, "", carManager, "Ford", "Fiesta");
+	}
+
+	@Test(expected = CustomAssertionError.class)
+	public void testConstructorThrowsAssertionErrorWhenCarManagerIsNull() {
+		CarType shouldNotBeCreated = new CarType(null, "someTypeName", null, "Ford", "Fiesta");
+	}
+
+	@Test(expected = CustomAssertionError.class)
+	public void testConstructorThrowsAssertionErrorWhenCarMakeIsNull() {
+		CarType shouldNotBeCreated = new CarType(null, "someTypeName", carManager, null, "Fiesta");
+	}
+
+	@Test(expected = CustomAssertionError.class)
+	public void testConstructorThrowsAssertionErrorWhenCarMakeIsEmpty() {
+		CarType shouldNotBeCreated = new CarType(null, "someTypeName", carManager, "", "Fiesta");
 	}
 
 	@Test
 	public void testIsSubtypeWorksForNonSubtype() {
+
+		// Assert
 		assertFalse(carType.isSubtype());
 	}
 
 	@Test
 	public void testIsSubtypeWorksForSubtype() {
+
+		// Assert
 		assertTrue(carTypeWithBaseType.isSubtype());
+	}
+
+	@Test
+	public void testConstructorSetsCorrectValues() {
+
+		// Assert
+		assertEquals(this.carType.getMake(), "Ford");
+		assertEquals(this.carType.getModel(), null);
 	}
 
 }

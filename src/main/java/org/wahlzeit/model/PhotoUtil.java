@@ -38,7 +38,7 @@ public class PhotoUtil {
 	private static final Logger log = Logger.getLogger(PhotoUtil.class.getName());
 
 	/**
-	 * @throws Exception 
+	 * @throws Exception
 	 * @methodtype creation
 	 */
 	public static Photo createPhoto(String filename, PhotoId id, Image uploadedImage) throws Exception {
@@ -53,7 +53,7 @@ public class PhotoUtil {
 
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 * @param filename
@@ -65,20 +65,21 @@ public class PhotoUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static CarPhoto createCarPhoto(String filename, PhotoId id, Image uploadedImage, String make, String model, int year) throws Exception {
-		
+	public static CarPhoto createCarPhoto(String filename, PhotoId id, Image uploadedImage, String make, String model,
+			int year) throws Exception {
+
 		Photo newPhoto = createPhoto(filename, id, uploadedImage);
-		
-		if(!(newPhoto instanceof CarPhoto)) {
+
+		if (!(newPhoto instanceof CarPhoto)) {
 			throw new CarPhotoCreationException("Photo object generated from createPhoto() is not a CarPhoto");
 		}
-		
-		CarPhoto newCarPhoto = (CarPhoto)newPhoto;
-		
-		newCarPhoto.setMake(make);
-		newCarPhoto.setModel(model);
-		newCarPhoto.setYear(year);
-		
+
+		CarPhoto newCarPhoto = (CarPhoto) newPhoto;
+
+		newCarPhoto.getCar().getType().setMake(make);
+		newCarPhoto.getCar().getType().setModel(model);
+		newCarPhoto.getCar().setYear(year);
+
 		return newCarPhoto;
 	}
 
@@ -118,8 +119,8 @@ public class PhotoUtil {
 	}
 
 	/**
-	 * @methodtype command Scale the source picture to the given size, store it in the datastore and reference it in the
-	 * photo.
+	 * @methodtype command Scale the source picture to the given size, store it in
+	 *             the datastore and reference it in the photo.
 	 */
 	protected static void scaleImage(Image source, PhotoSize size, Photo photo) throws Exception {
 		int sourceWidth = source.getWidth();

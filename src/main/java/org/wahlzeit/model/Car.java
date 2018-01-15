@@ -22,6 +22,8 @@
 
 package org.wahlzeit.model;
 
+import java.util.Calendar;
+
 import org.wahlzeit.utils.CustomAssertionUtils;
 
 import com.googlecode.objectify.annotation.Entity;
@@ -33,6 +35,11 @@ public class Car {
 
 	private static long idCounter = 0;
 
+	/**
+	 * Get the next ID. Ensures unique ID within the application context.
+	 * 
+	 * @return
+	 */
 	public static long getNextId() {
 		return idCounter++;
 	}
@@ -45,21 +52,30 @@ public class Car {
 	@Ignore
 	private CarManager carManager = null;
 
-	public Car(CarType type) {
+	private Integer year;
+
+	/**
+	 * Create a car with given type. Instantiated by {@link CarManager}.
+	 * 
+	 * @param type
+	 */
+	protected Car(CarType type, CarManager carManager) {
 
 		CustomAssertionUtils.assertValueIsNotNull(type);
+		CustomAssertionUtils.assertValueIsNotNull(carManager);
 
-		// TODO
 		this.type = type;
 
-		this.carManager = null;
+		this.year = null;
+
+		this.carManager = carManager;
 
 		this.id = Car.getNextId();
 
 	}
 
 	/**
-	 * TODO
+	 * Get type of the car.
 	 * 
 	 * @return
 	 */
@@ -68,12 +84,75 @@ public class Car {
 	}
 
 	/**
-	 * TODO
+	 * Get the associated car manager.
 	 * 
 	 * @return
 	 */
 	public CarManager getManager() {
 		return this.carManager;
+	}
+
+	/**
+	 * Get car make.
+	 * 
+	 * @return
+	 */
+	public String getMake() {
+		// Delegate to type object
+		return getType().getMake();
+	}
+
+	/**
+	 * Get car model.
+	 * 
+	 * @return
+	 */
+	public String getModel() {
+		// Delegate to type object
+		return getType().getModel();
+	}
+
+	/**
+	 * Set manufacturing year.
+	 * 
+	 * @param year
+	 */
+	public void setYear(Integer year) {
+		this.year = year;
+
+		this.assertClassInvariants();
+	}
+
+	/**
+	 * Get manufacturing year.
+	 * 
+	 * @return
+	 */
+	public int getYear() {
+		return year;
+	}
+
+	/**
+	 * Get displayed car's year as a string.
+	 * 
+	 * @return
+	 */
+	public String getYearAsString() {
+		if (year != null) {
+			return year.toString();
+		} else {
+			return "";
+		}
+	}
+
+	/**
+	 * Assert class invariants.
+	 */
+	private void assertClassInvariants() {
+
+		CustomAssertionUtils.assertValueIsNotNull(year);
+		CustomAssertionUtils.assertValueIsBetween(year.intValue(), CarType.YEAR_THE_AUTOMOBILE_WAS_INVENTED,
+				Calendar.getInstance().get(Calendar.YEAR) + 1);
 	}
 
 }
