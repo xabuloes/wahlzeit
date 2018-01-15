@@ -153,6 +153,7 @@ public class Car {
 		CustomAssertionUtils.assertValueIsNotNull(year);
 		CustomAssertionUtils.assertValueIsBetween(year.intValue(), CarType.YEAR_THE_AUTOMOBILE_WAS_INVENTED,
 				Calendar.getInstance().get(Calendar.YEAR) + 1);
+		
 	}
 
 }

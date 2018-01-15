@@ -157,6 +157,9 @@ public class CarType {
 
 		CustomAssertionUtils.assertValueIsNotNullAndNotEmpty(make);
 		// Model may be null
+		
+		// According to the UML chart, CarType and CarManager have a composite association.
+		CustomAssertionUtils.assertValueIsNotNull(carManager);
 
 	}
 
