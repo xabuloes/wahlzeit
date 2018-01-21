@@ -59,7 +59,7 @@ public class CarManager extends ObjectManager {
 	 * @return
 	 */
 	public Car createCar(CarType type) {
-		return createCar(type.getTypeName());
+		return doCreateCar(type.getTypeName());
 	}
 
 	/**
@@ -74,23 +74,6 @@ public class CarManager extends ObjectManager {
 	}
 
 	/**
-	 * Create car from type string.
-	 * 
-	 * @param typeName
-	 * @return
-	 */
-	public Car createCar(String typeName) {
-
-		CustomAssertionUtils.assertValueIsNotNullAndNotEmpty(typeName);
-
-		CarType carType = typeNameToTypeMap.get(typeName);
-
-		CustomAssertionUtils.assertValueIsNotNull(carType);
-
-		return carType.createInstance();
-	}
-
-	/**
 	 * Create car from type string (with year)
 	 * 
 	 * @param typeName
@@ -98,7 +81,7 @@ public class CarManager extends ObjectManager {
 	 * @return
 	 */
 	public Car createCar(String typeName, Integer year) {
-		Car newCar = createCar(typeName);
+		Car newCar = doCreateCar(typeName);
 		newCar.setYear(year);
 		return newCar;
 	}
@@ -109,7 +92,36 @@ public class CarManager extends ObjectManager {
 	 * @return
 	 */
 	public Car createUnknownCar() {
-		return createCar(UNKNOWN_CAR_TYPE_NAME);
+		return doCreateCar(UNKNOWN_CAR_TYPE_NAME);
+	}
+
+	/**
+	 * Create car from type string.
+	 * 
+	 * @param typeName
+	 * @return
+	 */
+	public Car createCar(String typeName) {
+		return doCreateCar(typeName);
+	}
+
+	/**
+	 * Central point for (internal) car instantiation. Create car from type name.
+	 * 
+	 * @param typeName
+	 * @return
+	 */
+	private Car doCreateCar(String typeName) {
+
+		CustomAssertionUtils.assertValueIsNotNullAndNotEmpty(typeName);
+
+		CarType carType = typeNameToTypeMap.get(typeName);
+
+		CustomAssertionUtils.assertValueIsNotNull(carType);
+
+		Car newInstance = carType.createInstance();
+
+		return newInstance;
 	}
 
 	/**
